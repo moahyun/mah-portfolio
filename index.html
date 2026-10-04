@@ -148,23 +148,34 @@
   .contact .big{font-family:var(--serif);font-size:calc(220*var(--u));line-height:.9;letter-spacing:-.02em}
   .contact .mail{font-size:calc(40*var(--u));font-weight:300;margin-top:calc(60*var(--u));display:inline-block;border-bottom:1px solid}
   .contact .foot{display:flex;justify-content:space-between;font-size:calc(13*var(--u));color:#888}
+  /* ── 이미지가 들어가면 원본 비율대로 ── */
+  .box img{display:block;width:100%;height:100%;object-fit:cover}
+  .box.has-img{height:auto !important;background:none}
+  .box.has-img img{height:auto}
+  .mah img{display:block;width:calc(900*var(--u));height:auto}
+  .detail + .detail{padding-top:calc(120*var(--u))}
+  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:calc(24*var(--u));margin-top:calc(200*var(--u))}
+  .gallery .box{height:calc(700*var(--u))}
+  .gallery .box.full{grid-column:span 2;height:calc(940*var(--u))}
+  .contact .foot a:hover{color:var(--ink)}
+  .contact .links a,.contact .links span{margin-left:calc(24*var(--u))}
 </style>
 </head>
 <body>
 
 <nav class="nav">
   <a href="#top" class="logo">MaH</a>
-  <ul><li><a href="#index">Index</a></li><li><a href="#about">About</a></li><li><a href="#contact">Contact</a></li></ul>
+  <ul><li><a href="#about">About</a></li><li><a href="#index">Index</a></li><li><a href="#contact">Contact</a></li></ul>
 </nav>
 
 <!-- 01 HERO -->
 <div class="hero-wrap" id="top">
 <section class="hero">
-  <span class="wf abs" style="top:calc(110*var(--u));left:calc(60*var(--u))">01 HERO · 1920×1080 한 화면 · MaH는 직접 디자인한 로고로 교체 예정 (SVG 또는 PNG)</span>
+  <span class="wf abs" style="top:calc(110*var(--u));left:calc(60*var(--u))">01 HERO · 1920×1080 한 화면 · 관리자 화면에서 로고 이미지를 올리면 글자 대신 이미지로 바뀜</span>
   <div class="mah" id="mah">MaH</div>
-  <div class="sub" id="sub">MO AHYUN · VISUAL CONTENT DESIGNER</div>
+  <div class="sub" id="sub"></div>
   <span class="wf" style="margin-top:calc(24*var(--u))">처음엔 흐릿하게 · 스크롤할수록 블러가 풀리며 또렷해짐 · 다 또렷해지면 이름이 나타남</span>
-  <div class="copy">Fit the brand,<br>keep the touch.</div>
+  <div class="copy" id="heroCopy"></div>
   <div class="scroll" id="scrollHint">Scroll ↓</div>
 </section>
 </div>
@@ -174,98 +185,28 @@
   <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 ABOUT · 메인 바로 아래 · 소개 / 경력 타임라인 / 할 수 있는 것 3단</span>
   <div class="sec-head rv"><h2>About</h2><span class="label">Mo Ahyun</span></div>
   <div class="ab-grid rv">
-    <p class="intro">브랜드와 맥락을 먼저 이해하고, 그에 맞는 비주얼을 찾아갑니다. 타이포·그래픽·AI 등 필요한 방법을 적극적으로 활용하되, 디테일에는 저만의 결을 남깁니다.</p>
-    <ul class="tl">
-      <li><span class="label">20XX — 2026</span><div><b>andar</b><small>Content Design Team · Campaign, CRM, Offline</small></div></li>
-      <li><span class="label">20XX — 20XX</span><div><b>HBAF</b><small>Brand Planning Team · Package, Character</small></div></li>
-      <li><span class="label">20XX — 20XX</span><div><b>ZEROBASEONE</b><small>Entertainment Production · Album Design, Lettering</small></div></li>
-    </ul>
-    <ul class="cap">
-      <li class="label" style="border:0;padding-bottom:calc(16*var(--u))">Capabilities</li>
-      <li>Campaign Key Visual</li><li>Typography & Lettering</li><li>CRM Visual</li>
-      <li>Package & Print</li><li>Character Design</li><li>AI Workflow</li>
-    </ul>
+    <p class="intro" id="aboutIntro"></p>
+    <ul class="tl" id="career"></ul>
+    <ul class="cap" id="caps"></ul>
   </div>
 </section>
 
 <!-- 03 INDEX -->
 <section class="index pad" id="index">
   <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">03 INDEX · 텍스트 리스트 · 행에 호버하면 대표 이미지가 커서를 따라다님 · 클릭하면 상세로</span>
-  <div class="sec-head rv"><h2>Index<sup>(07)</sup></h2><span class="label">Selected Works 20XX — 2026</span></div>
+  <div class="sec-head rv"><h2>Index<sup id="count"></sup></h2><span class="label" id="indexCaption"></span></div>
   <div class="cols label"><span>No.</span><span>Project</span><span>Client</span><span>Category</span><span style="text-align:right">Year</span></div>
   <div class="rows" id="rows"></div>
 </section>
 <div class="preview box" id="preview"></div>
 
-<!-- 04 PROJECT DETAIL (템플릿: 01 예시) -->
-<section class="detail pad" id="p01">
-  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">04 PROJECT DETAIL · 7개 프로젝트 모두 이 템플릿 공통 · 블록(Touch / Spread / Result)은 프로젝트마다 골라서 사용</span>
-  <div class="d-head rv">
-    <div class="d-no">01</div>
-    <div class="d-title">Seasonal Campaign<br>— Bridge Visual</div>
-  </div>
-  <div class="meta rv">
-    <div><span class="label">Client</span><span>andar</span></div>
-    <div><span class="label">Year</span><span>2026</span></div>
-    <div><span class="label">Role</span><span>KV · Banner · CRM · Offline</span></div>
-    <div><span class="label">Category</span><span>Campaign</span></div>
-  </div>
-  <div class="d-hero box rv">MAIN VISUAL · 1800×940</div>
-
-  <div class="two rv">
-    <span class="label">Overview</span>
-    <div>
-      <p>캠페인의 배경과 브리프를 2~3문장으로 정리하는 자리. 어떤 시즌, 어떤 목표, 어떤 타깃이었는지.</p>
-      <p>그래서 어떤 톤을 선택했고, 왜 그 비주얼이 브랜드에 맞는 답이었는지 짧게 서술.</p>
-    </div>
-  </div>
-
-  <div class="touch rv">
-    <div class="box">DETAIL IMAGE
-      <div class="mk" style="left:28%;top:32%">✦<div class="tip">MaH's touch — 이 타이포 자간과 곡선은 제 취향이 들어간 부분이에요.</div></div>
-      <div class="mk" style="left:64%;top:62%">✦<div class="tip">브랜드 가이드는 지키면서, 그림자 처리로 무드를 더했어요.</div></div>
-    </div>
-    <div>
-      <span class="wf" style="display:block;margin-bottom:calc(16*var(--u))">✦ 마커 호버 시 한 줄 코멘트 · 프로젝트당 1~3개</span>
-      <h3>MaH's touch</h3>
-      <p>브랜드의 답 위에 남긴 나의 한 끗. 이미지 위의 점에 마우스를 올려보세요.</p>
-    </div>
-  </div>
-
-  <div class="spread rv">
-    <span class="wf" style="display:block;margin-bottom:calc(16*var(--u))">KV 하나가 채널별로 확장되는 모습을 한 화면에 · 캠페인 프로젝트에서 사용</span>
-    <h3>One KV → Touchpoints</h3>
-    <div class="spread-grid">
-      <div class="kv box">KEY VISUAL</div>
-      <div class="tp">
-        <div class="box wide">APP MAIN BANNER</div>
-        <div class="box">PUSH</div>
-        <div class="box">EMAIL / CRM</div>
-        <div class="box">DETAIL PAGE</div>
-        <div class="box">OFFLINE POP</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="result rv">
-    <div>
-      <span class="label">Result</span>
-      <p style="font-size:calc(20*var(--u));margin-top:calc(8*var(--u));font-weight:300">비주얼 A/B 테스트 클릭률 — 데이터 확보 후 추가</p>
-      <span class="wf">수치가 없으면 이 블록 대신 "실제 집행 · N개 채널" 같은 사실로 대체</span>
-    </div>
-    <div class="big">+ 00%</div>
-  </div>
-
-  <a class="next rv" href="#index">
-    <div><span class="label">Next Project</span><div class="t">02 — ZEROBASEONE Album</div></div>
-    <span class="label">→</span>
-  </a>
-</section>
+<!-- 04 PROJECT DETAILS (content.json의 프로젝트 순서대로 생성) -->
+<div id="details"></div>
 
 <!-- 05 DAILY CONTENTS -->
 <section class="daily" id="daily">
   <div class="pad">
-    <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">05 DAILY CONTENTS (= 07번 프로젝트) · 썸네일/배너/상세를 크기별로 천천히 흐르게 · 호버 시 일시정지</span>
+    <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">05 DAILY CONTENTS · 썸네일/배너/상세를 크기별로 천천히 흐르게 · 호버 시 일시정지</span>
     <div class="sec-head rv"><h2>Daily Contents<sup>andar</sup></h2><span class="label">Thumbnail · Banner · Detail</span></div>
   </div>
   <div style="margin-top:calc(60*var(--u))">
@@ -278,50 +219,145 @@
 <!-- 06 CONTACT -->
 <section class="contact pad" id="contact">
   <div>
-    <span class="wf" style="color:#8aa2ff;display:block;margin-bottom:calc(20*var(--u))">06 CONTACT · 큰 타이포로 마무리</span>
-    <div class="big">Let's work<br>together.</div>
-    <a class="mail" href="#contact">email@domain.com</a>
+    <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">06 CONTACT · 큰 타이포로 마무리</span>
+    <div class="big" id="contactHeading"></div>
+    <a class="mail" id="mail"></a>
   </div>
-  <div class="foot"><span>MaH — Mo Ahyun</span><span>Instagram · Behance · PDF Portfolio</span><span>© 2026</span></div>
+  <div class="foot"><span>MaH — Mo Ahyun</span><span class="links" id="links"></span><span>© 2026</span></div>
 </section>
 
 <button class="toggle" id="toggle">메모 숨기기</button>
 
 <script>
-  const projects = [
-    ['01','Seasonal Campaign','andar','Campaign / KV','2026'],
-    ['02','ZEROBASEONE Album','ZEROBASEONE','Album / Lettering','20XX'],
-    ['03','UTme Seoul Character','HBAF × UNIQLO','Character','20XX'],
-    ['04','Gravure Package','HBAF','Package / Print','20XX'],
-    ['05','CRM Visual','andar','CRM','2026'],
-    ['06','Offline Event','andar','Offline / Space','2026'],
-    ['07','Daily Contents','andar','Banner / Detail','2026'],
-  ];
-  const rows = document.getElementById('rows');
-  rows.innerHTML = projects.map(p =>
-    `<div class="row" data-t="${p[1]}" data-n="${p[0]}"><span class="n">${p[0]}</span><span class="t">${p[1]}</span>
-     <span class="m">${p[2]}</span><span class="m">${p[3]}</span><span class="y">${p[4]}</span></div>`).join('');
-  rows.querySelectorAll('.row').forEach(r => r.addEventListener('click', () => {
-    document.getElementById(r.dataset.n === '07' ? 'daily' : 'p01').scrollIntoView({behavior:'smooth'});
-  }));
+  // 모든 텍스트·이미지는 content.json에서 읽어옴 (관리자 화면 = Pages CMS)
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const br = s => esc(s).replace(/\n/g, '<br>');
+  const pad = n => String(n).padStart(2, '0');
+  // 이미지가 있으면 이미지, 없으면 회색 박스 + 라벨
+  const media = (src, label, cls = '', inner = '') => src
+    ? `<div class="box has-img ${cls}"><img src="${esc(src)}" alt="${esc(label)}" loading="lazy">${inner}</div>`
+    : `<div class="box ${cls}">${esc(label)}${inner}</div>`;
 
-  // 커서 따라다니는 프리뷰
-  const pv = document.getElementById('preview');
-  let tx=0, ty=0, cx=0, cy=0;
-  rows.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
-  rows.querySelectorAll('.row').forEach(r => {
-    r.addEventListener('mouseenter', () => { pv.textContent = r.dataset.n + ' · ' + r.dataset.t.toUpperCase(); pv.classList.add('on'); });
-  });
-  rows.addEventListener('mouseleave', () => pv.classList.remove('on'));
-  (function loop(){
-    cx += (tx - cx) * .1; cy += (ty - cy) * .1;
-    const u = innerWidth / 1920;
-    pv.style.transform = `translate(${cx + 40*u}px, ${cy - 150*u}px) rotate(${(tx - cx) * .02}deg)`;
-    requestAnimationFrame(loop);
-  })();
+  fetch('content.json', {cache: 'no-store'}).then(r => r.json()).then(render)
+    .catch(() => { document.body.insertAdjacentHTML('afterbegin', '<p class="wf" style="position:fixed;top:80px;left:60px;z-index:99">content.json을 불러오지 못했어요 (로컬 서버로 열어야 함)</p>'); });
+
+  function render(c){
+    // Hero
+    if (c.hero.logo) $('mah').innerHTML = `<img src="${esc(c.hero.logo)}" alt="MaH">`;
+    $('sub').textContent = c.hero.subtitle;
+    $('heroCopy').innerHTML = br(c.hero.copy);
+
+    // About
+    $('aboutIntro').innerHTML = br(c.about.intro);
+    $('career').innerHTML = c.about.career.map(x =>
+      `<li><span class="label">${esc(x.period)}</span><div><b>${esc(x.company)}</b><small>${esc(x.role)}</small></div></li>`).join('');
+    $('caps').innerHTML = '<li class="label" style="border:0;padding-bottom:calc(16*var(--u))">Capabilities</li>'
+      + c.about.capabilities.map(x => `<li>${esc(x)}</li>`).join('');
+
+    // Index
+    const ps = c.projects;
+    $('count').textContent = `(${pad(ps.length)})`;
+    $('indexCaption').textContent = c.indexCaption;
+    $('rows').innerHTML = ps.map((p, i) =>
+      `<div class="row" data-i="${i}"><span class="n">${pad(i+1)}</span><span class="t">${esc(p.title)}</span>
+       <span class="m">${esc(p.client)}</span><span class="m">${esc(p.category)}</span><span class="y">${esc(p.year)}</span></div>`).join('');
+
+    // Project details
+    const target = i => ps[i].isDailyWall ? 'daily' : 'p' + pad(i+1);
+    const detailIdx = ps.map((p, i) => i).filter(i => !ps[i].isDailyWall);
+    $('details').innerHTML = detailIdx.map((i, k) => detail(ps[i], i, k === 0, ps[detailIdx[k+1]] ? detailIdx[k+1] : null)).join('');
+
+    function detail(p, i, first, nextI){
+      const no = pad(i+1);
+      let h = `<section class="detail pad" id="p${no}">`;
+      if (first) h += `<span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">04 PROJECT DETAIL · 모든 프로젝트 공통 템플릿 · 내용이 비어있는 블록(Touch / Spread / Gallery / Result)은 자동으로 숨겨짐</span>`;
+      h += `<div class="d-head rv"><div class="d-no">${no}</div><div class="d-title">${esc(p.title)}${p.subtitle ? '<br>— ' + esc(p.subtitle) : ''}</div></div>
+        <div class="meta rv">
+          <div><span class="label">Client</span><span>${esc(p.client)}</span></div>
+          <div><span class="label">Year</span><span>${esc(p.year)}</span></div>
+          <div><span class="label">Role</span><span>${esc(p.role)}</span></div>
+          <div><span class="label">Category</span><span>${esc(p.category)}</span></div>
+        </div>`;
+      h += media(p.mainImage, 'MAIN VISUAL · 1800×940', 'd-hero rv');
+      if (p.overview) h += `<div class="two rv"><span class="label">Overview</span><div>${
+        p.overview.split(/\n\s*\n/).map(t => `<p>${br(t.trim())}</p>`).join('')}</div></div>`;
+      else h += `<div style="height:calc(160*var(--u))"></div>`;
+
+      if (p.touches && p.touches.length) {
+        const mk = p.touches.map(t => `<div class="mk" style="left:${+t.x}%;top:${+t.y}%">✦<div class="tip">MaH's touch — ${esc(t.comment)}</div></div>`).join('');
+        h += `<div class="touch rv">${media(p.touchImage, 'DETAIL IMAGE', '', mk)}
+          <div>${first ? '<span class="wf" style="display:block;margin-bottom:calc(16*var(--u))">✦ 마커 호버 시 한 줄 코멘트 · 위치는 관리자 화면에서 % 값으로 지정</span>' : ''}
+          <h3>MaH's touch</h3><p>브랜드의 답 위에 남긴 나의 한 끗. 이미지 위의 점에 마우스를 올려보세요.</p></div></div>`;
+      }
+      if (p.kvImage || (p.touchpoints && p.touchpoints.length)) {
+        h += `<div class="spread rv"><h3>One KV → Touchpoints</h3><div class="spread-grid">
+          ${media(p.kvImage, 'KEY VISUAL', 'kv')}
+          <div class="tp">${(p.touchpoints || []).map((t, j) => media(t.image, t.label, j === 0 ? 'wide' : '')).join('')}</div></div></div>`;
+      }
+      if (p.gallery && p.gallery.length) {
+        h += `<div class="gallery rv">${p.gallery.map((g, j) => media(g, 'IMAGE', j % 3 === 0 ? 'full' : '')).join('')}</div>`;
+      }
+      if (p.resultText || p.resultValue) {
+        h += `<div class="result rv"><div><span class="label">Result</span>
+          <p style="font-size:calc(20*var(--u));margin-top:calc(8*var(--u));font-weight:300">${esc(p.resultText)}</p></div>
+          <div class="big">${esc(p.resultValue)}</div></div>`;
+      }
+      const n = nextI ?? ps.findIndex(x => x.isDailyWall);
+      if (n !== null && n >= 0) h += `<a class="next rv" href="#${target(n)}"><div><span class="label">Next Project</span><div class="t">${pad(n+1)} — ${esc(ps[n].title)}</div></div><span class="label">→</span></a>`;
+      else h += `<div style="height:calc(160*var(--u))"></div>`;
+      return h + '</section>';
+    }
+
+    // Index 클릭 → 해당 상세로
+    $('rows').querySelectorAll('.row').forEach(r => r.addEventListener('click', () =>
+      $(target(+r.dataset.i)).scrollIntoView({behavior:'smooth'})));
+
+    // 커서 따라다니는 프리뷰
+    const pv = $('preview');
+    let tx = 0, ty = 0, cx = 0, cy = 0;
+    $('rows').addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
+    $('rows').querySelectorAll('.row').forEach(r => r.addEventListener('mouseenter', () => {
+      const p = ps[+r.dataset.i];
+      pv.innerHTML = p.thumbnail ? `<img src="${esc(p.thumbnail)}" alt="">` : esc(pad(+r.dataset.i + 1) + ' · ' + p.title.toUpperCase());
+      pv.classList.add('on');
+    }));
+    $('rows').addEventListener('mouseleave', () => pv.classList.remove('on'));
+    (function loop(){
+      cx += (tx - cx) * .1; cy += (ty - cy) * .1;
+      const u = innerWidth / 1920;
+      pv.style.transform = `translate(${cx + 40*u}px, ${cy - 150*u}px) rotate(${(tx - cx) * .02}deg)`;
+      requestAnimationFrame(loop);
+    })();
+
+    // Daily contents 트랙 (이미지가 없으면 회색 박스)
+    const fallback = { ta:[[360,360],[560,360],[360,360],[280,360]], tb:[[640,280],[280,280],[420,280]], tc:[[300,400],[300,400],[520,400]] };
+    const imgs = { ta:c.daily.thumbnails, tb:c.daily.banners, tc:c.daily.details };
+    const hts = { ta:360, tb:280, tc:400 }, names = { ta:'THUMBNAIL', tb:'BANNER', tc:'DETAIL' };
+    for (const id in fallback) {
+      let html = '';
+      const list = imgs[id] || [];
+      const reps = list.length ? Math.max(2, Math.ceil(12 / list.length)) : 6;
+      for (let k = 0; k < reps; k++) html += list.length
+        ? list.map(s => `<img src="${esc(s)}" alt="" loading="lazy" style="height:calc(${hts[id]}*var(--u));width:auto;flex:none;display:block">`).join('')
+        : fallback[id].map(([w,h]) => `<div class="box" style="width:calc(${w}*var(--u));height:calc(${h}*var(--u))">${names[id]}</div>`).join('');
+      $(id).innerHTML = html + html;
+    }
+
+    // Contact
+    $('contactHeading').innerHTML = br(c.contact.heading);
+    $('mail').textContent = c.contact.email;
+    $('mail').href = 'mailto:' + c.contact.email;
+    $('links').innerHTML = c.contact.links.map(l => l.url
+      ? `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a>` : `<span>${esc(l.label)}</span>`).join('');
+
+    // 스크롤 리빌
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.15});
+    document.querySelectorAll('.rv').forEach(el => io.observe(el));
+  }
 
   // 히어로: 스크롤 진행도에 따라 블러가 풀림
-  const mah = document.getElementById('mah'), sub = document.getElementById('sub'), hint = document.getElementById('scrollHint');
+  const mah = $('mah'), sub = $('sub'), hint = $('scrollHint');
   const clamp = v => Math.min(1, Math.max(0, v));
   function heroScroll(){
     const u = innerWidth / 1920;
@@ -336,22 +372,8 @@
   addEventListener('resize', heroScroll);
   heroScroll();
 
-  // Daily contents 트랙 (가로 무한 흐름)
-  const sizes = { ta:[[360,360],[560,360],[360,360],[280,360]], tb:[[640,280],[280,280],[420,280]], tc:[[300,400],[300,400],[520,400]] };
-  const names = { ta:'THUMBNAIL', tb:'BANNER', tc:'DETAIL' };
-  for (const id in sizes) {
-    let html = '';
-    for (let i = 0; i < 6; i++) sizes[id].forEach(([w,h]) =>
-      html += `<div class="box" style="width:calc(${w}*var(--u));height:calc(${h}*var(--u))">${names[id]}</div>`);
-    document.getElementById(id).innerHTML = html + html;
-  }
-
-  // 스크롤 리빌
-  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.15});
-  document.querySelectorAll('.rv').forEach(el => io.observe(el));
-
   // 메모 토글
-  const tg = document.getElementById('toggle');
+  const tg = $('toggle');
   tg.onclick = () => { document.body.classList.toggle('hide-notes'); tg.textContent = document.body.classList.contains('hide-notes') ? '메모 보기' : '메모 숨기기'; };
 </script>
 </body>

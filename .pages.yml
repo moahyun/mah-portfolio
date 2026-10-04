@@ -1,0 +1,179 @@
+media:
+  input: images
+  output: images
+
+content:
+  - name: site
+    label: 포트폴리오 내용
+    type: file
+    path: content.json
+    format: json
+    fields:
+      - name: hero
+        label: 메인 (첫 화면)
+        type: object
+        fields:
+          - name: logo
+            label: MaH 로고 이미지
+            description: SVG 또는 배경이 투명한 PNG. 비워두면 글자로 표시돼요.
+            type: image
+          - name: subtitle
+            label: 로고 아래 작은 글씨
+            type: string
+          - name: copy
+            label: 왼쪽 아래 카피
+            description: 줄바꿈하면 사이트에서도 줄이 바뀌어요.
+            type: text
+
+      - name: about
+        label: About
+        type: object
+        fields:
+          - name: intro
+            label: 소개 문구
+            type: text
+          - name: career
+            label: 경력
+            type: object
+            list: true
+            fields:
+              - name: period
+                label: 기간
+                type: string
+              - name: company
+                label: 회사
+                type: string
+              - name: role
+                label: 팀 · 업무
+                type: string
+          - name: capabilities
+            label: 할 수 있는 것
+            type: string
+            list: true
+
+      - name: indexCaption
+        label: Index 오른쪽 작은 글씨
+        type: string
+
+      - name: projects
+        label: 프로젝트
+        description: 위에서부터 01, 02... 순서로 번호가 붙어요. 순서를 바꾸면 번호도 바뀌어요.
+        type: object
+        list: true
+        fields:
+          - name: title
+            label: 제목
+            type: string
+            required: true
+          - name: subtitle
+            label: 부제
+            type: string
+          - name: client
+            label: 클라이언트
+            type: string
+          - name: category
+            label: 분야
+            type: string
+          - name: year
+            label: 연도
+            type: string
+          - name: role
+            label: 역할
+            type: string
+          - name: thumbnail
+            label: Index 호버 이미지
+            type: image
+          - name: mainImage
+            label: 메인 이미지
+            type: image
+          - name: overview
+            label: 개요
+            description: 빈 줄을 넣으면 문단이 나뉘어요.
+            type: text
+          - name: touchImage
+            label: MaH's touch 이미지
+            type: image
+          - name: touches
+            label: MaH's touch 마커
+            description: 비워두면 이 블록이 숨겨져요. 위치는 이미지 왼쪽 위 기준 % (0~100).
+            type: object
+            list: true
+            fields:
+              - name: x
+                label: 가로 위치 (%)
+                type: number
+              - name: y
+                label: 세로 위치 (%)
+                type: number
+              - name: comment
+                label: 코멘트
+                type: text
+          - name: kvImage
+            label: 키비주얼 (One KV → Touchpoints)
+            type: image
+          - name: touchpoints
+            label: 확장 매체
+            description: 키비주얼과 확장 매체를 모두 비워두면 이 블록이 숨겨져요.
+            type: object
+            list: true
+            fields:
+              - name: label
+                label: 매체 이름
+                type: string
+              - name: image
+                label: 이미지
+                type: image
+          - name: gallery
+            label: 추가 이미지
+            type: image
+            list: true
+          - name: resultText
+            label: 결과 설명
+            description: 결과 설명과 수치를 모두 비워두면 이 블록이 숨겨져요.
+            type: string
+          - name: resultValue
+            label: 결과 수치
+            type: string
+          - name: isDailyWall
+            label: Daily Contents 벽으로 보여주기
+            description: 켜면 상세 페이지 대신 아래 Daily Contents 섹션으로 연결돼요.
+            type: boolean
+
+      - name: daily
+        label: Daily Contents
+        type: object
+        fields:
+          - name: thumbnails
+            label: 1줄 — 썸네일
+            type: image
+            list: true
+          - name: banners
+            label: 2줄 — 배너
+            type: image
+            list: true
+          - name: details
+            label: 3줄 — 상세페이지
+            type: image
+            list: true
+
+      - name: contact
+        label: Contact
+        type: object
+        fields:
+          - name: heading
+            label: 큰 문구
+            type: text
+          - name: email
+            label: 이메일
+            type: string
+          - name: links
+            label: 링크
+            type: object
+            list: true
+            fields:
+              - name: label
+                label: 이름
+                type: string
+              - name: url
+                label: 주소
+                type: string
