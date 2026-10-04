@@ -80,10 +80,12 @@
   /* ── 01 Hero ── */
   /* 스크롤 트랙: 약 3화면 높이만큼 스크롤하는 동안 화면에 고정된 채 블러가 풀림 */
   .hero-wrap{height:calc(4240*var(--u))}
-  .hero{position:sticky;top:0;height:calc(1080*var(--u));display:flex;flex-direction:column;align-items:center;justify-content:center}
-  .mah{font-family:var(--serif);font-size:calc(280*var(--u));line-height:.8;letter-spacing:-.02em;will-change:filter,opacity}
+  .hero{position:sticky;top:0;height:calc(1080*var(--u));display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:calc(96*var(--u))}
+  /* MaH 묶음은 가운데 하단에 · 메모(wf)는 흐름에서 빼서 위치에 영향 없게 */
+  .hero > .wf:not(.abs){position:absolute;top:calc(140*var(--u));left:50%;transform:translateX(-50%);white-space:nowrap}
+  .mah{font-family:var(--serif);font-size:calc(440*var(--u));line-height:.8;letter-spacing:-.02em;will-change:filter,opacity}
   .mah-wrap{display:flex;flex-direction:column;align-items:center;will-change:filter,opacity}
-  .sub{margin-top:calc(28*var(--u));font-family:var(--serif);font-size:calc(34*var(--u));line-height:1;letter-spacing:0}
+  .sub{margin-top:calc(36*var(--u));font-family:var(--serif);font-size:calc(40*var(--u));line-height:1;letter-spacing:0}
 
   /* ── 02 Index ── */
   .index{padding-top:calc(200*var(--u));padding-bottom:calc(200*var(--u));position:relative;min-height:100vh}
