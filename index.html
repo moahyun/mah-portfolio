@@ -92,7 +92,7 @@
     padding-bottom:calc(24*var(--u))}
   .sec-head h2{font-family:var(--serif);font-weight:400;font-size:calc(96*var(--u));line-height:1}
   .sec-head h2 sup{font-family:var(--sans);font-size:calc(16*var(--u));color:var(--mute);vertical-align:top;margin-left:calc(8*var(--u))}
-  .cols,.row{display:grid;grid-template-columns:calc(140*var(--u)) 1fr calc(440*var(--u)) calc(300*var(--u));
+  .cols,.row{display:grid;grid-template-columns:calc(140*var(--u)) 1fr auto calc(260*var(--u));
     align-items:center}
   .cols{padding:calc(20*var(--u)) 0;border-bottom:1px solid var(--line)}
   .row{height:calc(104*var(--u));border-bottom:1px solid var(--line);cursor:pointer;overflow:hidden;
@@ -101,7 +101,7 @@
   .row.hide{height:0;opacity:0 !important;border-bottom-color:transparent;pointer-events:none}
   .row .t{font-size:calc(40*var(--u));font-weight:300;letter-spacing:-.01em;transition:transform .8s var(--ease)}
   .row .n{font-family:var(--serif);font-size:calc(22*var(--u));color:var(--mute)}
-  .row .m{font-size:calc(15*var(--u));color:var(--mute)}
+  .row .m{font-size:calc(15*var(--u));color:var(--mute);text-align:right}
   .row .y{font-size:calc(15*var(--u));color:var(--mute);text-align:right}
   .rows:has(.row:hover) .row{opacity:.22}
   .rows .row:hover{opacity:1}
@@ -118,7 +118,6 @@
   .grp{display:flex;justify-content:space-between;align-items:baseline;padding:calc(64*var(--u)) 0 calc(18*var(--u));border-bottom:1px solid var(--line)}
   .rows .grp:first-child{padding-top:calc(36*var(--u))}
   .grp .g-name{font-family:var(--serif);font-size:calc(34*var(--u));line-height:1}
-  .grp .g-meta{font-size:calc(13*var(--u));color:var(--mute);letter-spacing:.04em}
   .rows.redraw > *{animation:rowIn .9s var(--ease) both}
   @keyframes rowIn{from{opacity:0;transform:translateY(calc(24*var(--u)))}}
   .preview{position:fixed;left:0;top:0;width:calc(440*var(--u));height:calc(300*var(--u));z-index:30;pointer-events:none;
@@ -274,7 +273,7 @@
   <div class="sec-head"><h2>Index<sup id="count"></sup></h2>
     <div class="modes"><button class="on" data-mode="co">Company</button><span>/</span><button data-mode="cap">Capability</button></div></div>
   <div class="filter off" id="filter"><div class="chips" id="chips"></div></div>
-  <div class="cols label rv"><span>No.</span><span>Project</span><span>Category</span><span style="text-align:right">Period</span></div>
+  <div class="cols label rv"><span>No.</span><span>Project</span><span style="text-align:right">Category</span><span style="text-align:right">Period</span></div>
   <div class="rows" id="rows"></div>
 </section>
 <div class="preview box" id="preview"></div>
@@ -338,15 +337,14 @@
     function groups(){
       const names = career.map(x => x.company);
       ps.forEach(p => (p.company || []).forEach(k => { if (!names.includes(k)) names.push(k); }));
-      const gs = names.map(n => ({ n, info: career.find(x => x.company === n), idx: ps.map((p, i) => i).filter(i => (ps[i].company || []).includes(n)) }));
+      const gs = names.map(n => ({ n, idx: ps.map((p, i) => i).filter(i => (ps[i].company || []).includes(n)) }));
       const rest = ps.map((p, i) => i).filter(i => !(ps[i].company || []).length);
       if (rest.length) gs.push({ n: 'Others', idx: rest });
       return gs.filter(g => g.idx.length);
     }
     function drawRows(){
       rows.innerHTML = mode === 'co'
-        ? groups().map(g => `<div class="grp${firstDraw ? ' rv' : ''}"><span class="g-name">${esc(g.n)}</span>
-            <span class="g-meta">${esc([g.info && g.info.role, g.info && g.info.period].filter(Boolean).join(' · '))}</span></div>`
+        ? groups().map(g => `<div class="grp${firstDraw ? " rv" : ""}"><span class="g-name">${esc(g.n)}</span></div>`
             + g.idx.map(rowHTML).join('')).join('')
         : ps.map((p, i) => rowHTML(i)).join('');
       if (!firstDraw) {
