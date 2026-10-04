@@ -294,7 +294,8 @@
   /* 디스플레이 글씨(구 세리프 자리)는 가는 산세리프로 */
   .sec-title,.sec-head h2,.exp-cols .co,.contact .big,.cover .c-title,.touch h3,.spread h3,.result .big,.next .t
     {font-weight:500;letter-spacing:-.035em}
-  .grp .g-name,.cover .c-no,.cover .c-sub{font-weight:400;letter-spacing:-.02em}
+  .cover .c-no,.cover .c-sub{font-weight:400;letter-spacing:-.02em}
+  .grp .g-name{font-weight:500;letter-spacing:-.02em}   /* 회사 묶음 이름: Medium으로 살짝 구분 */
   .nav .logo{font-weight:500;letter-spacing:-.02em}
 
   /* ── 06 Contact ── */
@@ -364,7 +365,6 @@
   <div class="sec-head"><h2>Index<sup id="count"></sup></h2>
     <div class="modes"><button class="on" data-mode="co">Company</button><span>/</span><button data-mode="cap">Category</button></div></div>
   <div class="filter off" id="filter"><div class="chips" id="chips"></div></div>
-  <div class="cols label rv"><span>No.</span><span>Project</span><span style="text-align:right">Category</span><span style="text-align:right">Period</span></div>
   <div class="rows" id="rows"></div>
 </section>
 
@@ -426,7 +426,7 @@
 
     // 보기 전환: Company = About 경력 순서대로 회사별 묶음 / Category = 카테고리 필터
     let mode = 'co', pick = 'All', firstDraw = true;
-    const rowHTML = i => { const p = ps[i]; return `<div class="row${firstDraw ? ' rv' : ''}" data-i="${i}"><span class="n">${pad(i+1)}</span><span class="t">${esc(p.title)}</span>
+    const rowHTML = i => { const p = ps[i]; return `<div class="row${firstDraw ? ' rv' : ''}" data-i="${i}"><span class="n"></span><span class="t">${esc(p.title)}</span>
        <span class="m">${esc(cats(p).join(' · '))}</span><span class="y">${esc(p.period)}</span>
        <span class="th">${p.thumbnail ? `<img src="${esc(p.thumbnail)}" alt="" loading="lazy">` : 'THUMBNAIL'}</span></div>`; };
     function groups(){
