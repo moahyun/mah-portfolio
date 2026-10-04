@@ -112,8 +112,10 @@
   /* 종이 질감 */
   .poster::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:multiply;
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .25 0'/></filter><rect width='100%' height='100%' filter='url(%23p)'/></svg>")}
-  .poster .x{position:absolute;top:calc(-14*var(--u));right:calc(-14*var(--u));width:calc(32*var(--u));height:calc(32*var(--u));
-    border-radius:50%;border:0;background:#111;color:#fff;font-size:calc(14*var(--u));line-height:1;cursor:pointer;z-index:2}
+  /* 닫기: 포스터 안 윗줄에 글자로만 */
+  .poster .x{background:none;border:0;padding:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;cursor:pointer;transition:opacity .3s ease}
+  .poster .x:hover{opacity:.45}
+  .poster.has-img .x{position:absolute;top:calc(14*var(--u));right:calc(16*var(--u));z-index:2;font-size:calc(10*var(--u));font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#111}
   .poster .pt{display:flex;justify-content:space-between;font-size:calc(10*var(--u));font-weight:500;letter-spacing:.12em;text-transform:uppercase}
   .poster .orb{width:calc(150*var(--u));height:calc(150*var(--u));border-radius:50%;margin:calc(18*var(--u)) 0 0 auto;
     background:radial-gradient(circle at 35% 30%, #C9DDE5 0%, #A9C6D2 50%, #94B5C3 100%)}
@@ -323,8 +325,7 @@
 <section class="hero sky">
   <span class="wf abs" style="top:calc(110*var(--u));left:calc(60*var(--u))">01 HERO · 1920×1080 한 화면 · 관리자 화면에서 로고 이미지를 올리면 글자 대신 이미지로 바뀜</span>
   <aside class="poster" id="poster" hidden>
-    <button class="x" id="posterX" aria-label="포스터 닫기">×</button>
-    <div class="pt"><span>MaH</span><span>No. 01</span><span>2026</span></div>
+    <div class="pt"><span>MaH — No. 01</span><span>2026</span><button class="x" id="posterX" aria-label="포스터 닫기">Close ×</button></div>
     <div class="orb"></div>
     <div>
       <div class="big">Brand first,<br>with a little<br>of me.</div>
@@ -704,7 +705,7 @@
     let closed = false;
     try { closed = sessionStorage.getItem('mah-poster') === 'closed'; } catch (e) {}
     if (closed || location.hash) return () => {};
-    if (c.hero.poster) { p.classList.add('has-img'); p.insertAdjacentHTML('beforeend', `<img src="${esc(c.hero.poster)}" alt="Mo Ahyun poster">`); [...p.children].forEach(el => { if (!el.matches('.x, img')) el.remove(); }); }
+    if (c.hero.poster) { p.classList.add('has-img'); p.appendChild($('posterX')); p.insertAdjacentHTML('beforeend', `<img src="${esc(c.hero.poster)}" alt="Mo Ahyun poster">`); [...p.children].forEach(el => { if (!el.matches('.x, img')) el.remove(); }); }
     $('posterX').onclick = e => {
       e.stopPropagation();
       p.classList.add('out');
