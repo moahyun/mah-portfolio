@@ -263,8 +263,9 @@
   .about{height:calc(1080*var(--u));display:flex;flex-direction:column;justify-content:space-between;
     padding-top:calc(160*var(--u));padding-bottom:calc(140*var(--u))}
   .sec-title{font-family:var(--serif);font-weight:400;font-size:calc(56*var(--u));line-height:1}
-  /* 소개 문장: About Me 제목과 같은 왼쪽 선에 맞춰 작게 */
-  .ab-intro{max-width:calc(540*var(--u));font-size:calc(17*var(--u));line-height:1.9;font-weight:400;letter-spacing:-.01em;word-break:keep-all}
+  /* 소개 문장: About Me 제목과 같은 줄, 오른쪽 끝에 작게 */
+  .ab-top{display:flex;justify-content:space-between;align-items:flex-start}
+  .ab-intro{width:calc(540*var(--u));padding-top:calc(6*var(--u));font-size:calc(17*var(--u));line-height:1.9;font-weight:400;letter-spacing:-.01em;word-break:keep-all}
 
   /* ── 03 Career: 한 화면 · 위 = 경력 3단(큰 세리프) / 아래 = 나머지 4단(작은 글씨) · Index의 줄 목록과 다른 단 구성 ── */
   .career{min-height:calc(1080*var(--u));display:flex;flex-direction:column;justify-content:space-between;
@@ -333,10 +334,9 @@
 <!-- 02 ABOUT ME (한 화면) -->
 <section class="about pad" id="about">
   <div>
-    <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 ABOUT ME · 1920×1080 한 화면 · 위 = 제목 / 아래 = 소개 문장 크게 · 선 없음</span>
-    <h2 class="sec-title">About Me</h2>
+    <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 ABOUT ME · 1920×1080 한 화면 · 제목과 같은 줄 오른쪽에 소개 문장 (작게)</span>
+    <div class="ab-top"><h2 class="sec-title">About Me</h2><p class="ab-intro rv" id="aboutIntro"></p></div>
   </div>
-  <p class="ab-intro rv" id="aboutIntro"></p>
 </section>
 
 <!-- 03 CAREER (한 화면) -->
