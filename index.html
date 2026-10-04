@@ -59,7 +59,7 @@
   @media (pointer:fine){ html.custom-cursor, html.custom-cursor *{cursor:none !important} }
   .cursor{position:fixed;left:0;top:0;z-index:100;pointer-events:none;opacity:0;transition:opacity .4s var(--ease)}
   .cursor.on{opacity:1}
-  .cursor .dot{width:calc(12*var(--u));height:calc(12*var(--u));border-radius:50%;background:#fff;
+  .cursor .dot{width:calc(24*var(--u));height:calc(24*var(--u));border-radius:50%;background:#fff;opacity:.5;
     transform:translate(-50%,-50%);transition:width .6s var(--ease),height .6s var(--ease)}
   .cursor.dot-mode{mix-blend-mode:difference}
   .cursor.hover .dot{width:calc(64*var(--u));height:calc(64*var(--u))}
