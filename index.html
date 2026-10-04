@@ -37,8 +37,8 @@
   .box{background:var(--box);position:relative;display:flex;align-items:center;justify-content:center;
     font-family:var(--mono);font-size:calc(12*var(--u));color:var(--mute);letter-spacing:.04em}
   .label{font-size:calc(13*var(--u));color:var(--mute);letter-spacing:.04em;text-transform:uppercase}
-  .rv{opacity:0;transform:translateY(calc(40*var(--u)));transition:opacity 1.4s var(--ease),transform 1.4s var(--ease)}
-  .rv.in{opacity:1;transform:none}
+  body .rv{opacity:0;transform:translateY(calc(70*var(--u)));transition:opacity 1.6s var(--ease),transform 1.6s var(--ease)}
+  body .rv.in{opacity:1;transform:none}
   .pad{padding-left:calc(60*var(--u));padding-right:calc(60*var(--u))}
 
   /* ── Nav ── */
@@ -184,8 +184,8 @@
 <section class="about pad" id="about">
   <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 ABOUT · 메인 바로 아래 · 소개 / 경력 타임라인 / 할 수 있는 것 3단</span>
   <div class="sec-head rv"><h2>About</h2><span class="label">Mo Ahyun</span></div>
-  <div class="ab-grid rv">
-    <p class="intro" id="aboutIntro"></p>
+  <div class="ab-grid">
+    <p class="intro rv" id="aboutIntro"></p>
     <ul class="tl" id="career"></ul>
     <ul class="cap" id="caps"></ul>
   </div>
@@ -195,7 +195,7 @@
 <section class="index pad" id="index">
   <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">03 INDEX · 텍스트 리스트 · 행에 호버하면 대표 이미지가 커서를 따라다님 · 클릭하면 상세로</span>
   <div class="sec-head rv"><h2>Index<sup id="count"></sup></h2><span class="label" id="indexCaption"></span></div>
-  <div class="cols label"><span>No.</span><span>Project</span><span>Client</span><span>Category</span><span style="text-align:right">Year</span></div>
+  <div class="cols label rv"><span>No.</span><span>Project</span><span>Client</span><span>Category</span><span style="text-align:right">Year</span></div>
   <div class="rows" id="rows"></div>
 </section>
 <div class="preview box" id="preview"></div>
@@ -209,7 +209,7 @@
     <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">05 DAILY CONTENTS · 썸네일/배너/상세를 크기별로 천천히 흐르게 · 호버 시 일시정지</span>
     <div class="sec-head rv"><h2>Daily Contents<sup>andar</sup></h2><span class="label">Thumbnail · Banner · Detail</span></div>
   </div>
-  <div style="margin-top:calc(60*var(--u))">
+  <div class="rv" style="margin-top:calc(60*var(--u))">
     <div class="track a" id="ta"></div>
     <div class="track b" id="tb"></div>
     <div class="track c" id="tc"></div>
@@ -220,10 +220,10 @@
 <section class="contact pad" id="contact">
   <div>
     <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">06 CONTACT · 큰 타이포로 마무리</span>
-    <div class="big" id="contactHeading"></div>
-    <a class="mail" id="mail"></a>
+    <div class="big rv" id="contactHeading"></div>
+    <a class="mail rv" id="mail"></a>
   </div>
-  <div class="foot"><span>MaH — Mo Ahyun</span><span class="links" id="links"></span><span>© 2026</span></div>
+  <div class="foot rv"><span>MaH — Mo Ahyun</span><span class="links" id="links"></span><span>© 2026</span></div>
 </section>
 
 <button class="toggle" id="toggle">메모 숨기기</button>
@@ -251,16 +251,16 @@
     // About
     $('aboutIntro').innerHTML = br(c.about.intro);
     $('career').innerHTML = c.about.career.map(x =>
-      `<li><span class="label">${esc(x.period)}</span><div><b>${esc(x.company)}</b><small>${esc(x.role)}</small></div></li>`).join('');
-    $('caps').innerHTML = '<li class="label" style="border:0;padding-bottom:calc(16*var(--u))">Capabilities</li>'
-      + c.about.capabilities.map(x => `<li>${esc(x)}</li>`).join('');
+      `<li class="rv"><span class="label">${esc(x.period)}</span><div><b>${esc(x.company)}</b><small>${esc(x.role)}</small></div></li>`).join('');
+    $('caps').innerHTML = '<li class="label rv" style="border:0;padding-bottom:calc(16*var(--u))">Capabilities</li>'
+      + c.about.capabilities.map(x => `<li class="rv">${esc(x)}</li>`).join('');
 
     // Index
     const ps = c.projects;
     $('count').textContent = `(${pad(ps.length)})`;
     $('indexCaption').textContent = c.indexCaption;
     $('rows').innerHTML = ps.map((p, i) =>
-      `<div class="row" data-i="${i}"><span class="n">${pad(i+1)}</span><span class="t">${esc(p.title)}</span>
+      `<div class="row rv" data-i="${i}"><span class="n">${pad(i+1)}</span><span class="t">${esc(p.title)}</span>
        <span class="m">${esc(p.client)}</span><span class="m">${esc(p.category)}</span><span class="y">${esc(p.year)}</span></div>`).join('');
 
     // Project details
@@ -351,9 +351,20 @@
     $('links').innerHTML = c.contact.links.map(l => l.url
       ? `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a>` : `<span>${esc(l.label)}</span>`).join('');
 
-    // 스크롤 리빌
-    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.15});
-    document.querySelectorAll('.rv').forEach(el => io.observe(el));
+    // 스크롤 리빌: 같이 화면에 들어온 요소들은 위에서부터 차례로 떠오름
+    const io = new IntersectionObserver(es => {
+      es.filter(e => e.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top || a.boundingClientRect.left - b.boundingClientRect.left)
+        .forEach((e, i) => {
+          const el = e.target;
+          io.unobserve(el);
+          el.style.transitionDelay = (i * .12) + "s";
+          el.classList.add("in");
+          // 등장이 끝나면 원래 스타일(호버 효과 등)로 돌려놓음
+          setTimeout(() => { el.classList.remove("rv", "in"); el.style.transitionDelay = ""; }, 1600 + i * 120);
+        });
+    }, {threshold:.15, rootMargin:"0px 0px -8% 0px"});
+    document.querySelectorAll(".rv").forEach(el => io.observe(el));
   }
 
   // 히어로: 스크롤 진행도에 따라 블러가 풀림
