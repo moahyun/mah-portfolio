@@ -38,16 +38,10 @@ content:
         label: About Me
         type: object
         fields:
-          - name: statement
-            label: 큰 문장
-            description: About Me 가운데에 크게 들어가는 한두 줄. 줄바꿈 그대로 보여요.
-            type: text
           - name: intro
-            label: 소개 문구 (Profile)
+            label: 디자인 가치관 글
+            description: About Me 제목 아래에 들어가요. 빈 줄을 넣으면 문단이 나뉘어요.
             type: text
-          - name: based
-            label: 지역 (Based)
-            type: string
           - name: career
             label: Experience (경력)
             description: 회사 이름은 Index의 Company 묶음 이름으로도 쓰여요. 위에서부터 순서대로 보여요.

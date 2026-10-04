@@ -76,6 +76,10 @@
   .nav{position:fixed;inset:0 0 auto 0;z-index:40;display:flex;justify-content:space-between;align-items:center;
     padding:calc(36*var(--u)) calc(60*var(--u));color:var(--ink);transition:color .5s var(--ease)}
   html.on-hero .nav{color:#fff}
+  /* 화이트 영역(또는 프로젝트 화면)에서는 메뉴 뒤를 흐린 유리처럼 */
+  .nav{transition:color .5s var(--ease),opacity .8s var(--ease),background-color .5s var(--ease),backdrop-filter .5s var(--ease)}
+  html:not(.on-hero) .nav,html.pv-open .nav{background-color:rgba(249,249,249,.72);
+    -webkit-backdrop-filter:blur(16px) saturate(1.1);backdrop-filter:blur(16px) saturate(1.1)}
   .nav a{transition:color .3s var(--ease)}
   .nav ul a:hover{opacity:.5}
   .nav .logo{font-family:var(--serif);font-size:calc(22*var(--u));line-height:1;transition:opacity .5s var(--ease)}
@@ -260,15 +264,12 @@
   @keyframes mq{to{transform:translateX(-50%)}}
 
   /* ── 02 About Me: 한 화면 · 제목은 위 / 소개 문장은 아래에 크게 (선 없음) ── */
-  .about{height:calc(1080*var(--u));display:flex;flex-direction:column;justify-content:space-between;
-    padding-top:calc(160*var(--u));padding-bottom:calc(140*var(--u))}
+  .about{padding-top:calc(160*var(--u));padding-bottom:calc(220*var(--u))}
   .sec-title{font-family:var(--serif);font-weight:400;font-size:calc(56*var(--u));line-height:1}
-  /* 위 = 제목 / 가운데 = 큰 한 줄 문장(강) / 아래 = 4단 중 오른쪽 두 단에 작은 정보(약) · Career 아래 4단과 같은 그리드 */
-  .ab-statement{font-size:calc(128*var(--u));font-weight:400;line-height:.98;letter-spacing:-.045em}
-  .ab-bottom{display:grid;grid-template-columns:repeat(4,1fr);column-gap:calc(40*var(--u))}
-  .ab-bottom .label{display:block;margin-bottom:calc(18*var(--u))}
-  .ab-bottom .label + p + .label{margin-top:calc(36*var(--u))}
-  .ab-intro,.ab-bottom p{font-size:calc(15*var(--u));line-height:1.85;word-break:keep-all;max-width:calc(400*var(--u))}
+  /* 제목 아래에 디자인 가치관 글 · 왼쪽 선에 맞춰 차분하게 */
+  .ab-text{margin-top:calc(96*var(--u));max-width:calc(760*var(--u))}
+  .ab-text p{font-size:calc(20*var(--u));line-height:1.95;letter-spacing:-.01em;word-break:keep-all}
+  .ab-text p + p{margin-top:calc(28*var(--u))}
 
   /* ── 03 Career: 한 화면 · 위 = 경력 3단(큰 세리프) / 아래 = 나머지 4단(작은 글씨) · Index의 줄 목록과 다른 단 구성 ── */
   .career{min-height:calc(1080*var(--u));display:flex;flex-direction:column;justify-content:space-between;
@@ -336,16 +337,9 @@
 
 <!-- 02 ABOUT ME (한 화면) -->
 <section class="about pad" id="about">
-  <div>
-    <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 ABOUT ME · 1920×1080 한 화면 · 위 = 제목 / 가운데 = 큰 문장 / 아래 = Career와 같은 4단 그리드의 오른쪽 두 단에 작은 정보</span>
-    <h2 class="sec-title">About Me</h2>
-  </div>
-  <p class="ab-statement rv" id="abStatement"></p>
-  <div class="ab-bottom">
-    <div></div><div></div>
-    <div class="rv"><span class="label">Profile</span><p class="ab-intro" id="aboutIntro"></p></div>
-    <div class="rv"><span class="label">Focus</span><p id="abFocus"></p><span class="label">Based</span><p id="abBased"></p></div>
-  </div>
+  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 ABOUT ME · 제목 아래 디자인 가치관 글 · 빈 줄로 문단 구분</span>
+  <h2 class="sec-title">About Me</h2>
+  <div class="ab-text" id="aboutIntro"></div>
 </section>
 
 <!-- 03 CAREER (한 화면) -->
@@ -409,10 +403,7 @@
     $('sub').textContent = c.hero.subtitle;
 
     // About
-    $('aboutIntro').innerHTML = br(c.about.intro);
-    $('abStatement').innerHTML = br(c.about.statement || '');
-    $('abFocus').innerHTML = (c.categories || []).map(esc).join('<br>');
-    $('abBased').textContent = c.about.based || '';
+    $('aboutIntro').innerHTML = (c.about.intro || '').split(/\n\s*\n/).map(t => `<p class="rv">${br(t.trim())}</p>`).join('');
     // Career: 경력 = 큰 세리프 단 / 나머지 = 작은 단
     const ab = c.about;
     $('expCols').innerHTML = (ab.career || []).map(x =>
