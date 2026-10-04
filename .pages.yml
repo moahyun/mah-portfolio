@@ -68,6 +68,12 @@ content:
         label: Index 오른쪽 작은 글씨
         type: string
 
+      - name: categories
+        label: 역량 카테고리 순서
+        type: string
+        list: true
+        hidden: true
+
       - name: projects
         label: 프로젝트
         description: 위에서부터 01, 02... 순서로 번호가 붙어요. 순서를 바꾸면 번호도 바뀌어요.
@@ -84,9 +90,23 @@ content:
           - name: client
             label: 클라이언트
             type: string
-          - name: category
-            label: 분야
+          - name: company
+            label: 회사 (Company 필터)
+            description: Index의 회사별 필터에 쓰여요. 같은 회사는 철자를 똑같이 써주세요. 여러 개 가능.
             type: string
+            list: true
+          - name: categories
+            label: 역량 카테고리 (Capability 필터)
+            description: 여러 개 고를 수 있어요.
+            type: select
+            options:
+              multiple: true
+              values:
+                - Campaign
+                - Album & Art Direction
+                - Logo & Type
+                - Character
+                - Contents
           - name: year
             label: 연도
             type: string

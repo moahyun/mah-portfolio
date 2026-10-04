@@ -12,6 +12,11 @@
     "intro": "브랜드와 맥락을 먼저 이해하고, 그에 맞는 비주얼을 찾아갑니다. 타이포·그래픽·AI 등 필요한 방법을 적극적으로 활용하되, 디테일에는 저만의 결을 남깁니다.",
     "career": [
       {
+        "period": "20XX — Now",
+        "company": "밴드 기린",
+        "role": "Freelance · SNS 운영"
+      },
+      {
         "period": "20XX — 2026",
         "company": "andar",
         "role": "Content Design Team · Campaign, CRM, Offline"
@@ -23,8 +28,8 @@
       },
       {
         "period": "20XX — 20XX",
-        "company": "ZEROBASEONE",
-        "role": "Entertainment Production · Album Design, Lettering"
+        "company": "CJ ENM · ZEROBASEONE",
+        "role": "인코스파트너스 파견 · 제작팀 · Album, Logo, Promotion"
       }
     ],
     "capabilities": [
@@ -37,12 +42,24 @@
     ]
   },
   "indexCaption": "Selected Works 20XX — 2026",
+  "categories": [
+    "Campaign",
+    "Album & Art Direction",
+    "Logo & Type",
+    "Character",
+    "Contents"
+  ],
   "projects": [
     {
       "title": "Seasonal Campaign",
       "subtitle": "Bridge Visual",
       "client": "andar",
-      "category": "Campaign / KV",
+      "company": [
+        "andar"
+      ],
+      "categories": [
+        "Campaign"
+      ],
       "year": "2026",
       "role": "KV · Banner · CRM · Offline",
       "coverImage": "",
@@ -95,18 +112,109 @@
     },
     {
       "title": "ZEROBASEONE Album",
-      "subtitle": "",
-      "client": "ZEROBASEONE",
-      "category": "Album / Lettering",
+      "subtitle": "Art Direction",
+      "client": "CJ ENM · ZEROBASEONE",
+      "company": [
+        "CJ ENM"
+      ],
+      "categories": [
+        "Album & Art Direction"
+      ],
       "year": "20XX",
-      "role": "Album Design · Lettering · Digital Cover",
+      "role": "Concept Planning · Spec Direction · Illustration",
       "coverImage": "",
       "dim": 50,
       "bgColor": "#000000",
       "textColor": "#f2f2f0",
       "thumbnail": "",
       "mainImage": "",
-      "overview": "앨범 컨셉과 브리프를 정리하는 자리.",
+      "overview": "앨범 컨셉 기획, 구성·사양 설계, 외주 디렉션 과정을 정리하는 자리.\n\n무드보드 → 설계 문서 → 최종 결과물 순서로 보여주고, 직접 그린 일러스트는 MaH's touch로 표시.",
+      "touchImage": "",
+      "touches": [],
+      "kvImage": "",
+      "touchpoints": [],
+      "resultText": "",
+      "resultValue": "",
+      "gallery": [],
+      "isDailyWall": false
+    },
+    {
+      "title": "HBAF Character Package",
+      "subtitle": "",
+      "client": "HBAF",
+      "company": [
+        "HBAF"
+      ],
+      "categories": [
+        "Character"
+      ],
+      "year": "20XX",
+      "role": "Character Variation · Package · Gravure Print",
+      "coverImage": "",
+      "dim": 50,
+      "bgColor": "#000000",
+      "textColor": "#f2f2f0",
+      "thumbnail": "",
+      "mainImage": "",
+      "overview": "기존 캐릭터를 어떤 기준으로 변형했는지, 그라비아 인쇄로 실제 양산되기까지를 정리하는 자리.",
+      "touchImage": "",
+      "touches": [],
+      "kvImage": "",
+      "touchpoints": [],
+      "resultText": "",
+      "resultValue": "",
+      "gallery": [],
+      "isDailyWall": false
+    },
+    {
+      "title": "Logotype Archive",
+      "subtitle": "",
+      "client": "ZEROBASEONE · 밴드 기린",
+      "company": [
+        "CJ ENM",
+        "밴드 기린"
+      ],
+      "categories": [
+        "Logo & Type"
+      ],
+      "year": "20XX — 2026",
+      "role": "Track Logo · Band Logo",
+      "coverImage": "",
+      "dim": 50,
+      "bgColor": "#000000",
+      "textColor": "#f2f2f0",
+      "thumbnail": "",
+      "mainImage": "",
+      "overview": "수록곡 로고와 밴드 로고를 모아 보여주는 자리. 곡과 팀의 무드를 글자로 옮긴 방식.",
+      "touchImage": "",
+      "touches": [],
+      "kvImage": "",
+      "touchpoints": [],
+      "resultText": "",
+      "resultValue": "",
+      "gallery": [],
+      "isDailyWall": false
+    },
+    {
+      "title": "ZEROBASEONE Promotion",
+      "subtitle": "Poster · Digital Cover · Story",
+      "client": "CJ ENM · ZEROBASEONE",
+      "company": [
+        "CJ ENM"
+      ],
+      "categories": [
+        "Campaign",
+        "Contents"
+      ],
+      "year": "20XX",
+      "role": "Promotion Poster · Digital Cover · Story Contents",
+      "coverImage": "",
+      "dim": 50,
+      "bgColor": "#000000",
+      "textColor": "#f2f2f0",
+      "thumbnail": "",
+      "mainImage": "",
+      "overview": "앨범 발매 시점에 쓰인 인스타그램 프로모션 포스터, 디지털 커버, 인터뷰 스토리 콘텐츠를 정리하는 자리.",
       "touchImage": "",
       "touches": [],
       "kvImage": "",
@@ -120,7 +228,12 @@
       "title": "UTme Seoul Character",
       "subtitle": "",
       "client": "HBAF × UNIQLO",
-      "category": "Character",
+      "company": [
+        "HBAF"
+      ],
+      "categories": [
+        "Character"
+      ],
       "year": "20XX",
       "role": "Character Design",
       "coverImage": "",
@@ -140,56 +253,15 @@
       "isDailyWall": false
     },
     {
-      "title": "Gravure Package",
-      "subtitle": "",
-      "client": "HBAF",
-      "category": "Package / Print",
-      "year": "20XX",
-      "role": "Package Design · Character Variation",
-      "coverImage": "",
-      "dim": 50,
-      "bgColor": "#000000",
-      "textColor": "#f2f2f0",
-      "thumbnail": "",
-      "mainImage": "",
-      "overview": "기존 캐릭터 베리에이션과 그라비아 인쇄 사양을 정리하는 자리.",
-      "touchImage": "",
-      "touches": [],
-      "kvImage": "",
-      "touchpoints": [],
-      "resultText": "",
-      "resultValue": "",
-      "gallery": [],
-      "isDailyWall": false
-    },
-    {
-      "title": "CRM Visual",
-      "subtitle": "",
-      "client": "andar",
-      "category": "CRM",
-      "year": "2026",
-      "role": "Push · Email · App Message",
-      "coverImage": "",
-      "dim": 50,
-      "bgColor": "#000000",
-      "textColor": "#f2f2f0",
-      "thumbnail": "",
-      "mainImage": "",
-      "overview": "CRM 비주얼 작업을 정리하는 자리.",
-      "touchImage": "",
-      "touches": [],
-      "kvImage": "",
-      "touchpoints": [],
-      "resultText": "",
-      "resultValue": "",
-      "gallery": [],
-      "isDailyWall": false
-    },
-    {
       "title": "Offline Event",
       "subtitle": "",
       "client": "andar",
-      "category": "Offline / Space",
+      "company": [
+        "andar"
+      ],
+      "categories": [
+        "Campaign"
+      ],
       "year": "2026",
       "role": "Event Visual · Print",
       "coverImage": "",
@@ -209,10 +281,43 @@
       "isDailyWall": false
     },
     {
+      "title": "CRM Visual",
+      "subtitle": "",
+      "client": "andar",
+      "company": [
+        "andar"
+      ],
+      "categories": [
+        "Contents"
+      ],
+      "year": "2026",
+      "role": "Push · Email · App Message",
+      "coverImage": "",
+      "dim": 50,
+      "bgColor": "#000000",
+      "textColor": "#f2f2f0",
+      "thumbnail": "",
+      "mainImage": "",
+      "overview": "CRM 비주얼 작업을 정리하는 자리.",
+      "touchImage": "",
+      "touches": [],
+      "kvImage": "",
+      "touchpoints": [],
+      "resultText": "",
+      "resultValue": "",
+      "gallery": [],
+      "isDailyWall": false
+    },
+    {
       "title": "Daily Contents",
       "subtitle": "",
       "client": "andar",
-      "category": "Banner / Detail",
+      "company": [
+        "andar"
+      ],
+      "categories": [
+        "Contents"
+      ],
       "year": "2026",
       "role": "Thumbnail · Banner · Detail Page",
       "coverImage": "",

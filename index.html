@@ -87,7 +87,7 @@
   .hero .scroll{position:absolute;right:calc(60*var(--u));bottom:calc(60*var(--u));font-size:calc(13*var(--u));color:var(--mute)}
 
   /* ── 02 Index ── */
-  .index{padding-top:calc(200*var(--u));padding-bottom:calc(200*var(--u));position:relative}
+  .index{padding-top:calc(200*var(--u));padding-bottom:calc(200*var(--u));position:relative;min-height:100vh}
   .sec-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--ink);
     padding-bottom:calc(24*var(--u))}
   .sec-head h2{font-family:var(--serif);font-weight:400;font-size:calc(96*var(--u));line-height:1}
@@ -95,7 +95,10 @@
   .cols,.row{display:grid;grid-template-columns:calc(140*var(--u)) 1fr calc(380*var(--u)) calc(320*var(--u)) calc(100*var(--u));
     align-items:center}
   .cols{padding:calc(20*var(--u)) 0;border-bottom:1px solid var(--line)}
-  .row{height:calc(104*var(--u));border-bottom:1px solid var(--line);cursor:pointer;transition:opacity .6s var(--ease)}
+  .row{height:calc(104*var(--u));border-bottom:1px solid var(--line);cursor:pointer;overflow:hidden;
+    transition:opacity .6s var(--ease),height .8s var(--ease),border-color .8s var(--ease)}
+  /* 필터에서 빠진 행은 부드럽게 접힘 */
+  .row.hide{height:0;opacity:0 !important;border-bottom-color:transparent;pointer-events:none}
   .row .t{font-size:calc(40*var(--u));font-weight:300;letter-spacing:-.01em;transition:transform .8s var(--ease)}
   .row .n{font-family:var(--serif);font-size:calc(22*var(--u));color:var(--mute)}
   .row .m{font-size:calc(15*var(--u));color:var(--mute)}
@@ -103,6 +106,14 @@
   .rows:hover .row{opacity:.22}
   .rows .row:hover{opacity:1}
   .rows .row:hover .t{transform:translateX(calc(24*var(--u)))}
+  /* ── Index 필터: 역량별 / 회사별 ── */
+  .filter{display:flex;align-items:baseline;gap:calc(48*var(--u));padding:calc(28*var(--u)) 0 calc(8*var(--u))}
+  .modes{display:flex;gap:calc(10*var(--u));font-size:calc(13*var(--u));letter-spacing:.08em;text-transform:uppercase;color:var(--mute);flex:none}
+  .filter button{background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;padding:0;transition:color .4s var(--ease)}
+  .filter button:hover,.filter button.on{color:var(--ink)}
+  .modes button.on{text-decoration:underline;text-underline-offset:calc(6*var(--u))}
+  .chips{display:flex;flex-wrap:wrap;gap:calc(8*var(--u)) calc(32*var(--u));font-size:calc(17*var(--u));color:var(--mute)}
+  .chips sup{font-size:calc(11*var(--u));margin-left:calc(4*var(--u));vertical-align:top}
   .preview{position:fixed;left:0;top:0;width:calc(440*var(--u));height:calc(300*var(--u));z-index:30;pointer-events:none;
     opacity:0;transform-origin:center;transition:opacity .5s var(--ease);background:var(--box2)}
   .preview.on{opacity:1}
@@ -254,6 +265,10 @@
 <section class="index pad" id="index">
   <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">03 INDEX · 행에 호버하면 대표 이미지가 커서를 따라다님 · 클릭하면 화면 전체가 프로젝트 뷰로 전환 (커버 이미지 + 딤 + 제목이 올라옴)</span>
   <div class="sec-head"><h2>Index<sup id="count"></sup></h2><span class="label" id="indexCaption"></span></div>
+  <div class="filter rv">
+    <div class="modes"><button class="on" data-mode="cap">Capability</button><span>/</span><button data-mode="co">Company</button></div>
+    <div class="chips" id="chips"></div>
+  </div>
   <div class="cols label rv"><span>No.</span><span>Project</span><span>Client</span><span>Category</span><span style="text-align:right">Year</span></div>
   <div class="rows" id="rows"></div>
 </section>
@@ -281,6 +296,7 @@
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const br = s => esc(s).replace(/\n/g, '<br>');
   const pad = n => String(n).padStart(2, '0');
+  const cats = p => p.categories || (p.category ? [p.category] : []);
   // 이미지가 있으면 이미지, 없으면 회색 박스 + 라벨
   const media = (src, label, cls = '', inner = '') => src
     ? `<div class="box has-img ${cls}"><img src="${esc(src)}" alt="${esc(label)}" loading="lazy">${inner}</div>`
@@ -311,7 +327,31 @@
     $('indexCaption').textContent = c.indexCaption;
     $('rows').innerHTML = ps.map((p, i) =>
       `<div class="row rv" data-i="${i}"><span class="n">${pad(i+1)}</span><span class="t">${esc(p.title)}</span>
-       <span class="m">${esc(p.client)}</span><span class="m">${esc(p.category)}</span><span class="y">${esc(p.year)}</span></div>`).join('');
+       <span class="m">${esc(p.client)}</span><span class="m">${esc(cats(p).join(" · "))}</span><span class="y">${esc(p.year)}</span></div>`).join('');
+
+    // 필터: 역량별(Capability) / 회사별(Company)
+    const rowEls = [...$("rows").querySelectorAll(".row")];
+    let mode = "cap", pick = "All";
+    const keysOf = p => mode === "cap" ? cats(p) : (p.company || []);
+    function drawChips(){
+      const counts = new Map();
+      ps.forEach(p => keysOf(p).forEach(k => counts.set(k, (counts.get(k) || 0) + 1)));
+      const order = mode === "cap" ? (c.categories || []).filter(k => counts.has(k)) : [];
+      const keys = [...new Set([...order, ...counts.keys()])];
+      $("chips").innerHTML = [["All", ps.length], ...keys.map(k => [k, counts.get(k)])].map(([k, n]) =>
+        `<button class="${k === pick ? "on" : ""}" data-k="${esc(k)}">${esc(k)}<sup>${pad(n)}</sup></button>`).join("");
+    }
+    function applyFilter(){
+      rowEls.forEach((r, i) => r.classList.toggle("hide", pick !== "All" && !keysOf(ps[i]).includes(pick)));
+      drawChips();
+    }
+    $("chips").addEventListener("click", e => { const b = e.target.closest("button"); if (b) { pick = b.dataset.k; applyFilter(); } });
+    document.querySelectorAll(".modes button").forEach(b => b.addEventListener("click", () => {
+      mode = b.dataset.mode; pick = "All";
+      document.querySelectorAll(".modes button").forEach(x => x.classList.toggle("on", x === b));
+      applyFilter();
+    }));
+    applyFilter();
 
     // Index 클릭 → 주소가 #p02 처럼 바뀌고 프로젝트 뷰가 열림 (뒤로가기로도 닫힘)
     $('rows').querySelectorAll('.row').forEach(r => r.addEventListener('click', () => {
@@ -366,7 +406,7 @@
             <div><span class="label">Client</span><span>${esc(p.client)}</span></div>
             <div><span class="label">Year</span><span>${esc(p.year)}</span></div>
             <div><span class="label">Role</span><span>${esc(p.role)}</span></div>
-            <div><span class="label">Category</span><span>${esc(p.category)}</span></div>
+            <div><span class="label">Category</span><span>${esc(cats(p).join(" · "))}</span></div>
           </div>
         </div>
       </section>`;
