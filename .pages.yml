@@ -33,6 +33,10 @@ content:
           - name: subtitle
             label: MaH 아래 글씨
             type: string
+          - name: poster
+            label: 자기소개 포스터 이미지
+            description: 3:4 세로 비율 권장. 올리면 메인에 팝업처럼 뜨는 포스터가 이 이미지로 바뀌어요. 비워두면 기본 타이포 포스터.
+            type: image
 
       - name: about
         label: About Me

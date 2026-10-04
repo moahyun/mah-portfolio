@@ -98,6 +98,30 @@
   .mah-wrap{display:flex;align-items:flex-start}
   .hero .sub{transition:opacity 1s var(--ease)}
 
+  /* ── 자기소개 포스터: 인트로가 끝나면 메인 오른쪽에 팝업처럼 툭 떨어짐 · 드래그 가능 · ×로 닫기 ── */
+  .poster{position:absolute;right:calc(150*var(--u));top:calc(150*var(--u));z-index:5;width:calc(420*var(--u));aspect-ratio:3/4;
+    background:#F9F9F9;color:#111;padding:calc(26*var(--u));display:flex;flex-direction:column;justify-content:space-between;
+    box-shadow:0 calc(30*var(--u)) calc(80*var(--u)) rgba(30,50,60,.28),0 calc(4*var(--u)) calc(12*var(--u)) rgba(30,50,60,.12);
+    transform:translateY(calc(40*var(--u))) rotate(-9deg) scale(.86);opacity:0;touch-action:none;user-select:none;
+    transition:transform .9s cubic-bezier(.34,1.56,.64,1),opacity .4s ease}
+  .poster.on{opacity:1;transform:rotate(-3deg)}
+  .poster.drag{transition:none;box-shadow:0 calc(40*var(--u)) calc(100*var(--u)) rgba(30,50,60,.34)}
+  .poster.out{opacity:0;transform:rotate(4deg) scale(.9);transition:transform .5s ease,opacity .4s ease}
+  .poster.has-img{padding:0;background:none}
+  .poster.has-img img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+  /* 종이 질감 */
+  .poster::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .25 0'/></filter><rect width='100%' height='100%' filter='url(%23p)'/></svg>")}
+  .poster .x{position:absolute;top:calc(-14*var(--u));right:calc(-14*var(--u));width:calc(32*var(--u));height:calc(32*var(--u));
+    border-radius:50%;border:0;background:#111;color:#fff;font-size:calc(14*var(--u));line-height:1;cursor:pointer;z-index:2}
+  .poster .pt{display:flex;justify-content:space-between;font-size:calc(10*var(--u));font-weight:500;letter-spacing:.12em;text-transform:uppercase}
+  .poster .orb{width:calc(150*var(--u));height:calc(150*var(--u));border-radius:50%;margin:calc(18*var(--u)) 0 0 auto;
+    background:radial-gradient(circle at 35% 30%, #C9DDE5 0%, #A9C6D2 50%, #94B5C3 100%)}
+  .poster .big{font-size:calc(48*var(--u));font-weight:500;line-height:.98;letter-spacing:-.04em}
+  .poster .pm{display:grid;grid-template-columns:1fr 1fr;gap:calc(4*var(--u)) calc(16*var(--u));margin-top:calc(22*var(--u));
+    padding-top:calc(12*var(--u));border-top:1px solid #111;font-size:calc(11*var(--u));line-height:1.45}
+  .poster .pm span:nth-child(odd){color:#8C8C88}
+
   /* ── 인트로: MaH가 화면 가득 한 글자씩 떠오름 → 작아지며 히어로 자리로 (방문당 한 번 · 클릭하면 건너뜀) ── */
   #intro{position:fixed;inset:0;z-index:90;cursor:pointer}   /* 하늘 배경을 깔아 뒤 페이지를 가림 */
   #intro .i-mah{position:fixed;color:#fff;font-family:var(--serif);font-weight:300;line-height:.74;letter-spacing:-.045em;
@@ -298,6 +322,21 @@
 <div class="hero-wrap" id="top">
 <section class="hero sky">
   <span class="wf abs" style="top:calc(110*var(--u));left:calc(60*var(--u))">01 HERO · 1920×1080 한 화면 · 관리자 화면에서 로고 이미지를 올리면 글자 대신 이미지로 바뀜</span>
+  <aside class="poster" id="poster" hidden>
+    <button class="x" id="posterX" aria-label="포스터 닫기">×</button>
+    <div class="pt"><span>MaH</span><span>No. 01</span><span>2026</span></div>
+    <div class="orb"></div>
+    <div>
+      <div class="big">Brand first,<br>with a little<br>of me.</div>
+      <div class="pm">
+        <span>Name</span><span>Mo Ahyun</span>
+        <span>Role</span><span>Visual Content Designer</span>
+        <span>Based</span><span>Seoul, KR</span>
+        <span>Works</span><span>Campaign · Album · Logo · Character · Contents</span>
+      </div>
+    </div>
+  </aside>
+  <span class="wf abs" style="top:calc(120*var(--u));right:calc(150*var(--u));left:auto">포스터: 인트로 후 팝업처럼 등장 · 드래그 가능 · ×로 닫기 · 관리자 화면에서 포스터 이미지를 올리면 이 디자인 대신 이미지</span>
   <div class="mah-wrap" id="mahWrap">
     <div class="mah" id="mah">MaH</div>
     <div class="sub" id="sub"></div>
@@ -600,6 +639,8 @@
     addEventListener('keydown', e => { if (e.key === 'Escape' && openIdx >= 0) location.hash = 'index'; });
     tb.onclick = () => { location.hash = 'index'; };
     route();
+    const showPoster = setupPoster(c);
+    if (playIntro) introDone = () => showPoster(500); else showPoster(900);
     runIntro(c);
   }
 
@@ -652,10 +693,39 @@
   heroTheme();
 
   // 인트로: 처음 방문했을 때 한 번만 (프로젝트 링크로 바로 들어오면 생략)
-  let introSeen = false;
+  let introSeen = false, introDone = () => {};
   try { introSeen = sessionStorage.getItem('mah-intro') === '1'; } catch (e) {}
   const playIntro = !introSeen && !location.hash && !matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (playIntro) { document.documentElement.classList.add('intro-on'); history.scrollRestoration = 'manual'; scrollTo(0, 0); }
+
+  // 자기소개 포스터: 같은 창에서 닫기 전까지 보여줌 · 드래그로 옮길 수 있음
+  function setupPoster(c){
+    const p = $('poster');
+    let closed = false;
+    try { closed = sessionStorage.getItem('mah-poster') === 'closed'; } catch (e) {}
+    if (closed || location.hash) return () => {};
+    if (c.hero.poster) { p.classList.add('has-img'); p.insertAdjacentHTML('beforeend', `<img src="${esc(c.hero.poster)}" alt="Mo Ahyun poster">`); [...p.children].forEach(el => { if (!el.matches('.x, img')) el.remove(); }); }
+    $('posterX').onclick = e => {
+      e.stopPropagation();
+      p.classList.add('out');
+      try { sessionStorage.setItem('mah-poster', 'closed'); } catch (err) {}
+      setTimeout(() => p.remove(), 500);
+    };
+    // 드래그
+    let sx, sy, ox = 0, oy = 0, dragging = false;
+    p.addEventListener('pointerdown', e => {
+      if (e.target.closest('.x')) return;
+      dragging = true; p.classList.add('drag'); p.setPointerCapture(e.pointerId);
+      sx = e.clientX - ox; sy = e.clientY - oy;
+    });
+    p.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      ox = e.clientX - sx; oy = e.clientY - sy;
+      p.style.transform = `translate(${ox}px, ${oy}px) rotate(-3deg)`;
+    });
+    p.addEventListener('pointerup', () => { dragging = false; p.classList.remove('drag'); });
+    return (delay) => { p.hidden = false; setTimeout(() => p.classList.add('on'), delay); };
+  }
 
   function runIntro(c){
     const root = document.documentElement;
@@ -669,6 +739,7 @@
       root.classList.remove('intro-on');
       intro.style.transition = 'opacity .6s'; intro.style.opacity = 0;
       setTimeout(() => intro.remove(), 650);
+      introDone();
     }
     intro.hidden = false;
     intro.innerHTML = '<div class="i-mah" id="iMah"></div><span class="skip">Click to skip</span>';
