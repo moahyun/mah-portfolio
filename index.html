@@ -29,7 +29,7 @@
   .wf::before{content:'WF — '}
   .wf.abs{position:absolute}
   body.hide-notes .wf{display:none}
-  .toggle{position:fixed;right:calc(40*var(--u));bottom:calc(40*var(--u));z-index:50;
+  .toggle{position:fixed;left:calc(40*var(--u));bottom:calc(40*var(--u));z-index:50;
     font-family:var(--mono);font-size:calc(12*var(--u));padding:calc(10*var(--u)) calc(16*var(--u));
     background:var(--note);color:#fff;border:0;border-radius:99px;cursor:pointer}
 
@@ -40,6 +40,20 @@
   body .rv{opacity:0;transform:translateY(calc(70*var(--u)));transition:opacity 1.6s var(--ease),transform 1.6s var(--ease)}
   body .rv.in{opacity:1;transform:none}
   .pad{padding-left:calc(60*var(--u));padding-right:calc(60*var(--u))}
+
+  /* ── Index로 돌아가는 플로팅 버튼 (프로젝트 상세 구간에서만 나타남) ── */
+  .to-index{position:fixed;right:calc(40*var(--u));bottom:calc(40*var(--u));z-index:45;display:flex;align-items:center;
+    gap:calc(14*var(--u));height:calc(52*var(--u));padding:0 calc(24*var(--u));border:1px solid rgba(242,242,240,.28);
+    border-radius:99px;background:rgba(0,0,0,.45);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    color:var(--ink);font-family:var(--sans);font-size:calc(13*var(--u));letter-spacing:.08em;cursor:pointer;
+    opacity:0;transform:translateY(calc(16*var(--u)));pointer-events:none;
+    transition:opacity .8s var(--ease),transform .8s var(--ease),background .5s var(--ease),color .5s var(--ease)}
+  .to-index.on{opacity:1;transform:none;pointer-events:auto}
+  .to-index .cur{font-family:var(--serif);font-size:calc(17*var(--u));letter-spacing:0;color:var(--mute);transition:color .5s var(--ease)}
+  .to-index .arr{display:inline-block;transition:transform .6s var(--ease)}
+  .to-index:hover{background:var(--ink);color:#000}
+  .to-index:hover .cur{color:#555}
+  .to-index:hover .arr{transform:translateY(calc(-3*var(--u)))}
 
   /* ── Nav ── */
   .nav{position:fixed;inset:0 0 auto 0;z-index:40;display:flex;justify-content:space-between;align-items:center;
@@ -226,6 +240,7 @@
   <div class="foot rv"><span>MaH — Mo Ahyun</span><span class="links" id="links"></span><span>© 2026</span></div>
 </section>
 
+<button class="to-index" id="toIndex" aria-label="Index로 돌아가기"><span class="cur" id="toIndexCur"></span><span>Index</span><span class="arr">↑</span></button>
 <button class="toggle" id="toggle">메모 숨기기</button>
 
 <script>
@@ -365,6 +380,20 @@
         });
     }, {threshold:.15, rootMargin:"0px 0px -8% 0px"});
     document.querySelectorAll(".rv").forEach(el => io.observe(el));
+
+    // Index로 돌아가는 버튼: 프로젝트를 보는 동안에만 나타나고, 지금 보는 번호를 표시
+    const tb = $("toIndex"), tbCur = $("toIndexCur");
+    const sections = ps.map((p, i) => [i, $(target(i))]);
+    function updateToIndex(){
+      const mid = innerHeight / 2;
+      let cur = -1;
+      sections.forEach(([i, el]) => { const r = el.getBoundingClientRect(); if (r.top <= mid && r.bottom > mid) cur = i; });
+      tb.classList.toggle("on", cur >= 0);
+      if (cur >= 0) tbCur.textContent = pad(cur + 1) + " / " + pad(ps.length);
+    }
+    tb.onclick = () => $("index").scrollIntoView({behavior:"smooth"});
+    addEventListener("scroll", updateToIndex, {passive:true});
+    updateToIndex();
   }
 
   // 히어로: 스크롤 진행도에 따라 블러가 풀림
