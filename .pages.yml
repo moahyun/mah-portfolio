@@ -266,6 +266,10 @@ content:
           - name: email
             label: 이메일
             type: string
+          - name: phone
+            label: 전화번호
+            description: 공개 사이트에 그대로 보여요. 비워두면 표시되지 않아요.
+            type: string
           - name: links
             label: 링크
             type: object
