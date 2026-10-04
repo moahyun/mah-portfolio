@@ -59,9 +59,11 @@
   @media (pointer:fine){ html.custom-cursor, html.custom-cursor *{cursor:none !important} }
   .cursor{position:fixed;left:0;top:0;z-index:100;pointer-events:none;opacity:0;transition:opacity .4s var(--ease)}
   .cursor.on{opacity:1}
-  .cursor .dot{width:calc(24*var(--u));height:calc(24*var(--u));border-radius:50%;background:#fff;opacity:.5;
+  /* 유리처럼 뒤가 비치는 원: 반투명 흰색 + 뒤 배경을 살짝 흐리게 */
+  .cursor .dot{width:calc(24*var(--u));height:calc(24*var(--u));border-radius:50%;
+    background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.55);
+    backdrop-filter:blur(calc(4*var(--u))) brightness(1.15);-webkit-backdrop-filter:blur(calc(4*var(--u))) brightness(1.15);
     transform:translate(-50%,-50%);transition:width .6s var(--ease),height .6s var(--ease)}
-  .cursor.dot-mode{mix-blend-mode:difference}
   .cursor.hover .dot{width:calc(64*var(--u));height:calc(64*var(--u))}
   .cursor img{display:block;transform:translate(-50%,-50%);transition:transform .6s var(--ease)}
   .cursor.hover img{transform:translate(-50%,-50%) scale(1.25)}
@@ -419,7 +421,6 @@
     cur.innerHTML = cfg.image
       ? `<img src="${esc(cfg.image)}" alt="" style="width:calc(${size}*var(--u))">`
       : `<div class="dot"></div>`;
-    cur.classList.toggle("dot-mode", !cfg.image);
     document.documentElement.classList.add("custom-cursor");
     let x = innerWidth / 2, y = innerHeight / 2, cx = x, cy = y;
     addEventListener("mousemove", e => { x = e.clientX; y = e.clientY; cur.classList.add("on"); }, {passive:true});
