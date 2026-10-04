@@ -41,12 +41,12 @@
   body .rv.in{opacity:1;transform:none}
   .pad{padding-left:calc(60*var(--u));padding-right:calc(60*var(--u))}
 
-  /* ── Back 플로팅 버튼 (프로젝트 뷰에서만 나타남 · 누르면 Index로) ── */
-  .to-index{position:fixed;right:calc(40*var(--u));bottom:calc(40*var(--u));z-index:45;display:flex;align-items:center;
+  /* ── Back 버튼 (프로젝트 뷰에서만 왼쪽 위에 나타남 · 누르면 Index로) ── */
+  .to-index{position:fixed;left:calc(48*var(--u));top:calc(24*var(--u));z-index:45;display:flex;align-items:center;
     gap:calc(14*var(--u));height:calc(52*var(--u));padding:0 calc(24*var(--u));border:1px solid rgba(242,242,240,.28);
     border-radius:99px;background:rgba(0,0,0,.45);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
     color:var(--ink);font-family:var(--sans);font-size:calc(13*var(--u));letter-spacing:.08em;cursor:pointer;
-    opacity:0;transform:translateY(calc(16*var(--u)));pointer-events:none;
+    opacity:0;transform:translateY(calc(-12*var(--u)));pointer-events:none;
     transition:opacity .8s var(--ease),transform .8s var(--ease),background .5s var(--ease),color .5s var(--ease)}
   .to-index.on{opacity:1;transform:none;pointer-events:auto}
   .to-index .cur{font-family:var(--serif);font-size:calc(17*var(--u));letter-spacing:0;color:var(--mute);transition:color .5s var(--ease)}
@@ -71,7 +71,9 @@
   /* ── Nav ── */
   .nav{position:fixed;inset:0 0 auto 0;z-index:40;display:flex;justify-content:space-between;align-items:center;
     padding:calc(36*var(--u)) calc(60*var(--u));mix-blend-mode:difference;color:#fff}
-  .nav .logo{font-family:var(--serif);font-size:calc(28*var(--u));line-height:1}
+  .nav .logo{font-family:var(--serif);font-size:calc(28*var(--u));line-height:1;transition:opacity .5s var(--ease)}
+  /* 프로젝트 뷰가 열리면 왼쪽 위 로고 자리에 Back 버튼이 대신 나타남 */
+  html.pv-open .nav .logo{opacity:0;pointer-events:none}
   .nav ul{display:flex;gap:calc(40*var(--u));list-style:none;font-size:calc(14*var(--u))}
 
   /* ── 01 Hero ── */
@@ -447,6 +449,7 @@
       }
       fill(i);
       document.documentElement.style.overflow = 'hidden';
+      document.documentElement.classList.add('pv-open');
       view.classList.add('open');
       tb.classList.add('on');
       setTimeout(() => view.classList.add('ready'), 250);
@@ -458,6 +461,7 @@
       view.classList.remove('open', 'ready');
       tb.classList.remove('on');
       document.documentElement.style.overflow = '';
+      document.documentElement.classList.remove('pv-open');
     }
 
     function route(){
