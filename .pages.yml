@@ -93,6 +93,22 @@ content:
           - name: role
             label: 역할
             type: string
+          - name: coverImage
+            label: 커버 이미지 (화면 꽉 채움)
+            description: 프로젝트를 열면 첫 화면 배경으로 꽉 차게 보여요. 1920×1080 이상 권장.
+            type: image
+          - name: dim
+            label: 커버 딤 농도 (0~100)
+            description: 숫자가 클수록 어두워져요. 기본 50.
+            type: number
+          - name: bgColor
+            label: 프로젝트 배경색
+            description: "#000000" 형식. 프로젝트마다 다른 무드를 줄 수 있어요.
+            type: string
+          - name: textColor
+            label: 프로젝트 글자색
+            description: "#f2f2f0" 형식.
+            type: string
           - name: thumbnail
             label: Index 호버 이미지
             type: image
@@ -149,7 +165,7 @@ content:
             type: string
           - name: isDailyWall
             label: Daily Contents 벽으로 보여주기
-            description: 켜면 상세 페이지 대신 아래 Daily Contents 섹션으로 연결돼요.
+            description: 켜면 프로젝트 뷰에서 상세 블록 대신 Daily Contents 이미지가 흐르는 벽으로 보여요.
             type: boolean
 
       - name: daily

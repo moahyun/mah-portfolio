@@ -11,9 +11,21 @@
   "about": {
     "intro": "브랜드와 맥락을 먼저 이해하고, 그에 맞는 비주얼을 찾아갑니다. 타이포·그래픽·AI 등 필요한 방법을 적극적으로 활용하되, 디테일에는 저만의 결을 남깁니다.",
     "career": [
-      { "period": "20XX — 2026", "company": "andar", "role": "Content Design Team · Campaign, CRM, Offline" },
-      { "period": "20XX — 20XX", "company": "HBAF", "role": "Brand Planning Team · Package, Character" },
-      { "period": "20XX — 20XX", "company": "ZEROBASEONE", "role": "Entertainment Production · Album Design, Lettering" }
+      {
+        "period": "20XX — 2026",
+        "company": "andar",
+        "role": "Content Design Team · Campaign, CRM, Offline"
+      },
+      {
+        "period": "20XX — 20XX",
+        "company": "HBAF",
+        "role": "Brand Planning Team · Package, Character"
+      },
+      {
+        "period": "20XX — 20XX",
+        "company": "ZEROBASEONE",
+        "role": "Entertainment Production · Album Design, Lettering"
+      }
     ],
     "capabilities": [
       "Campaign Key Visual",
@@ -33,21 +45,48 @@
       "category": "Campaign / KV",
       "year": "2026",
       "role": "KV · Banner · CRM · Offline",
+      "coverImage": "",
+      "dim": 50,
+      "bgColor": "#000000",
+      "textColor": "#f2f2f0",
       "thumbnail": "",
       "mainImage": "",
       "overview": "캠페인의 배경과 브리프를 2~3문장으로 정리하는 자리. 어떤 시즌, 어떤 목표, 어떤 타깃이었는지.\n\n그래서 어떤 톤을 선택했고, 왜 그 비주얼이 브랜드에 맞는 답이었는지 짧게 서술.",
       "touchImage": "",
       "touches": [
-        { "x": 28, "y": 32, "comment": "이 타이포 자간과 곡선은 제 취향이 들어간 부분이에요." },
-        { "x": 64, "y": 62, "comment": "브랜드 가이드는 지키면서, 그림자 처리로 무드를 더했어요." }
+        {
+          "x": 28,
+          "y": 32,
+          "comment": "이 타이포 자간과 곡선은 제 취향이 들어간 부분이에요."
+        },
+        {
+          "x": 64,
+          "y": 62,
+          "comment": "브랜드 가이드는 지키면서, 그림자 처리로 무드를 더했어요."
+        }
       ],
       "kvImage": "",
       "touchpoints": [
-        { "label": "APP MAIN BANNER", "image": "" },
-        { "label": "PUSH", "image": "" },
-        { "label": "EMAIL / CRM", "image": "" },
-        { "label": "DETAIL PAGE", "image": "" },
-        { "label": "OFFLINE POP", "image": "" }
+        {
+          "label": "APP MAIN BANNER",
+          "image": ""
+        },
+        {
+          "label": "PUSH",
+          "image": ""
+        },
+        {
+          "label": "EMAIL / CRM",
+          "image": ""
+        },
+        {
+          "label": "DETAIL PAGE",
+          "image": ""
+        },
+        {
+          "label": "OFFLINE POP",
+          "image": ""
+        }
       ],
       "resultText": "비주얼 A/B 테스트 클릭률 — 데이터 확보 후 추가",
       "resultValue": "+ 00%",
@@ -61,6 +100,10 @@
       "category": "Album / Lettering",
       "year": "20XX",
       "role": "Album Design · Lettering · Digital Cover",
+      "coverImage": "",
+      "dim": 50,
+      "bgColor": "#000000",
+      "textColor": "#f2f2f0",
       "thumbnail": "",
       "mainImage": "",
       "overview": "앨범 컨셉과 브리프를 정리하는 자리.",
@@ -80,6 +123,10 @@
       "category": "Character",
       "year": "20XX",
       "role": "Character Design",
+      "coverImage": "",
+      "dim": 50,
+      "bgColor": "#000000",
+      "textColor": "#f2f2f0",
       "thumbnail": "",
       "mainImage": "",
       "overview": "'서울' 컨셉을 캐릭터로 번역한 과정을 정리하는 자리.",
@@ -99,6 +146,10 @@
       "category": "Package / Print",
       "year": "20XX",
       "role": "Package Design · Character Variation",
+      "coverImage": "",
+      "dim": 50,
+      "bgColor": "#000000",
+      "textColor": "#f2f2f0",
       "thumbnail": "",
       "mainImage": "",
       "overview": "기존 캐릭터 베리에이션과 그라비아 인쇄 사양을 정리하는 자리.",
@@ -118,6 +169,10 @@
       "category": "CRM",
       "year": "2026",
       "role": "Push · Email · App Message",
+      "coverImage": "",
+      "dim": 50,
+      "bgColor": "#000000",
+      "textColor": "#f2f2f0",
       "thumbnail": "",
       "mainImage": "",
       "overview": "CRM 비주얼 작업을 정리하는 자리.",
@@ -137,6 +192,10 @@
       "category": "Offline / Space",
       "year": "2026",
       "role": "Event Visual · Print",
+      "coverImage": "",
+      "dim": 50,
+      "bgColor": "#000000",
+      "textColor": "#f2f2f0",
       "thumbnail": "",
       "mainImage": "",
       "overview": "오프라인 행사 비주얼과 현장 사진을 정리하는 자리.",
@@ -156,6 +215,10 @@
       "category": "Banner / Detail",
       "year": "2026",
       "role": "Thumbnail · Banner · Detail Page",
+      "coverImage": "",
+      "dim": 50,
+      "bgColor": "#000000",
+      "textColor": "#f2f2f0",
       "thumbnail": "",
       "mainImage": "",
       "overview": "",
@@ -178,9 +241,18 @@
     "heading": "Let's work\ntogether.",
     "email": "email@domain.com",
     "links": [
-      { "label": "Instagram", "url": "" },
-      { "label": "Behance", "url": "" },
-      { "label": "PDF Portfolio", "url": "" }
+      {
+        "label": "Instagram",
+        "url": ""
+      },
+      {
+        "label": "Behance",
+        "url": ""
+      },
+      {
+        "label": "PDF Portfolio",
+        "url": ""
+      }
     ]
   }
 }

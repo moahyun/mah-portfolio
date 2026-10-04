@@ -149,8 +149,37 @@
   .next .t{font-size:calc(88*var(--u));font-weight:300;letter-spacing:-.02em;line-height:1;transition:transform .9s var(--ease)}
   .next:hover .t{transform:translateX(calc(40*var(--u)))}
 
-  /* ── 04 Daily contents ── */
-  .daily{padding-top:calc(200*var(--u));padding-bottom:calc(200*var(--u));overflow:hidden}
+  /* ── 04 프로젝트 뷰: Index에서 클릭하면 화면 전체가 새 무드로 전환 ── */
+  .pv{position:fixed;inset:0;z-index:35;overflow-y:auto;overscroll-behavior:contain;background:var(--bg);color:var(--ink);
+    opacity:0;visibility:hidden;clip-path:inset(100% 0 0 0);
+    transition:opacity .7s var(--ease),visibility 0s .7s,clip-path 0s .7s}
+  .pv.open{opacity:1;visibility:visible;clip-path:inset(0);transition:clip-path 1.2s var(--ease),opacity .01s}
+  .pv::-webkit-scrollbar{width:0}
+  .pv-inner{transition:opacity .5s var(--ease)}
+  .pv.swap .pv-inner{opacity:0}
+
+  .cover{position:relative;height:100vh;min-height:calc(600*var(--u));overflow:hidden;color:#fff}
+  .cover .bg{position:absolute;inset:0;background:#1c1c1c center/cover no-repeat;transform:scale(1.12);transition:transform 2.6s var(--ease)}
+  .pv.ready .cover .bg{transform:scale(1)}
+  .cover .bg.ph{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:calc(12*var(--u));color:#666;letter-spacing:.04em}
+  .cover .dim{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,0) 55%),rgba(0,0,0,var(--dim))}
+  .cover .ttl{position:absolute;left:calc(60*var(--u));right:calc(60*var(--u));bottom:calc(80*var(--u))}
+  .cover .c-no{font-family:var(--serif);font-size:calc(40*var(--u));line-height:1}
+  .cover .c-title{font-size:calc(150*var(--u));font-weight:300;letter-spacing:-.03em;line-height:1;margin-top:calc(24*var(--u))}
+  .cover .c-sub{font-family:var(--serif);font-style:italic;font-size:calc(40*var(--u));line-height:1.2;margin-top:calc(16*var(--u))}
+  .cover .meta{border-color:rgba(255,255,255,.5);margin-top:calc(60*var(--u))}
+  .cover .meta .label{color:rgba(255,255,255,.55)}
+  .cover .c-scroll{position:absolute;right:calc(60*var(--u));top:calc(110*var(--u));font-size:calc(13*var(--u));color:rgba(255,255,255,.6)}
+  /* 제목이 아래에서 위로 올라오는 마스크 */
+  .up{display:block;overflow:hidden}
+  .up > span{display:block;transform:translateY(110%);transition:transform 1.5s var(--ease)}
+  .pv.ready .up > span{transform:none}
+  .fade{opacity:0;transition:opacity 1.4s var(--ease)}
+  .pv.ready .fade{opacity:1}
+  .pv-body{padding-bottom:calc(40*var(--u))}
+
+  /* ── Daily contents (프로젝트 뷰 안에서) ── */
+  .daily{padding-top:calc(160*var(--u));padding-bottom:calc(200*var(--u));overflow:hidden}
   .track{display:flex;gap:calc(20*var(--u));width:max-content;margin-top:calc(20*var(--u))}
   .track .box{flex:none;background:var(--box)}
   .track.a{animation:mq 90s linear infinite}
@@ -180,7 +209,6 @@
   .box.has-img{height:auto !important;background:none}
   .box.has-img img{height:auto}
   .mah img{display:block;width:calc(900*var(--u));height:auto}
-  .detail + .detail{padding-top:calc(120*var(--u))}
   .gallery{display:grid;grid-template-columns:1fr 1fr;gap:calc(24*var(--u));margin-top:calc(200*var(--u))}
   .gallery .box{height:calc(700*var(--u))}
   .gallery .box.full{grid-column:span 2;height:calc(940*var(--u))}
@@ -222,38 +250,25 @@
 
 <!-- 03 INDEX -->
 <section class="index pad" id="index">
-  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">03 INDEX · 텍스트 리스트 · 행에 호버하면 대표 이미지가 커서를 따라다님 · 클릭하면 상세로</span>
+  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">03 INDEX · 행에 호버하면 대표 이미지가 커서를 따라다님 · 클릭하면 화면 전체가 프로젝트 뷰로 전환 (커버 이미지 + 딤 + 제목이 올라옴)</span>
   <div class="sec-head"><h2>Index<sup id="count"></sup></h2><span class="label" id="indexCaption"></span></div>
   <div class="cols label rv"><span>No.</span><span>Project</span><span>Client</span><span>Category</span><span style="text-align:right">Year</span></div>
   <div class="rows" id="rows"></div>
 </section>
 <div class="preview box" id="preview"></div>
 
-<!-- 04 PROJECT DETAILS (content.json의 프로젝트 순서대로 생성) -->
-<div id="details"></div>
-
-<!-- 05 DAILY CONTENTS -->
-<section class="daily" id="daily">
-  <div class="pad">
-    <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">05 DAILY CONTENTS · 썸네일/배너/상세를 크기별로 천천히 흐르게 · 호버 시 일시정지</span>
-    <div class="sec-head"><h2>Daily Contents<sup>andar</sup></h2><span class="label">Thumbnail · Banner · Detail</span></div>
-  </div>
-  <div class="rv" style="margin-top:calc(60*var(--u))">
-    <div class="track a" id="ta"></div>
-    <div class="track b" id="tb"></div>
-    <div class="track c" id="tc"></div>
-  </div>
-</section>
-
-<!-- 06 CONTACT -->
+<!-- 04 CONTACT -->
 <section class="contact pad" id="contact">
   <div>
-    <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">06 CONTACT · 큰 타이포로 마무리</span>
+    <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">04 CONTACT · 큰 타이포로 마무리</span>
     <div class="big rv" id="contactHeading"></div>
     <a class="mail rv" id="mail"></a>
   </div>
   <div class="foot rv"><span>MaH — Mo Ahyun</span><span class="links" id="links"></span><span>© 2026</span></div>
 </section>
+
+<!-- 프로젝트 뷰 (Index에서 클릭하면 열림 · 주소 #p01, #p02 ...) -->
+<div class="pv" id="pv"><div class="pv-inner" id="pvInner"></div></div>
 
 <button class="to-index" id="toIndex" aria-label="Index로 돌아가기"><span class="cur" id="toIndexCur"></span><span>Index</span><span class="arr">↑</span></button>
 <button class="toggle" id="toggle">메모 숨기기</button>
@@ -296,55 +311,10 @@
       `<div class="row rv" data-i="${i}"><span class="n">${pad(i+1)}</span><span class="t">${esc(p.title)}</span>
        <span class="m">${esc(p.client)}</span><span class="m">${esc(p.category)}</span><span class="y">${esc(p.year)}</span></div>`).join('');
 
-    // Project details
-    const target = i => ps[i].isDailyWall ? 'daily' : 'p' + pad(i+1);
-    const detailIdx = ps.map((p, i) => i).filter(i => !ps[i].isDailyWall);
-    $('details').innerHTML = detailIdx.map((i, k) => detail(ps[i], i, k === 0, ps[detailIdx[k+1]] ? detailIdx[k+1] : null)).join('');
-
-    function detail(p, i, first, nextI){
-      const no = pad(i+1);
-      let h = `<section class="detail pad" id="p${no}">`;
-      if (first) h += `<span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">04 PROJECT DETAIL · 모든 프로젝트 공통 템플릿 · 내용이 비어있는 블록(Touch / Spread / Gallery / Result)은 자동으로 숨겨짐</span>`;
-      h += `<div class="d-head rv"><div class="d-no">${no}</div><div class="d-title">${esc(p.title)}${p.subtitle ? '<br>— ' + esc(p.subtitle) : ''}</div></div>
-        <div class="meta rv">
-          <div><span class="label">Client</span><span>${esc(p.client)}</span></div>
-          <div><span class="label">Year</span><span>${esc(p.year)}</span></div>
-          <div><span class="label">Role</span><span>${esc(p.role)}</span></div>
-          <div><span class="label">Category</span><span>${esc(p.category)}</span></div>
-        </div>`;
-      h += media(p.mainImage, 'MAIN VISUAL · 1800×940', 'd-hero rv');
-      if (p.overview) h += `<div class="two rv"><span class="label">Overview</span><div>${
-        p.overview.split(/\n\s*\n/).map(t => `<p>${br(t.trim())}</p>`).join('')}</div></div>`;
-      else h += `<div style="height:calc(160*var(--u))"></div>`;
-
-      if (p.touches && p.touches.length) {
-        const mk = p.touches.map(t => `<div class="mk" style="left:${+t.x}%;top:${+t.y}%">✦<div class="tip">MaH's touch — ${esc(t.comment)}</div></div>`).join('');
-        h += `<div class="touch rv">${media(p.touchImage, 'DETAIL IMAGE', '', mk)}
-          <div>${first ? '<span class="wf" style="display:block;margin-bottom:calc(16*var(--u))">✦ 마커 호버 시 한 줄 코멘트 · 위치는 관리자 화면에서 % 값으로 지정</span>' : ''}
-          <h3>MaH's touch</h3><p>브랜드의 답 위에 남긴 나의 한 끗. 이미지 위의 점에 마우스를 올려보세요.</p></div></div>`;
-      }
-      if (p.kvImage || (p.touchpoints && p.touchpoints.length)) {
-        h += `<div class="spread rv"><h3>One KV → Touchpoints</h3><div class="spread-grid">
-          ${media(p.kvImage, 'KEY VISUAL', 'kv')}
-          <div class="tp">${(p.touchpoints || []).map((t, j) => media(t.image, t.label, j === 0 ? 'wide' : '')).join('')}</div></div></div>`;
-      }
-      if (p.gallery && p.gallery.length) {
-        h += `<div class="gallery rv">${p.gallery.map((g, j) => media(g, 'IMAGE', j % 3 === 0 ? 'full' : '')).join('')}</div>`;
-      }
-      if (p.resultText || p.resultValue) {
-        h += `<div class="result rv"><div><span class="label">Result</span>
-          <p style="font-size:calc(20*var(--u));margin-top:calc(8*var(--u));font-weight:300">${esc(p.resultText)}</p></div>
-          <div class="big">${esc(p.resultValue)}</div></div>`;
-      }
-      const n = nextI ?? ps.findIndex(x => x.isDailyWall);
-      if (n !== null && n >= 0) h += `<a class="next rv" href="#${target(n)}"><div><span class="label">Next Project</span><div class="t">${pad(n+1)} — ${esc(ps[n].title)}</div></div><span class="label">→</span></a>`;
-      else h += `<div style="height:calc(160*var(--u))"></div>`;
-      return h + '</section>';
-    }
-
-    // Index 클릭 → 해당 상세로
-    $('rows').querySelectorAll('.row').forEach(r => r.addEventListener('click', () =>
-      $(target(+r.dataset.i)).scrollIntoView({behavior:'smooth'})));
+    // Index 클릭 → 주소가 #p02 처럼 바뀌고 프로젝트 뷰가 열림 (뒤로가기로도 닫힘)
+    $('rows').querySelectorAll('.row').forEach(r => r.addEventListener('click', () => {
+      location.hash = 'p' + pad(+r.dataset.i + 1);
+    }));
 
     // 커서 따라다니는 프리뷰
     const pv = $('preview');
@@ -363,20 +333,6 @@
       requestAnimationFrame(loop);
     })();
 
-    // Daily contents 트랙 (이미지가 없으면 회색 박스)
-    const fallback = { ta:[[360,360],[560,360],[360,360],[280,360]], tb:[[640,280],[280,280],[420,280]], tc:[[300,400],[300,400],[520,400]] };
-    const imgs = { ta:c.daily.thumbnails, tb:c.daily.banners, tc:c.daily.details };
-    const hts = { ta:360, tb:280, tc:400 }, names = { ta:'THUMBNAIL', tb:'BANNER', tc:'DETAIL' };
-    for (const id in fallback) {
-      let html = '';
-      const list = imgs[id] || [];
-      const reps = list.length ? Math.max(2, Math.ceil(12 / list.length)) : 6;
-      for (let k = 0; k < reps; k++) html += list.length
-        ? list.map(s => `<img src="${esc(s)}" alt="" loading="lazy" style="height:calc(${hts[id]}*var(--u));width:auto;flex:none;display:block">`).join('')
-        : fallback[id].map(([w,h]) => `<div class="box" style="width:calc(${w}*var(--u));height:calc(${h}*var(--u))">${names[id]}</div>`).join('');
-      $(id).innerHTML = html + html;
-    }
-
     // Contact
     $('contactHeading').innerHTML = br(c.contact.heading);
     $('mail').textContent = c.contact.email;
@@ -384,7 +340,142 @@
     $('links').innerHTML = c.contact.links.map(l => l.url
       ? `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a>` : `<span>${esc(l.label)}</span>`).join('');
 
-    // 스크롤 리빌: 같이 화면에 들어온 요소들은 위에서부터 차례로 떠오름
+    observeReveal(document);
+
+    // ── 프로젝트 뷰 ──
+    const view = $('pv'), inner = $('pvInner'), tb = $('toIndex'), tbCur = $('toIndexCur');
+    let openIdx = -1;
+
+    function projectHTML(p, i){
+      const no = pad(i + 1);
+      const dim = (p.dim ?? 50) / 100;
+      const first = i === 0;
+      let h = `<section class="cover" style="--dim:${dim}">
+        ${p.coverImage ? `<div class="bg" style="background-image:url('${esc(p.coverImage)}')"></div>`
+                       : `<div class="bg ph">COVER IMAGE · 1920×1080 (배경 꽉 채움)</div>`}
+        <div class="dim"></div>
+        ${first ? `<span class="wf abs" style="top:calc(110*var(--u));left:calc(60*var(--u))">04 PROJECT VIEW · 커버 이미지가 화면을 꽉 채우고 딤 처리 · 제목이 아래에서 올라옴 · 배경색/글자색/딤 농도는 프로젝트마다 관리자 화면에서 설정</span>` : ''}
+        <div class="c-scroll fade" style="transition-delay:1.2s">Scroll ↓</div>
+        <div class="ttl">
+          <span class="up c-no"><span style="transition-delay:.35s">${no} / ${pad(ps.length)}</span></span>
+          <span class="up c-title"><span style="transition-delay:.45s">${esc(p.title)}</span></span>
+          ${p.subtitle ? `<span class="up c-sub"><span style="transition-delay:.6s">${esc(p.subtitle)}</span></span>` : ''}
+          <div class="meta fade" style="transition-delay:.9s">
+            <div><span class="label">Client</span><span>${esc(p.client)}</span></div>
+            <div><span class="label">Year</span><span>${esc(p.year)}</span></div>
+            <div><span class="label">Role</span><span>${esc(p.role)}</span></div>
+            <div><span class="label">Category</span><span>${esc(p.category)}</span></div>
+          </div>
+        </div>
+      </section>`;
+
+      if (p.isDailyWall) {
+        h += `<section class="daily"><div class="rv">
+          <div class="track a">${track(c.daily.thumbnails, 360, [[360,360],[560,360],[360,360],[280,360]], 'THUMBNAIL')}</div>
+          <div class="track b">${track(c.daily.banners, 280, [[640,280],[280,280],[420,280]], 'BANNER')}</div>
+          <div class="track c">${track(c.daily.details, 400, [[300,400],[300,400],[520,400]], 'DETAIL')}</div>
+        </div></section>`;
+      } else {
+        h += `<div class="pv-body pad">`;
+        if (p.overview) h += `<div class="two rv"><span class="label">Overview</span><div>${
+          p.overview.split(/\n\s*\n/).map(t => `<p>${br(t.trim())}</p>`).join('')}</div></div>`;
+        else h += `<div style="height:calc(160*var(--u))"></div>`;
+        h += media(p.mainImage, 'MAIN VISUAL · 1800×940', 'd-hero rv');
+
+        if (p.touches && p.touches.length) {
+          const mk = p.touches.map(t => `<div class="mk" style="left:${+t.x}%;top:${+t.y}%">✦<div class="tip">MaH's touch — ${esc(t.comment)}</div></div>`).join('');
+          h += `<div class="touch rv" style="margin-top:calc(200*var(--u))">${media(p.touchImage, 'DETAIL IMAGE', '', mk)}
+            <div>${first ? '<span class="wf" style="display:block;margin-bottom:calc(16*var(--u))">✦ 마커 호버 시 한 줄 코멘트 · 위치는 관리자 화면에서 % 값으로 지정</span>' : ''}
+            <h3>MaH's touch</h3><p>브랜드의 답 위에 남긴 나의 한 끗. 이미지 위의 점에 마우스를 올려보세요.</p></div></div>`;
+        }
+        if (p.kvImage || (p.touchpoints && p.touchpoints.length)) {
+          h += `<div class="spread rv"><h3>One KV → Touchpoints</h3><div class="spread-grid">
+            ${media(p.kvImage, 'KEY VISUAL', 'kv')}
+            <div class="tp">${(p.touchpoints || []).map((t, j) => media(t.image, t.label, j === 0 ? 'wide' : '')).join('')}</div></div></div>`;
+        }
+        if (p.gallery && p.gallery.length) {
+          h += `<div class="gallery rv">${p.gallery.map((g, j) => media(g, 'IMAGE', j % 3 === 0 ? 'full' : '')).join('')}</div>`;
+        }
+        if (p.resultText || p.resultValue) {
+          h += `<div class="result rv"><div><span class="label">Result</span>
+            <p style="font-size:calc(20*var(--u));margin-top:calc(8*var(--u));font-weight:300">${esc(p.resultText)}</p></div>
+            <div class="big">${esc(p.resultValue)}</div></div>`;
+        }
+        h += `</div>`;
+      }
+
+      // 다음 프로젝트 (마지막이면 01로)
+      const n = (i + 1) % ps.length;
+      h += `<div class="pad"><a class="next rv" href="#p${pad(n + 1)}"><div><span class="label">Next Project</span>
+        <div class="t">${pad(n + 1)} — ${esc(ps[n].title)}</div></div><span class="label">→</span></a></div>`;
+      return h;
+    }
+
+    function track(list, ht, fallback, name){
+      list = list || [];
+      let html = '';
+      const reps = list.length ? Math.max(2, Math.ceil(12 / list.length)) : 6;
+      for (let k = 0; k < reps; k++) html += list.length
+        ? list.map(s => `<img src="${esc(s)}" alt="" loading="lazy" style="height:calc(${ht}*var(--u));width:auto;flex:none;display:block">`).join('')
+        : fallback.map(([w, h]) => `<div class="box" style="width:calc(${w}*var(--u));height:calc(${h}*var(--u))">${name}</div>`).join('');
+      return html + html;
+    }
+
+    function fill(i){
+      const p = ps[i];
+      view.style.setProperty('--bg', p.bgColor || '#000000');
+      view.style.setProperty('--ink', p.textColor || '#f2f2f0');
+      inner.innerHTML = projectHTML(p, i);
+      view.scrollTop = 0;
+      observeReveal(inner);
+      tbCur.textContent = pad(i + 1) + ' / ' + pad(ps.length);
+      openIdx = i;
+    }
+
+    function openProject(i){
+      if (openIdx === i) return;
+      if (openIdx >= 0) {
+        // 프로젝트 → 다른 프로젝트: 내용만 잠깐 사라졌다가 새 제목이 다시 올라옴
+        view.classList.add('swap');
+        view.classList.remove('ready');
+        setTimeout(() => {
+          fill(i);
+          view.classList.remove('swap');
+          requestAnimationFrame(() => requestAnimationFrame(() => view.classList.add('ready')));
+        }, 550);
+        return;
+      }
+      fill(i);
+      document.documentElement.style.overflow = 'hidden';
+      view.classList.add('open');
+      tb.classList.add('on');
+      setTimeout(() => view.classList.add('ready'), 250);
+    }
+
+    function closeProject(){
+      if (openIdx < 0) return;
+      openIdx = -1;
+      view.classList.remove('open', 'ready');
+      tb.classList.remove('on');
+      document.documentElement.style.overflow = '';
+    }
+
+    function route(){
+      const h = location.hash.slice(1);
+      const m = h.match(/^p(\d+)$/);
+      if (m && ps[+m[1] - 1]) return openProject(+m[1] - 1);
+      const wasOpen = openIdx >= 0;
+      closeProject();
+      if (h && $(h)) $(h).scrollIntoView({behavior: wasOpen ? 'instant' : 'smooth'});
+    }
+    addEventListener('hashchange', route);
+    addEventListener('keydown', e => { if (e.key === 'Escape' && openIdx >= 0) location.hash = 'index'; });
+    tb.onclick = () => { location.hash = 'index'; };
+    route();
+  }
+
+  // 스크롤 리빌: 같이 화면에 들어온 요소들은 위에서부터 차례로 떠오름
+  function observeReveal(root){
     const io = new IntersectionObserver(es => {
       es.filter(e => e.isIntersecting)
         .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top || a.boundingClientRect.left - b.boundingClientRect.left)
@@ -397,21 +488,7 @@
           setTimeout(() => { el.classList.remove("rv", "in"); el.style.transitionDelay = ""; }, 1600 + i * 120);
         });
     }, {threshold:.15, rootMargin:"0px 0px -8% 0px"});
-    document.querySelectorAll(".rv").forEach(el => io.observe(el));
-
-    // Index로 돌아가는 버튼: 프로젝트를 보는 동안에만 나타나고, 지금 보는 번호를 표시
-    const tb = $("toIndex"), tbCur = $("toIndexCur");
-    const sections = ps.map((p, i) => [i, $(target(i))]);
-    function updateToIndex(){
-      const mid = innerHeight / 2;
-      let cur = -1;
-      sections.forEach(([i, el]) => { const r = el.getBoundingClientRect(); if (r.top <= mid && r.bottom > mid) cur = i; });
-      tb.classList.toggle("on", cur >= 0);
-      if (cur >= 0) tbCur.textContent = pad(cur + 1) + " / " + pad(ps.length);
-    }
-    tb.onclick = () => $("index").scrollIntoView({behavior:"smooth"});
-    addEventListener("scroll", updateToIndex, {passive:true});
-    updateToIndex();
+    root.querySelectorAll(".rv").forEach(el => io.observe(el));
   }
 
   function setupCursor(cfg){
