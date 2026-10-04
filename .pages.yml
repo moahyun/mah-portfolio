@@ -59,10 +59,6 @@ content:
               - name: role
                 label: 팀 · 업무
                 type: string
-          - name: capabilities
-            label: 할 수 있는 것
-            type: string
-            list: true
 
       - name: categories
         label: 카테고리 순서

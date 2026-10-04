@@ -21,7 +21,7 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;
-    font-size:calc(16*var(--u));line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    font-size:calc(14*var(--u));line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
 
   /* ── 와이어프레임 메모 ── */
@@ -36,20 +36,20 @@
   /* ── 공통 ── */
   .box{background:var(--box);position:relative;display:flex;align-items:center;justify-content:center;
     font-family:var(--mono);font-size:calc(12*var(--u));color:var(--mute);letter-spacing:.04em}
-  .label{font-size:calc(13*var(--u));color:var(--mute);letter-spacing:.04em;text-transform:uppercase}
+  .label{font-size:calc(11*var(--u));color:var(--mute);letter-spacing:.12em;text-transform:uppercase}
   body .rv{opacity:0;transform:translateY(calc(70*var(--u)));transition:opacity 1.6s var(--ease),transform 1.6s var(--ease)}
   body .rv.in{opacity:1;transform:none}
   .pad{padding-left:calc(60*var(--u));padding-right:calc(60*var(--u))}
 
   /* ── Back 버튼 (프로젝트 뷰에서만 왼쪽 위에 나타남 · 누르면 Index로) ── */
   .to-index{position:fixed;left:calc(48*var(--u));top:calc(24*var(--u));z-index:45;display:flex;align-items:center;
-    gap:calc(14*var(--u));height:calc(52*var(--u));padding:0 calc(24*var(--u));border:1px solid rgba(242,242,240,.28);
+    gap:calc(14*var(--u));height:calc(40*var(--u));padding:0 calc(20*var(--u));border:1px solid rgba(242,242,240,.28);
     border-radius:99px;background:rgba(0,0,0,.45);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-    color:var(--ink);font-family:var(--sans);font-size:calc(13*var(--u));letter-spacing:.08em;cursor:pointer;
+    color:var(--ink);font-family:var(--sans);font-size:calc(11*var(--u));letter-spacing:.12em;text-transform:uppercase;cursor:pointer;
     opacity:0;transform:translateY(calc(-12*var(--u)));pointer-events:none;
     transition:opacity .8s var(--ease),transform .8s var(--ease),background .5s var(--ease),color .5s var(--ease)}
   .to-index.on{opacity:1;transform:none;pointer-events:auto}
-  .to-index .cur{font-family:var(--serif);font-size:calc(17*var(--u));letter-spacing:0;color:var(--mute);transition:color .5s var(--ease)}
+  .to-index .cur{font-family:var(--serif);font-size:calc(14*var(--u));letter-spacing:0;color:var(--mute);transition:color .5s var(--ease)}
   .to-index .arr{display:inline-block;transition:transform .6s var(--ease)}
   .to-index:hover{background:var(--ink);color:#000}
   .to-index:hover .cur{color:#555}
@@ -71,56 +71,56 @@
   /* ── Nav ── */
   .nav{position:fixed;inset:0 0 auto 0;z-index:40;display:flex;justify-content:space-between;align-items:center;
     padding:calc(36*var(--u)) calc(60*var(--u));mix-blend-mode:difference;color:#fff}
-  .nav .logo{font-family:var(--serif);font-size:calc(28*var(--u));line-height:1;transition:opacity .5s var(--ease)}
+  .nav .logo{font-family:var(--serif);font-size:calc(22*var(--u));line-height:1;transition:opacity .5s var(--ease)}
   /* 프로젝트 뷰가 열리면 왼쪽 위 로고 자리에 Back 버튼이 대신 나타남 */
   html.pv-open .nav .logo{opacity:0;pointer-events:none}
-  .nav ul{display:flex;gap:calc(40*var(--u));list-style:none;font-size:calc(14*var(--u))}
+  .nav ul{display:flex;gap:calc(40*var(--u));list-style:none;font-size:calc(11*var(--u));letter-spacing:.12em;text-transform:uppercase}
 
   /* ── 01 Hero ── */
   /* 스크롤 트랙: 약 3화면 높이만큼 스크롤하는 동안 화면에 고정된 채 블러가 풀림 */
   .hero-wrap{height:calc(4240*var(--u))}
   .hero{position:sticky;top:0;height:calc(1080*var(--u));display:flex;flex-direction:column;align-items:center;justify-content:center}
-  .mah{font-family:var(--serif);font-size:calc(380*var(--u));line-height:.8;letter-spacing:-.02em;will-change:filter,opacity}
-  .sub{margin-top:calc(48*var(--u));font-size:calc(13*var(--u));letter-spacing:.32em;color:var(--mute);opacity:0}
+  .mah{font-family:var(--serif);font-size:calc(280*var(--u));line-height:.8;letter-spacing:-.02em;will-change:filter,opacity}
+  .sub{margin-top:calc(44*var(--u));font-size:calc(11*var(--u));letter-spacing:.36em;color:var(--mute);opacity:0}
   .hero .copy{position:absolute;left:calc(60*var(--u));bottom:calc(60*var(--u));font-family:var(--serif);
-    font-size:calc(32*var(--u));font-style:italic;line-height:1.2}
-  .hero .scroll{position:absolute;right:calc(60*var(--u));bottom:calc(60*var(--u));font-size:calc(13*var(--u));color:var(--mute)}
+    font-size:calc(22*var(--u));font-style:italic;line-height:1.25}
+  .hero .scroll{position:absolute;right:calc(60*var(--u));bottom:calc(60*var(--u));font-size:calc(11*var(--u));letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
 
   /* ── 02 Index ── */
   .index{padding-top:calc(200*var(--u));padding-bottom:calc(200*var(--u));position:relative;min-height:100vh}
-  .sec-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--ink);
-    padding-bottom:calc(24*var(--u))}
-  .sec-head h2{font-family:var(--serif);font-weight:400;font-size:calc(96*var(--u));line-height:1}
-  .sec-head h2 sup{font-family:var(--sans);font-size:calc(16*var(--u));color:var(--mute);vertical-align:top;margin-left:calc(8*var(--u))}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--line);
+    padding-bottom:calc(20*var(--u))}
+  .sec-head h2{font-family:var(--serif);font-weight:400;font-size:calc(56*var(--u));line-height:1}
+  .sec-head h2 sup{font-family:var(--sans);font-size:calc(11*var(--u));color:var(--mute);vertical-align:top;margin-left:calc(8*var(--u))}
   .cols,.row{display:grid;grid-template-columns:calc(140*var(--u)) 1fr auto calc(260*var(--u));
     align-items:center}
   .cols{padding:calc(20*var(--u)) 0;border-bottom:1px solid var(--line)}
-  .row{height:calc(104*var(--u));border-bottom:1px solid var(--line);cursor:pointer;overflow:hidden;
+  .row{height:calc(72*var(--u));border-bottom:1px solid var(--line);cursor:pointer;overflow:hidden;
     transition:opacity .6s var(--ease),height .8s var(--ease),border-color .8s var(--ease)}
   /* 필터에서 빠진 행은 부드럽게 접힘 */
   .row.hide{height:0;opacity:0 !important;border-bottom-color:transparent;pointer-events:none}
-  .row .t{font-size:calc(40*var(--u));font-weight:300;letter-spacing:-.01em;transition:transform .8s var(--ease)}
-  .row .n{font-family:var(--serif);font-size:calc(22*var(--u));color:var(--mute)}
-  .row .m{font-size:calc(15*var(--u));color:var(--mute);text-align:right}
-  .row .y{font-size:calc(15*var(--u));color:var(--mute);text-align:right}
+  .row .t{font-size:calc(24*var(--u));font-weight:300;letter-spacing:-.005em;transition:transform .8s var(--ease)}
+  .row .n{font-family:var(--serif);font-size:calc(15*var(--u));color:var(--mute)}
+  .row .m{font-size:calc(12*var(--u));color:var(--mute);text-align:right}
+  .row .y{font-size:calc(12*var(--u));color:var(--mute);text-align:right}
   .rows:has(.row:hover) .row{opacity:.22}
   .rows .row:hover{opacity:1}
-  .rows .row:hover .t{transform:translateX(calc(24*var(--u)))}
+  .rows .row:hover .t{transform:translateX(calc(16*var(--u)))}
   /* ── Index 보기 전환: Company(회사별 묶음) / Category(카테고리 필터) ── */
-  .modes{display:flex;align-items:baseline;gap:calc(14*var(--u));font-size:calc(15*var(--u));letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+  .modes{display:flex;align-items:baseline;gap:calc(12*var(--u));font-size:calc(11*var(--u));letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
   .modes button,.chips button{background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;padding:0;transition:color .4s var(--ease)}
   .modes button:hover,.modes button.on,.chips button:hover,.chips button.on{color:var(--ink)}
   .modes button.on{text-decoration:underline;text-underline-offset:calc(6*var(--u))}
   .filter{overflow:hidden;max-height:calc(120*var(--u));transition:max-height .8s var(--ease),opacity .6s var(--ease)}
   .filter.off{max-height:0;opacity:0}
-  .chips{display:flex;flex-wrap:wrap;gap:calc(8*var(--u)) calc(32*var(--u));padding:calc(28*var(--u)) 0 calc(8*var(--u));font-size:calc(17*var(--u));color:var(--mute)}
-  .chips sup{font-size:calc(11*var(--u));margin-left:calc(4*var(--u));vertical-align:top}
-  .grp{display:flex;justify-content:space-between;align-items:baseline;padding:calc(64*var(--u)) 0 calc(18*var(--u));border-bottom:1px solid var(--line)}
+  .chips{display:flex;flex-wrap:wrap;gap:calc(8*var(--u)) calc(32*var(--u));padding:calc(24*var(--u)) 0 calc(8*var(--u));font-size:calc(13*var(--u));color:var(--mute)}
+  .chips sup{font-size:calc(9*var(--u));margin-left:calc(4*var(--u));vertical-align:top}
+  .grp{display:flex;justify-content:space-between;align-items:baseline;padding:calc(56*var(--u)) 0 calc(14*var(--u));border-bottom:1px solid var(--line)}
   .rows .grp:first-child{padding-top:calc(36*var(--u))}
-  .grp .g-name{font-family:var(--serif);font-size:calc(34*var(--u));line-height:1}
+  .grp .g-name{font-family:var(--serif);font-size:calc(22*var(--u));line-height:1}
   .rows.redraw > *{animation:rowIn .9s var(--ease) both}
   @keyframes rowIn{from{opacity:0;transform:translateY(calc(24*var(--u)))}}
-  .preview{position:fixed;left:0;top:0;width:calc(440*var(--u));height:calc(300*var(--u));z-index:30;pointer-events:none;
+  .preview{position:fixed;left:0;top:0;width:calc(360*var(--u));height:calc(240*var(--u));z-index:30;pointer-events:none;
     opacity:0;transform-origin:center;transition:opacity .5s var(--ease);background:var(--box2)}
   .preview.on{opacity:1}
 
@@ -132,10 +132,10 @@
   .meta{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);padding-top:calc(20*var(--u));
     margin-top:calc(60*var(--u))}
   .meta div span{display:block}
-  .meta div span:last-child{font-size:calc(17*var(--u));margin-top:calc(6*var(--u))}
+  .meta div span:last-child{font-size:calc(14*var(--u));margin-top:calc(6*var(--u))}
   .d-hero{height:calc(940*var(--u));margin-top:calc(80*var(--u))}
   .two{display:grid;grid-template-columns:calc(420*var(--u)) 1fr;padding-top:calc(160*var(--u));padding-bottom:calc(160*var(--u))}
-  .two p{max-width:calc(760*var(--u));font-size:calc(22*var(--u));line-height:1.75;font-weight:300}
+  .two p{max-width:calc(720*var(--u));font-size:calc(17*var(--u));line-height:1.85;font-weight:300}
   .two p + p{margin-top:calc(24*var(--u))}
 
   .touch{display:grid;grid-template-columns:calc(1140*var(--u)) 1fr;gap:calc(80*var(--u));align-items:end}
@@ -147,11 +147,11 @@
   @keyframes pulse{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.4);opacity:0}}
   .mk .tip{position:absolute;left:calc(36*var(--u));top:50%;transform:translateY(-50%) translateX(calc(-8*var(--u)));
     width:calc(300*var(--u));background:var(--bg);color:var(--ink);padding:calc(14*var(--u)) calc(18*var(--u));
-    font-family:var(--sans);font-size:calc(14*var(--u));line-height:1.55;letter-spacing:0;text-align:left;
+    font-family:var(--sans);font-size:calc(13*var(--u));line-height:1.55;letter-spacing:0;text-align:left;
     opacity:0;pointer-events:none;transition:all .6s var(--ease);border:1px solid var(--line)}
   .mk:hover .tip{opacity:1;transform:translateY(-50%)}
-  .touch h3,.spread h3{font-family:var(--serif);font-weight:400;font-size:calc(48*var(--u));line-height:1.1}
-  .touch p{margin-top:calc(20*var(--u));font-size:calc(17*var(--u));color:#555;font-weight:300}
+  .touch h3,.spread h3{font-family:var(--serif);font-weight:400;font-size:calc(32*var(--u));line-height:1.1}
+  .touch p{margin-top:calc(16*var(--u));font-size:calc(14*var(--u));color:var(--mute);font-weight:300}
 
   .spread{padding-top:calc(200*var(--u))}
   .spread-grid{display:grid;grid-template-columns:calc(700*var(--u)) 1fr;gap:calc(24*var(--u));margin-top:calc(60*var(--u))}
@@ -161,12 +161,12 @@
 
   .result{margin-top:calc(200*var(--u));border:1px dashed var(--mute);height:calc(240*var(--u));display:flex;
     align-items:center;justify-content:space-between;padding:0 calc(60*var(--u))}
-  .result .big{font-family:var(--serif);font-size:calc(96*var(--u));color:var(--mute);line-height:1}
+  .result .big{font-family:var(--serif);font-size:calc(64*var(--u));color:var(--mute);line-height:1}
 
   .next{margin-top:calc(200*var(--u));border-top:1px solid var(--ink);padding-top:calc(40*var(--u));padding-bottom:calc(160*var(--u));
     display:flex;justify-content:space-between;align-items:end;cursor:pointer}
-  .next .t{font-size:calc(88*var(--u));font-weight:300;letter-spacing:-.02em;line-height:1;transition:transform .9s var(--ease)}
-  .next:hover .t{transform:translateX(calc(40*var(--u)))}
+  .next .t{font-size:calc(48*var(--u));font-weight:300;letter-spacing:-.015em;line-height:1;transition:transform .9s var(--ease)}
+  .next:hover .t{transform:translateX(calc(24*var(--u)))}
 
   /* ── 04 프로젝트 뷰: Index에서 클릭하면 화면 전체가 새 무드로 전환 ── */
   .pv{position:fixed;inset:0;z-index:35;overflow-y:auto;overscroll-behavior:contain;background:var(--bg);color:var(--ink);
@@ -183,12 +183,12 @@
   .cover .bg.ph{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:calc(12*var(--u));color:#666;letter-spacing:.04em}
   .cover .dim{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,0) 55%),rgba(0,0,0,var(--dim))}
   .cover .ttl{position:absolute;left:calc(60*var(--u));right:calc(60*var(--u));bottom:calc(80*var(--u))}
-  .cover .c-no{font-family:var(--serif);font-size:calc(40*var(--u));line-height:1}
-  .cover .c-title{font-size:calc(150*var(--u));font-weight:300;letter-spacing:-.03em;line-height:1;margin-top:calc(24*var(--u))}
-  .cover .c-sub{font-family:var(--serif);font-style:italic;font-size:calc(40*var(--u));line-height:1.2;margin-top:calc(16*var(--u))}
-  .cover .meta{border-color:rgba(255,255,255,.5);margin-top:calc(60*var(--u))}
+  .cover .c-no{font-family:var(--serif);font-size:calc(20*var(--u));line-height:1}
+  .cover .c-title{font-size:calc(88*var(--u));font-weight:300;letter-spacing:-.025em;line-height:1.05;margin-top:calc(20*var(--u))}
+  .cover .c-sub{font-family:var(--serif);font-style:italic;font-size:calc(26*var(--u));line-height:1.2;margin-top:calc(16*var(--u))}
+  .cover .meta{border-color:rgba(255,255,255,.35);margin-top:calc(48*var(--u))}
   .cover .meta .label{color:rgba(255,255,255,.55)}
-  .cover .c-scroll{position:absolute;right:calc(60*var(--u));top:calc(110*var(--u));font-size:calc(13*var(--u));color:rgba(255,255,255,.6)}
+  .cover .c-scroll{position:absolute;right:calc(60*var(--u));top:calc(110*var(--u));font-size:calc(11*var(--u));letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6)}
   /* 제목이 아래에서 위로 올라오는 마스크 */
   .up{display:block;overflow:hidden}
   .up > span{display:block;transform:translateY(110%);transition:transform 1.5s var(--ease)}
@@ -207,22 +207,24 @@
   .daily:hover .track{animation-play-state:paused}
   @keyframes mq{to{transform:translateX(-50%)}}
 
-  /* ── 05 About ── */
-  .about{padding-top:calc(200*var(--u));padding-bottom:calc(200*var(--u))}
-  .ab-grid{display:grid;grid-template-columns:calc(560*var(--u)) 1fr calc(440*var(--u));gap:calc(80*var(--u));margin-top:calc(80*var(--u))}
-  .ab-grid .intro{font-size:calc(26*var(--u));line-height:1.65;font-weight:300}
-  .tl li{list-style:none;display:grid;grid-template-columns:calc(200*var(--u)) 1fr;padding:calc(24*var(--u)) 0;border-top:1px solid var(--line)}
-  .tl li:last-child{border-bottom:1px solid var(--line)}
-  .tl b{font-weight:500;font-size:calc(19*var(--u))}
-  .tl small{display:block;color:var(--mute);font-size:calc(14*var(--u));margin-top:calc(4*var(--u))}
-  .cap li{list-style:none;font-size:calc(19*var(--u));padding:calc(10*var(--u)) 0;border-top:1px solid var(--line)}
+  /* ── 02 About: 1920×2160 (두 화면 높이) · 위 = 소개 / 아래 = 경력 ── */
+  .about{min-height:calc(2160*var(--u));display:flex;flex-direction:column;padding-top:calc(200*var(--u));padding-bottom:calc(120*var(--u))}
+  .ab-block{flex:1;display:grid;grid-template-columns:calc(420*var(--u)) 1fr;align-content:center}
+  .ab-intro{font-size:calc(26*var(--u));line-height:1.8;font-weight:300;max-width:calc(960*var(--u));letter-spacing:-.005em}
+  .ab-name{margin-top:calc(48*var(--u))}
+  .exp li{list-style:none;display:grid;grid-template-columns:calc(480*var(--u)) 1fr auto;align-items:baseline;
+    padding:calc(22*var(--u)) 0;border-bottom:1px solid var(--line)}
+  .exp li:first-child{border-top:1px solid var(--line)}
+  .exp .co{font-family:var(--serif);font-size:calc(22*var(--u));line-height:1.2}
+  .exp .ro{font-size:calc(13*var(--u));color:var(--mute)}
+  .exp .pe{font-size:calc(12*var(--u));color:var(--mute);letter-spacing:.04em}
 
   /* ── 06 Contact ── */
   .contact{height:calc(1080*var(--u));display:flex;flex-direction:column;justify-content:space-between;
     padding-top:calc(200*var(--u));padding-bottom:calc(60*var(--u));border-top:1px solid var(--line)}
-  .contact .big{font-family:var(--serif);font-size:calc(220*var(--u));line-height:.9;letter-spacing:-.02em}
-  .contact .mail{font-size:calc(40*var(--u));font-weight:300;margin-top:calc(60*var(--u));display:inline-block;border-bottom:1px solid}
-  .contact .foot{display:flex;justify-content:space-between;font-size:calc(13*var(--u));color:#888}
+  .contact .big{font-family:var(--serif);font-size:calc(120*var(--u));line-height:.9;letter-spacing:-.02em}
+  .contact .mail{font-size:calc(22*var(--u));font-weight:300;margin-top:calc(48*var(--u));display:inline-block;border-bottom:1px solid}
+  .contact .foot{display:flex;justify-content:space-between;font-size:calc(11*var(--u));letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
   /* ── 이미지가 들어가면 원본 비율대로 ── */
   .box img{display:block;width:100%;height:100%;object-fit:cover}
   .box.has-img{height:auto !important;background:none}
@@ -258,12 +260,15 @@
 
 <!-- 02 ABOUT -->
 <section class="about pad" id="about">
-  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 ABOUT · 메인 바로 아래 · 소개 / 경력 타임라인 / 할 수 있는 것 3단</span>
+  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 ABOUT · 1920×2160 (두 화면 높이) · 위 화면 = 소개 문장 / 아래 화면 = 경력 · 왼쪽 라벨 + 오른쪽 내용이 같은 축</span>
   <div class="sec-head"><h2>About</h2><span class="label">Mo Ahyun</span></div>
-  <div class="ab-grid">
-    <p class="intro rv" id="aboutIntro"></p>
-    <ul class="tl" id="career"></ul>
-    <ul class="cap" id="caps"></ul>
+  <div class="ab-block">
+    <span class="label rv">Profile</span>
+    <div><p class="ab-intro rv" id="aboutIntro"></p><p class="ab-name label rv">Mo Ahyun — Visual Content Designer</p></div>
+  </div>
+  <div class="ab-block">
+    <span class="label rv">Experience</span>
+    <ul class="exp" id="career"></ul>
   </div>
 </section>
 
@@ -321,9 +326,7 @@
     // About
     $('aboutIntro').innerHTML = br(c.about.intro);
     $('career').innerHTML = c.about.career.map(x =>
-      `<li class="rv"><span class="label">${esc(x.period)}</span><div><b>${esc(x.company)}</b><small>${esc(x.role)}</small></div></li>`).join('');
-    $('caps').innerHTML = '<li class="label rv" style="border:0;padding-bottom:calc(16*var(--u))">Capabilities</li>'
-      + c.about.capabilities.map(x => `<li class="rv">${esc(x)}</li>`).join('');
+      `<li class="rv"><span class="co">${esc(x.company)}</span><span class="ro">${esc(x.role)}</span><span class="pe">${esc(x.period)}</span></li>`).join('');
 
     // Index
     const ps = c.projects, rows = $('rows');
