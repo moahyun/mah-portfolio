@@ -82,7 +82,8 @@
   .hero-wrap{height:calc(4240*var(--u))}
   .hero{position:sticky;top:0;height:calc(1080*var(--u));display:flex;flex-direction:column;align-items:center;justify-content:center}
   .mah{font-family:var(--serif);font-size:calc(280*var(--u));line-height:.8;letter-spacing:-.02em;will-change:filter,opacity}
-  .sub{position:absolute;left:calc(60*var(--u));bottom:calc(52*var(--u));font-size:calc(11*var(--u));letter-spacing:.24em;color:var(--mute)}
+  .mah-wrap{display:flex;flex-direction:column;align-items:center;will-change:filter,opacity}
+  .sub{margin-top:calc(28*var(--u));font-family:var(--serif);font-size:calc(34*var(--u));line-height:1;letter-spacing:0}
 
   /* ── 02 Index ── */
   .index{padding-top:calc(200*var(--u));padding-bottom:calc(200*var(--u));position:relative;min-height:100vh}
@@ -209,7 +210,6 @@
   .about{min-height:calc(2160*var(--u));display:flex;flex-direction:column;padding-top:calc(200*var(--u));padding-bottom:calc(120*var(--u))}
   .ab-block{flex:1;display:grid;grid-template-columns:calc(420*var(--u)) 1fr;align-content:center}
   .ab-intro{font-size:calc(26*var(--u));line-height:1.8;font-weight:300;max-width:calc(960*var(--u));letter-spacing:-.005em}
-  .ab-name{margin-top:calc(48*var(--u))}
   /* 이력: 그룹마다 한 줄씩 · 왼쪽 = 그룹 이름(세리프) / 오른쪽 = 항목 · 경력만 크게 */
   .cv{padding-top:calc(120*var(--u))}
   .cv-group{display:grid;grid-template-columns:calc(420*var(--u)) 1fr;padding:calc(56*var(--u)) 0;border-top:1px solid var(--line)}
@@ -255,19 +255,21 @@
 <div class="hero-wrap" id="top">
 <section class="hero">
   <span class="wf abs" style="top:calc(110*var(--u));left:calc(60*var(--u))">01 HERO · 1920×1080 한 화면 · 관리자 화면에서 로고 이미지를 올리면 글자 대신 이미지로 바뀜</span>
-  <div class="mah" id="mah">MaH</div>
-  <span class="wf" style="margin-top:calc(24*var(--u))">처음엔 흐릿하게 · 스크롤할수록 블러가 풀리며 또렷해짐</span>
-  <div class="sub" id="sub"></div>
+  <div class="mah-wrap" id="mahWrap">
+    <div class="mah" id="mah">MaH</div>
+    <div class="sub" id="sub"></div>
+  </div>
+  <span class="wf" style="margin-top:calc(24*var(--u))">처음엔 흐릿하게 · 스크롤할수록 MaH와 아래 글씨가 함께 또렷해짐</span>
 </section>
 </div>
 
 <!-- 02 INFO -->
 <section class="about pad" id="info">
   <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 INFO · 위 화면 = 소개 / 아래 = 이력 (그룹 이름 왼쪽, 항목 오른쪽 · 경력만 크게) · 연락처·주소는 공개 사이트라 넣지 않음</span>
-  <div class="sec-head"><h2>Info</h2><span class="label">Mo Ahyun</span></div>
+  <div class="sec-head"><h2>Info</h2></div>
   <div class="ab-block">
-    <span class="label rv">Profile</span>
-    <div><p class="ab-intro rv" id="aboutIntro"></p><p class="ab-name label rv" id="aboutName"></p></div>
+    <span></span>
+    <p class="ab-intro rv" id="aboutIntro"></p>
   </div>
   <div class="cv" id="cv"></div>
 </section>
@@ -324,7 +326,6 @@
 
     // About
     $('aboutIntro').innerHTML = br(c.about.intro);
-    $('aboutName').textContent = c.about.name || '';
     // 이력: Experience만 크게(main), 나머지는 작게
     const cvGroup = (label, items, main) => items && items.length ? `<div class="cv-group${main ? ' main' : ''}"><h3 class="rv">${esc(label)}</h3><ul>${
       items.map(x => `<li class="rv"><span class="ti">${esc(x.title)}</span><span class="de">${esc(x.desc)}</span><span class="pe">${esc(x.period)}</span></li>`).join('')}</ul></div>` : '';
@@ -587,7 +588,7 @@
   }
 
   // 히어로: 스크롤 진행도에 따라 블러가 풀림
-  const mah = $('mah');
+  const mah = $("mahWrap");
   const clamp = v => Math.min(1, Math.max(0, v));
   function heroScroll(){
     const u = innerWidth / 1920;
