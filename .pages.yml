@@ -31,8 +31,9 @@ content:
             description: SVG 또는 배경이 투명한 PNG. 비워두면 글자로 표시돼요.
             type: image
           - name: subtitle
-            label: MaH 아래 글씨
-            type: string
+            label: MaH 옆 작은 글씨
+            description: 줄바꿈하면 사이트에서도 줄이 바뀌어요.
+            type: text
 
       - name: about
         label: About Me
@@ -263,6 +264,9 @@ content:
           - name: heading
             label: 큰 문구
             type: text
+          - name: name
+            label: 이름
+            type: string
           - name: email
             label: 이메일
             type: string
@@ -270,14 +274,3 @@ content:
             label: 전화번호
             description: 공개 사이트에 그대로 보여요. 비워두면 표시되지 않아요.
             type: string
-          - name: links
-            label: 링크
-            type: object
-            list: true
-            fields:
-              - name: label
-                label: 이름
-                type: string
-              - name: url
-                label: 주소
-                type: string

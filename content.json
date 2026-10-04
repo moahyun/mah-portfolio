@@ -5,7 +5,7 @@
   },
   "hero": {
     "logo": "",
-    "subtitle": "Visual Content Designer"
+    "subtitle": "Mo AHyun\nVisual Content Designer"
   },
   "about": {
     "intro": "브랜드를 먼저 이해하고, 그에 맞는 답을 찾습니다.\n필요한 방법은 무엇이든 쓰되, 디테일에는 저만의 결을 남깁니다.",
@@ -381,22 +381,9 @@
     "details": []
   },
   "contact": {
-    "heading": "Thank\nYou",
+    "heading": "Thank You",
+    "name": "Mo AHyun",
     "email": "moamoa1379@gmail.com",
-    "phone": "010 9971 3571",
-    "links": [
-      {
-        "label": "Instagram",
-        "url": ""
-      },
-      {
-        "label": "Behance",
-        "url": ""
-      },
-      {
-        "label": "PDF Portfolio",
-        "url": ""
-      }
-    ]
+    "phone": "010 9971 3571"
   }
 }

@@ -138,7 +138,7 @@
   html.intro-on{overflow:hidden}
   html.intro-on .hero .mah,html.intro-on .hero .sub,html.intro-on .nav,html.intro-on .toggle{opacity:0}
   .nav{transition:color .5s var(--ease),opacity .8s var(--ease)}
-  .sub{margin-left:calc(20*var(--u));margin-top:calc(6*var(--u));font-size:calc(16*var(--u));font-weight:400;line-height:1.3;letter-spacing:.01em;max-width:calc(120*var(--u))}
+  .sub{margin-left:calc(20*var(--u));margin-top:calc(6*var(--u));font-size:calc(16*var(--u));font-weight:400;line-height:1.3;letter-spacing:.01em;white-space:nowrap}
 
   /* ── 02 Index ── */
   .index{padding-top:calc(200*var(--u));padding-bottom:calc(200*var(--u));position:relative;min-height:100vh}
@@ -296,19 +296,17 @@
     {font-weight:500;letter-spacing:-.035em}
   .cover .c-no,.cover .c-sub{font-weight:400;letter-spacing:-.02em}
   .grp .g-name{font-weight:500;letter-spacing:-.02em}   /* 회사 묶음 이름: Medium으로 살짝 구분 */
-  .contact .big{font-family:var(--serif);font-size:calc(520*var(--u));font-weight:300;line-height:.74;letter-spacing:-.045em;margin-left:calc(-24*var(--u))}  /* = .mah */
+  .contact .big{font-family:var(--serif);font-size:calc(200*var(--u));font-weight:300;line-height:.9;letter-spacing:-.045em;margin-left:calc(-8*var(--u))}
   .nav .logo{font-weight:500;letter-spacing:-.02em}
 
   /* ── 06 Contact ── */
-  .contact{height:max(calc(1080*var(--u)),100vh);display:flex;flex-direction:column;justify-content:flex-end;
-    padding-top:calc(120*var(--u));padding-bottom:calc(56*var(--u))}
-  .contact .c-row{display:flex;justify-content:space-between;align-items:flex-end}
-  .contact .reach{display:flex;flex-direction:column;align-items:flex-end;gap:calc(10*var(--u));padding-bottom:calc(6*var(--u))}
-  .contact .reach a{font-size:calc(18*var(--u));font-weight:400;line-height:1.3;transition:opacity .3s ease}
-  .contact .reach a:hover{opacity:.6}
-  .contact .reach b{font-weight:500;margin-right:calc(8*var(--u))}
-  .contact .foot{margin-top:calc(30*var(--u))}
-  .contact .foot{display:flex;justify-content:space-between;font-size:calc(11*var(--u));font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+  .contact{height:max(calc(1080*var(--u)),100vh);display:flex;flex-direction:column;justify-content:space-between;
+    padding-top:calc(180*var(--u));padding-bottom:calc(56*var(--u))}
+  .c-info{display:grid;grid-template-columns:repeat(4,1fr);column-gap:calc(40*var(--u));padding-top:calc(22*var(--u));
+    border-top:1px solid rgba(255,255,255,.45)}
+  .c-info .k{display:block;font-size:calc(11*var(--u));font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:calc(10*var(--u))}
+  .c-info .v{font-size:calc(16*var(--u));line-height:1.4;transition:opacity .3s ease}
+  .c-info a.v:hover{opacity:.6}
   /* ── 이미지가 들어가면 원본 비율대로 ── */
   .box img{display:block;width:100%;height:100%;object-fit:cover}
   .box.has-img{height:auto !important;background:none}
@@ -317,8 +315,6 @@
   .gallery{display:grid;grid-template-columns:1fr 1fr;gap:calc(24*var(--u));margin-top:calc(200*var(--u))}
   .gallery .box{height:calc(700*var(--u))}
   .gallery .box.full{grid-column:span 2;height:calc(940*var(--u))}
-  .contact .foot a:hover{color:#fff}
-  .contact .links a,.contact .links span{margin-left:calc(24*var(--u))}
 </style>
 </head>
 <body>
@@ -376,12 +372,14 @@
 <!-- 05 CONTACT (위에 화이트 → 하늘 경계 띠) -->
 <div class="sky-fade up" aria-hidden="true"></div>
 <section class="contact pad sky" id="contact">
-  <span class="wf" style="position:absolute;top:calc(140*var(--u));left:calc(60*var(--u))">05 CONTACT · Thank You = 메인 MaH와 같은 크기 (왼쪽 아래) · 연락처는 오른쪽 아래</span>
-  <div class="c-row">
-    <div class="big rv" id="contactHeading"></div>
-    <div class="reach"><a id="mail"></a><a id="phone"></a></div>
+  <span class="wf" style="position:absolute;top:calc(130*var(--u));left:calc(60*var(--u))">05 CONTACT · 위 = Thank You 한 줄 / 아래 = 얇은 선 위 4단 (이름 · 비움 · E-mail · Ph.)</span>
+  <h2 class="big rv" id="contactHeading"></h2>
+  <div class="c-info">
+    <div><span class="k">Name</span><span class="v" id="cName"></span></div>
+    <div></div>
+    <div><span class="k">E-mail</span><a class="v" id="mail"></a></div>
+    <div id="phoneBox"><span class="k">Ph.</span><a class="v" id="phone"></a></div>
   </div>
-  <div class="foot"><span>MaH — Mo Ahyun</span><span class="links" id="links"></span><span>© 2026</span></div>
 </section>
 
 <!-- 프로젝트 뷰 (Index에서 클릭하면 열림 · 주소 #p01, #p02 ...) -->
@@ -411,7 +409,7 @@
 
     // Hero
     if (c.hero.logo) $('mah').innerHTML = `<img src="${esc(c.hero.logo)}" alt="MaH">`;
-    $('sub').textContent = c.hero.subtitle;
+    $('sub').innerHTML = br(c.hero.subtitle);
 
     // About
     $('aboutIntro').innerHTML = (c.about.intro || '').split(/\n\s*\n/).map(t => `<p class="rv">${br(t.trim())}</p>`).join('');
@@ -492,11 +490,10 @@
 
     // Contact
     $('contactHeading').innerHTML = br(c.contact.heading);
-    $('mail').innerHTML = '<b>E-mail.</b>' + esc(c.contact.email);
+    $('cName').textContent = c.contact.name || '';
+    $('mail').textContent = c.contact.email;
     $('mail').href = 'mailto:' + c.contact.email;
-    if (c.contact.phone) { $('phone').innerHTML = '<b>Ph.</b>' + esc(c.contact.phone); $('phone').href = 'tel:' + c.contact.phone.replace(/\s/g, ''); } else $('phone').remove();
-    $('links').innerHTML = c.contact.links.map(l => l.url
-      ? `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a>` : `<span>${esc(l.label)}</span>`).join('');
+    if (c.contact.phone) { $('phone').textContent = c.contact.phone; $('phone').href = 'tel:' + c.contact.phone.replace(/\s/g, ''); } else $('phoneBox').innerHTML = '';
 
     observeReveal(document);
 
