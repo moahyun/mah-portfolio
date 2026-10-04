@@ -76,8 +76,15 @@
   .nav{position:fixed;inset:0 0 auto 0;z-index:40;display:flex;justify-content:space-between;align-items:center;
     padding:calc(36*var(--u)) calc(60*var(--u));color:var(--ink);transition:color .5s var(--ease)}
   html.on-hero .nav{color:#fff}
-  /* 화이트 영역(또는 프로젝트 화면)에서는 메뉴 글씨가 뒤 색에 따라 자동 반전 (흰 배경 = 검정, 검정 글씨·이미지 위 = 흰색) */
-  html:not(.on-hero) .nav,html.pv-open .nav{color:#fff;mix-blend-mode:difference}
+  /* 화이트 영역(또는 프로젝트 화면)에서는 메뉴 뒤를 흐리게: 위는 조금 더, 아래로 갈수록 단계적으로 약해지는 "점진 블러" (경계선 없음) */
+  .nav-blur{position:absolute;left:0;right:0;top:0;height:calc(100% + 64*var(--u));z-index:-1;pointer-events:none;opacity:0;transition:opacity .5s var(--ease);
+    background:linear-gradient(180deg,rgba(249,249,249,.62) 0%,rgba(249,249,249,.35) 50%,rgba(249,249,249,0) 100%)}
+  .nav-blur i{position:absolute;inset:0}
+  .nav-blur i:nth-child(1){-webkit-backdrop-filter:blur(1px);backdrop-filter:blur(1px);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 60%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 60%,transparent 100%)}
+  .nav-blur i:nth-child(2){-webkit-backdrop-filter:blur(2.5px);backdrop-filter:blur(2.5px);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 40%,transparent 75%);mask-image:linear-gradient(180deg,#000 0%,#000 40%,transparent 75%)}
+  .nav-blur i:nth-child(3){-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 25%,transparent 55%);mask-image:linear-gradient(180deg,#000 0%,#000 25%,transparent 55%)}
+  .nav-blur i:nth-child(4){-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);-webkit-mask-image:linear-gradient(180deg,#000 0%,transparent 35%);mask-image:linear-gradient(180deg,#000 0%,transparent 35%)}
+  html:not(.on-hero) .nav-blur,html.pv-open .nav-blur{opacity:1}
   .nav a{transition:color .3s var(--ease)}
   .nav ul a:hover{opacity:.5}
   .nav .logo{font-family:var(--serif);font-size:calc(22*var(--u));line-height:1;transition:opacity .5s var(--ease)}
@@ -313,6 +320,7 @@
 <div class="cursor" id="cursor"></div>
 
 <nav class="nav">
+  <div class="nav-blur" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
   <a href="#top" class="logo">MaH</a>
   <ul><li><a href="#about">About Me</a></li><li><a href="#career">Career</a></li><li><a href="#index">Index</a></li><li><a href="#contact">Contact</a></li></ul>
 </nav>
