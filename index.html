@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MaH Wireframe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  /* 1920 기준 단위: calc(N * var(--u)) = 1920 화면에서 Npx */
+  :root{
+    --u: calc(100vw / 1920);
+    --bg:#000000; --ink:#f2f2f0; --mute:#7c7c7a; --line:#262626;
+    --box:#141414; --box2:#1f1f1f; --note:#5b7cff;
+    --serif:'Instrument Serif', serif;
+    --sans:'Inter','Pretendard',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;
+    font-size:calc(16*var(--u));line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+
+  /* ── 와이어프레임 메모 ── */
+  .wf{font-family:var(--mono);font-size:calc(12*var(--u));color:var(--note);letter-spacing:.02em;line-height:1.5}
+  .wf::before{content:'WF — '}
+  .wf.abs{position:absolute}
+  body.hide-notes .wf{display:none}
+  .toggle{position:fixed;right:calc(40*var(--u));bottom:calc(40*var(--u));z-index:50;
+    font-family:var(--mono);font-size:calc(12*var(--u));padding:calc(10*var(--u)) calc(16*var(--u));
+    background:var(--note);color:#fff;border:0;border-radius:99px;cursor:pointer}
+
+  /* ── 공통 ── */
+  .box{background:var(--box);position:relative;display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:calc(12*var(--u));color:var(--mute);letter-spacing:.04em}
+  .label{font-size:calc(13*var(--u));color:var(--mute);letter-spacing:.04em;text-transform:uppercase}
+  .rv{opacity:0;transform:translateY(calc(40*var(--u)));transition:opacity 1.4s var(--ease),transform 1.4s var(--ease)}
+  .rv.in{opacity:1;transform:none}
+  .pad{padding-left:calc(60*var(--u));padding-right:calc(60*var(--u))}
+
+  /* ── Nav ── */
+  .nav{position:fixed;inset:0 0 auto 0;z-index:40;display:flex;justify-content:space-between;align-items:center;
+    padding:calc(36*var(--u)) calc(60*var(--u));mix-blend-mode:difference;color:#fff}
+  .nav .logo{font-family:var(--serif);font-size:calc(28*var(--u));line-height:1}
+  .nav ul{display:flex;gap:calc(40*var(--u));list-style:none;font-size:calc(14*var(--u))}
+
+  /* ── 01 Hero ── */
+  .hero{height:calc(1080*var(--u));position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .mah{font-family:var(--serif);font-size:calc(380*var(--u));line-height:.8;letter-spacing:-.02em;
+    opacity:0;filter:blur(calc(10*var(--u)));transition:opacity 2.6s var(--ease),filter 2.6s var(--ease);will-change:transform}
+  .mah.in{opacity:1;filter:blur(0)}
+  .sub{margin-top:calc(48*var(--u));font-size:calc(13*var(--u));letter-spacing:.32em;color:var(--mute);
+    opacity:0;transition:opacity 1.6s var(--ease) 1.4s}
+  .sub.in{opacity:1}
+  .hero .copy{position:absolute;left:calc(60*var(--u));bottom:calc(60*var(--u));font-family:var(--serif);
+    font-size:calc(32*var(--u));font-style:italic;line-height:1.2}
+  .hero .scroll{position:absolute;right:calc(60*var(--u));bottom:calc(60*var(--u));font-size:calc(13*var(--u));color:var(--mute)}
+
+  /* ── 02 Index ── */
+  .index{padding-top:calc(200*var(--u));padding-bottom:calc(200*var(--u));position:relative}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--ink);
+    padding-bottom:calc(24*var(--u))}
+  .sec-head h2{font-family:var(--serif);font-weight:400;font-size:calc(96*var(--u));line-height:1}
+  .sec-head h2 sup{font-family:var(--sans);font-size:calc(16*var(--u));color:var(--mute);vertical-align:top;margin-left:calc(8*var(--u))}
+  .cols,.row{display:grid;grid-template-columns:calc(140*var(--u)) 1fr calc(380*var(--u)) calc(320*var(--u)) calc(100*var(--u));
+    align-items:center}
+  .cols{padding:calc(20*var(--u)) 0;border-bottom:1px solid var(--line)}
+  .row{height:calc(104*var(--u));border-bottom:1px solid var(--line);cursor:pointer;transition:opacity .6s var(--ease)}
+  .row .t{font-size:calc(40*var(--u));font-weight:300;letter-spacing:-.01em;transition:transform .8s var(--ease)}
+  .row .n{font-family:var(--serif);font-size:calc(22*var(--u));color:var(--mute)}
+  .row .m{font-size:calc(15*var(--u));color:var(--mute)}
+  .row .y{font-size:calc(15*var(--u));color:var(--mute);text-align:right}
+  .rows:hover .row{opacity:.22}
+  .rows .row:hover{opacity:1}
+  .rows .row:hover .t{transform:translateX(calc(24*var(--u)))}
+  .preview{position:fixed;left:0;top:0;width:calc(440*var(--u));height:calc(300*var(--u));z-index:30;pointer-events:none;
+    opacity:0;transform-origin:center;transition:opacity .5s var(--ease);background:var(--box2)}
+  .preview.on{opacity:1}
+
+  /* ── 03 Project detail ── */
+  .detail{padding-top:calc(200*var(--u))}
+  .d-head{display:grid;grid-template-columns:calc(420*var(--u)) 1fr;align-items:end;padding-bottom:calc(60*var(--u))}
+  .d-no{font-family:var(--serif);font-size:calc(200*var(--u));line-height:.8}
+  .d-title{font-size:calc(72*var(--u));font-weight:300;letter-spacing:-.02em;line-height:1.05}
+  .meta{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);padding-top:calc(20*var(--u));
+    margin-top:calc(60*var(--u))}
+  .meta div span{display:block}
+  .meta div span:last-child{font-size:calc(17*var(--u));margin-top:calc(6*var(--u))}
+  .d-hero{height:calc(940*var(--u));margin-top:calc(80*var(--u))}
+  .two{display:grid;grid-template-columns:calc(420*var(--u)) 1fr;padding-top:calc(160*var(--u));padding-bottom:calc(160*var(--u))}
+  .two p{max-width:calc(760*var(--u));font-size:calc(22*var(--u));line-height:1.75;font-weight:300}
+  .two p + p{margin-top:calc(24*var(--u))}
+
+  .touch{display:grid;grid-template-columns:calc(1140*var(--u)) 1fr;gap:calc(80*var(--u));align-items:end}
+  .touch .box{height:calc(760*var(--u))}
+  .mk{position:absolute;width:calc(22*var(--u));height:calc(22*var(--u));border-radius:50%;background:var(--ink);
+    cursor:default;display:flex;align-items:center;justify-content:center;color:var(--bg);font-size:calc(11*var(--u))}
+  .mk::after{content:'';position:absolute;inset:calc(-8*var(--u));border-radius:50%;border:1px solid var(--ink);
+    animation:pulse 2.4s var(--ease) infinite}
+  @keyframes pulse{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.4);opacity:0}}
+  .mk .tip{position:absolute;left:calc(36*var(--u));top:50%;transform:translateY(-50%) translateX(calc(-8*var(--u)));
+    width:calc(300*var(--u));background:var(--bg);color:var(--ink);padding:calc(14*var(--u)) calc(18*var(--u));
+    font-family:var(--sans);font-size:calc(14*var(--u));line-height:1.55;letter-spacing:0;text-align:left;
+    opacity:0;pointer-events:none;transition:all .6s var(--ease);border:1px solid var(--line)}
+  .mk:hover .tip{opacity:1;transform:translateY(-50%)}
+  .touch h3,.spread h3{font-family:var(--serif);font-weight:400;font-size:calc(48*var(--u));line-height:1.1}
+  .touch p{margin-top:calc(20*var(--u));font-size:calc(17*var(--u));color:#555;font-weight:300}
+
+  .spread{padding-top:calc(200*var(--u))}
+  .spread-grid{display:grid;grid-template-columns:calc(700*var(--u)) 1fr;gap:calc(24*var(--u));margin-top:calc(60*var(--u))}
+  .spread-grid .kv{height:calc(880*var(--u));background:var(--box2)}
+  .tp{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:calc(24*var(--u))}
+  .tp .wide{grid-column:span 2}
+
+  .result{margin-top:calc(200*var(--u));border:1px dashed var(--mute);height:calc(240*var(--u));display:flex;
+    align-items:center;justify-content:space-between;padding:0 calc(60*var(--u))}
+  .result .big{font-family:var(--serif);font-size:calc(96*var(--u));color:var(--mute);line-height:1}
+
+  .next{margin-top:calc(200*var(--u));border-top:1px solid var(--ink);padding-top:calc(40*var(--u));padding-bottom:calc(160*var(--u));
+    display:flex;justify-content:space-between;align-items:end;cursor:pointer}
+  .next .t{font-size:calc(88*var(--u));font-weight:300;letter-spacing:-.02em;line-height:1;transition:transform .9s var(--ease)}
+  .next:hover .t{transform:translateX(calc(40*var(--u)))}
+
+  /* ── 04 Daily contents ── */
+  .daily{padding-top:calc(200*var(--u));padding-bottom:calc(200*var(--u));overflow:hidden}
+  .track{display:flex;gap:calc(20*var(--u));width:max-content;margin-top:calc(20*var(--u))}
+  .track .box{flex:none;background:var(--box)}
+  .track.a{animation:mq 90s linear infinite}
+  .track.b{animation:mq 110s linear infinite reverse}
+  .track.c{animation:mq 100s linear infinite}
+  .daily:hover .track{animation-play-state:paused}
+  @keyframes mq{to{transform:translateX(-50%)}}
+
+  /* ── 05 About ── */
+  .about{padding-top:calc(200*var(--u));padding-bottom:calc(200*var(--u))}
+  .ab-grid{display:grid;grid-template-columns:calc(560*var(--u)) 1fr calc(440*var(--u));gap:calc(80*var(--u));margin-top:calc(80*var(--u))}
+  .ab-grid .intro{font-size:calc(26*var(--u));line-height:1.65;font-weight:300}
+  .tl li{list-style:none;display:grid;grid-template-columns:calc(200*var(--u)) 1fr;padding:calc(24*var(--u)) 0;border-top:1px solid var(--line)}
+  .tl li:last-child{border-bottom:1px solid var(--line)}
+  .tl b{font-weight:500;font-size:calc(19*var(--u))}
+  .tl small{display:block;color:var(--mute);font-size:calc(14*var(--u));margin-top:calc(4*var(--u))}
+  .cap li{list-style:none;font-size:calc(19*var(--u));padding:calc(10*var(--u)) 0;border-top:1px solid var(--line)}
+
+  /* ── 06 Contact ── */
+  .contact{height:calc(1080*var(--u));display:flex;flex-direction:column;justify-content:space-between;
+    padding-top:calc(200*var(--u));padding-bottom:calc(60*var(--u));border-top:1px solid var(--line)}
+  .contact .big{font-family:var(--serif);font-size:calc(220*var(--u));line-height:.9;letter-spacing:-.02em}
+  .contact .mail{font-size:calc(40*var(--u));font-weight:300;margin-top:calc(60*var(--u));display:inline-block;border-bottom:1px solid}
+  .contact .foot{display:flex;justify-content:space-between;font-size:calc(13*var(--u));color:#888}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#top" class="logo">MaH</a>
+  <ul><li><a href="#index">Index</a></li><li><a href="#about">About</a></li><li><a href="#contact">Contact</a></li></ul>
+</nav>
+
+<!-- 01 HERO -->
+<section class="hero" id="top">
+  <span class="wf abs" style="top:calc(110*var(--u));left:calc(60*var(--u))">01 HERO · 1920×1080 한 화면 · 직접 레터링한 MaH 로고로 교체 예정</span>
+  <div class="mah" id="mah">MaH</div>
+  <div class="sub" id="sub">MO AHYUN · VISUAL CONTENT DESIGNER</div>
+  <span class="wf" style="margin-top:calc(24*var(--u))">로딩 시 블러→선명하게 천천히 등장 · 마우스 따라 아주 미세하게 움직임</span>
+  <div class="copy">Fit the brand,<br>keep the touch.</div>
+  <div class="scroll">Scroll ↓</div>
+</section>
+
+<!-- 02 INDEX -->
+<section class="index pad" id="index">
+  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 INDEX · 텍스트 리스트 · 행에 호버하면 대표 이미지가 커서를 따라다님 · 클릭하면 상세로</span>
+  <div class="sec-head rv"><h2>Index<sup>(07)</sup></h2><span class="label">Selected Works 20XX — 2026</span></div>
+  <div class="cols label"><span>No.</span><span>Project</span><span>Client</span><span>Category</span><span style="text-align:right">Year</span></div>
+  <div class="rows" id="rows"></div>
+</section>
+<div class="preview box" id="preview"></div>
+
+<!-- 03 PROJECT DETAIL (템플릿: 01 예시) -->
+<section class="detail pad" id="p01">
+  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">03 PROJECT DETAIL · 7개 프로젝트 모두 이 템플릿 공통 · 블록(Touch / Spread / Result)은 프로젝트마다 골라서 사용</span>
+  <div class="d-head rv">
+    <div class="d-no">01</div>
+    <div class="d-title">Seasonal Campaign<br>— Bridge Visual</div>
+  </div>
+  <div class="meta rv">
+    <div><span class="label">Client</span><span>andar</span></div>
+    <div><span class="label">Year</span><span>2026</span></div>
+    <div><span class="label">Role</span><span>KV · Banner · CRM · Offline</span></div>
+    <div><span class="label">Category</span><span>Campaign</span></div>
+  </div>
+  <div class="d-hero box rv">MAIN VISUAL · 1800×940</div>
+
+  <div class="two rv">
+    <span class="label">Overview</span>
+    <div>
+      <p>캠페인의 배경과 브리프를 2~3문장으로 정리하는 자리. 어떤 시즌, 어떤 목표, 어떤 타깃이었는지.</p>
+      <p>그래서 어떤 톤을 선택했고, 왜 그 비주얼이 브랜드에 맞는 답이었는지 짧게 서술.</p>
+    </div>
+  </div>
+
+  <div class="touch rv">
+    <div class="box">DETAIL IMAGE
+      <div class="mk" style="left:28%;top:32%">✦<div class="tip">MaH's touch — 이 타이포 자간과 곡선은 제 취향이 들어간 부분이에요.</div></div>
+      <div class="mk" style="left:64%;top:62%">✦<div class="tip">브랜드 가이드는 지키면서, 그림자 처리로 무드를 더했어요.</div></div>
+    </div>
+    <div>
+      <span class="wf" style="display:block;margin-bottom:calc(16*var(--u))">✦ 마커 호버 시 한 줄 코멘트 · 프로젝트당 1~3개</span>
+      <h3>MaH's touch</h3>
+      <p>브랜드의 답 위에 남긴 나의 한 끗. 이미지 위의 점에 마우스를 올려보세요.</p>
+    </div>
+  </div>
+
+  <div class="spread rv">
+    <span class="wf" style="display:block;margin-bottom:calc(16*var(--u))">KV 하나가 채널별로 확장되는 모습을 한 화면에 · 캠페인 프로젝트에서 사용</span>
+    <h3>One KV → Touchpoints</h3>
+    <div class="spread-grid">
+      <div class="kv box">KEY VISUAL</div>
+      <div class="tp">
+        <div class="box wide">APP MAIN BANNER</div>
+        <div class="box">PUSH</div>
+        <div class="box">EMAIL / CRM</div>
+        <div class="box">DETAIL PAGE</div>
+        <div class="box">OFFLINE POP</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="result rv">
+    <div>
+      <span class="label">Result</span>
+      <p style="font-size:calc(20*var(--u));margin-top:calc(8*var(--u));font-weight:300">비주얼 A/B 테스트 클릭률 — 데이터 확보 후 추가</p>
+      <span class="wf">수치가 없으면 이 블록 대신 "실제 집행 · N개 채널" 같은 사실로 대체</span>
+    </div>
+    <div class="big">+ 00%</div>
+  </div>
+
+  <a class="next rv" href="#index">
+    <div><span class="label">Next Project</span><div class="t">02 — ZEROBASEONE Album</div></div>
+    <span class="label">→</span>
+  </a>
+</section>
+
+<!-- 04 DAILY CONTENTS -->
+<section class="daily" id="daily">
+  <div class="pad">
+    <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">04 DAILY CONTENTS (= 07번 프로젝트) · 썸네일/배너/상세를 크기별로 천천히 흐르게 · 호버 시 일시정지</span>
+    <div class="sec-head rv"><h2>Daily Contents<sup>andar</sup></h2><span class="label">Thumbnail · Banner · Detail</span></div>
+  </div>
+  <div style="margin-top:calc(60*var(--u))">
+    <div class="track a" id="ta"></div>
+    <div class="track b" id="tb"></div>
+    <div class="track c" id="tc"></div>
+  </div>
+</section>
+
+<!-- 05 ABOUT -->
+<section class="about pad" id="about">
+  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">05 ABOUT · 소개 / 경력 타임라인 / 할 수 있는 것 3단</span>
+  <div class="sec-head rv"><h2>About</h2><span class="label">Mo Ahyun</span></div>
+  <div class="ab-grid rv">
+    <p class="intro">브랜드와 맥락을 먼저 이해하고, 그에 맞는 비주얼을 찾아갑니다. 타이포·그래픽·AI 등 필요한 방법을 적극적으로 활용하되, 디테일에는 저만의 결을 남깁니다.</p>
+    <ul class="tl">
+      <li><span class="label">20XX — 2026</span><div><b>andar</b><small>Content Design Team · Campaign, CRM, Offline</small></div></li>
+      <li><span class="label">20XX — 20XX</span><div><b>HBAF</b><small>Brand Planning Team · Package, Character</small></div></li>
+      <li><span class="label">20XX — 20XX</span><div><b>ZEROBASEONE</b><small>Entertainment Production · Album Design, Lettering</small></div></li>
+    </ul>
+    <ul class="cap">
+      <li class="label" style="border:0;padding-bottom:calc(16*var(--u))">Capabilities</li>
+      <li>Campaign Key Visual</li><li>Typography & Lettering</li><li>CRM Visual</li>
+      <li>Package & Print</li><li>Character Design</li><li>AI Workflow</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 06 CONTACT -->
+<section class="contact pad" id="contact">
+  <div>
+    <span class="wf" style="color:#8aa2ff;display:block;margin-bottom:calc(20*var(--u))">06 CONTACT · 큰 타이포로 마무리</span>
+    <div class="big">Let's work<br>together.</div>
+    <a class="mail" href="#contact">email@domain.com</a>
+  </div>
+  <div class="foot"><span>MaH — Mo Ahyun</span><span>Instagram · Behance · PDF Portfolio</span><span>© 2026</span></div>
+</section>
+
+<button class="toggle" id="toggle">메모 숨기기</button>
+
+<script>
+  const projects = [
+    ['01','Seasonal Campaign','andar','Campaign / KV','2026'],
+    ['02','ZEROBASEONE Album','ZEROBASEONE','Album / Lettering','20XX'],
+    ['03','UTme Seoul Character','HBAF × UNIQLO','Character','20XX'],
+    ['04','Gravure Package','HBAF','Package / Print','20XX'],
+    ['05','CRM Visual','andar','CRM','2026'],
+    ['06','Offline Event','andar','Offline / Space','2026'],
+    ['07','Daily Contents','andar','Banner / Detail','2026'],
+  ];
+  const rows = document.getElementById('rows');
+  rows.innerHTML = projects.map(p =>
+    `<div class="row" data-t="${p[1]}" data-n="${p[0]}"><span class="n">${p[0]}</span><span class="t">${p[1]}</span>
+     <span class="m">${p[2]}</span><span class="m">${p[3]}</span><span class="y">${p[4]}</span></div>`).join('');
+  rows.querySelectorAll('.row').forEach(r => r.addEventListener('click', () => {
+    document.getElementById(r.dataset.n === '07' ? 'daily' : 'p01').scrollIntoView({behavior:'smooth'});
+  }));
+
+  // 커서 따라다니는 프리뷰
+  const pv = document.getElementById('preview');
+  let tx=0, ty=0, cx=0, cy=0;
+  rows.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
+  rows.querySelectorAll('.row').forEach(r => {
+    r.addEventListener('mouseenter', () => { pv.textContent = r.dataset.n + ' · ' + r.dataset.t.toUpperCase(); pv.classList.add('on'); });
+  });
+  rows.addEventListener('mouseleave', () => pv.classList.remove('on'));
+  (function loop(){
+    cx += (tx - cx) * .1; cy += (ty - cy) * .1;
+    const u = innerWidth / 1920;
+    pv.style.transform = `translate(${cx + 40*u}px, ${cy - 150*u}px) rotate(${(tx - cx) * .02}deg)`;
+    requestAnimationFrame(loop);
+  })();
+
+  // 히어로 등장 + 미세 패럴랙스
+  const mah = document.getElementById('mah');
+  requestAnimationFrame(() => { mah.classList.add('in'); document.getElementById('sub').classList.add('in'); });
+  document.querySelector('.hero').addEventListener('mousemove', e => {
+    const x = (e.clientX / innerWidth - .5) * 16, y = (e.clientY / innerHeight - .5) * 10;
+    mah.style.transform = `translate(${x}px, ${y}px)`;
+  });
+
+  // Daily contents 트랙 (가로 무한 흐름)
+  const sizes = { ta:[[360,360],[560,360],[360,360],[280,360]], tb:[[640,280],[280,280],[420,280]], tc:[[300,400],[300,400],[520,400]] };
+  const names = { ta:'THUMBNAIL', tb:'BANNER', tc:'DETAIL' };
+  for (const id in sizes) {
+    let html = '';
+    for (let i = 0; i < 6; i++) sizes[id].forEach(([w,h]) =>
+      html += `<div class="box" style="width:calc(${w}*var(--u));height:calc(${h}*var(--u))">${names[id]}</div>`);
+    document.getElementById(id).innerHTML = html + html;
+  }
+
+  // 스크롤 리빌
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.15});
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+  // 메모 토글
+  const tg = document.getElementById('toggle');
+  tg.onclick = () => { document.body.classList.toggle('hide-notes'); tg.textContent = document.body.classList.contains('hide-notes') ? '메모 보기' : '메모 숨기기'; };
+</script>
+</body>
+</html>
