@@ -103,17 +103,24 @@
   .row .n{font-family:var(--serif);font-size:calc(22*var(--u));color:var(--mute)}
   .row .m{font-size:calc(15*var(--u));color:var(--mute)}
   .row .y{font-size:calc(15*var(--u));color:var(--mute);text-align:right}
-  .rows:hover .row{opacity:.22}
+  .rows:has(.row:hover) .row{opacity:.22}
   .rows .row:hover{opacity:1}
   .rows .row:hover .t{transform:translateX(calc(24*var(--u)))}
-  /* ── Index 필터: 역량별 / 회사별 ── */
-  .filter{display:flex;align-items:baseline;gap:calc(48*var(--u));padding:calc(28*var(--u)) 0 calc(8*var(--u))}
-  .modes{display:flex;gap:calc(10*var(--u));font-size:calc(13*var(--u));letter-spacing:.08em;text-transform:uppercase;color:var(--mute);flex:none}
-  .filter button{background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;padding:0;transition:color .4s var(--ease)}
-  .filter button:hover,.filter button.on{color:var(--ink)}
+  /* ── Index 보기 전환: Company(회사별 묶음) / Capability(역량 필터) ── */
+  .modes{display:flex;align-items:baseline;gap:calc(14*var(--u));font-size:calc(15*var(--u));letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+  .modes button,.chips button{background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;padding:0;transition:color .4s var(--ease)}
+  .modes button:hover,.modes button.on,.chips button:hover,.chips button.on{color:var(--ink)}
   .modes button.on{text-decoration:underline;text-underline-offset:calc(6*var(--u))}
-  .chips{display:flex;flex-wrap:wrap;gap:calc(8*var(--u)) calc(32*var(--u));font-size:calc(17*var(--u));color:var(--mute)}
+  .filter{overflow:hidden;max-height:calc(120*var(--u));transition:max-height .8s var(--ease),opacity .6s var(--ease)}
+  .filter.off{max-height:0;opacity:0}
+  .chips{display:flex;flex-wrap:wrap;gap:calc(8*var(--u)) calc(32*var(--u));padding:calc(28*var(--u)) 0 calc(8*var(--u));font-size:calc(17*var(--u));color:var(--mute)}
   .chips sup{font-size:calc(11*var(--u));margin-left:calc(4*var(--u));vertical-align:top}
+  .grp{display:flex;justify-content:space-between;align-items:baseline;padding:calc(64*var(--u)) 0 calc(18*var(--u));border-bottom:1px solid var(--line)}
+  .rows .grp:first-child{padding-top:calc(36*var(--u))}
+  .grp .g-name{font-family:var(--serif);font-size:calc(34*var(--u));line-height:1}
+  .grp .g-meta{font-size:calc(13*var(--u));color:var(--mute);letter-spacing:.04em}
+  .rows.redraw > *{animation:rowIn .9s var(--ease) both}
+  @keyframes rowIn{from{opacity:0;transform:translateY(calc(24*var(--u)))}}
   .preview{position:fixed;left:0;top:0;width:calc(440*var(--u));height:calc(300*var(--u));z-index:30;pointer-events:none;
     opacity:0;transform-origin:center;transition:opacity .5s var(--ease);background:var(--box2)}
   .preview.on{opacity:1}
@@ -264,11 +271,9 @@
 <!-- 03 INDEX -->
 <section class="index pad" id="index">
   <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">03 INDEX · 행에 호버하면 대표 이미지가 커서를 따라다님 · 클릭하면 화면 전체가 프로젝트 뷰로 전환 (커버 이미지 + 딤 + 제목이 올라옴)</span>
-  <div class="sec-head"><h2>Index<sup id="count"></sup></h2><span class="label" id="indexCaption"></span></div>
-  <div class="filter rv">
-    <div class="modes"><button class="on" data-mode="cap">Capability</button><span>/</span><button data-mode="co">Company</button></div>
-    <div class="chips" id="chips"></div>
-  </div>
+  <div class="sec-head"><h2>Index<sup id="count"></sup></h2>
+    <div class="modes"><button class="on" data-mode="co">Company</button><span>/</span><button data-mode="cap">Capability</button></div></div>
+  <div class="filter off" id="filter"><div class="chips" id="chips"></div></div>
   <div class="cols label rv"><span>No.</span><span>Project</span><span>Client</span><span>Category</span><span style="text-align:right">Year</span></div>
   <div class="rows" id="rows"></div>
 </section>
@@ -322,52 +327,72 @@
       + c.about.capabilities.map(x => `<li class="rv">${esc(x)}</li>`).join('');
 
     // Index
-    const ps = c.projects;
+    const ps = c.projects, rows = $('rows');
+    const career = c.about.career || [];
     $('count').textContent = `(${pad(ps.length)})`;
-    $('indexCaption').textContent = c.indexCaption;
-    $('rows').innerHTML = ps.map((p, i) =>
-      `<div class="row rv" data-i="${i}"><span class="n">${pad(i+1)}</span><span class="t">${esc(p.title)}</span>
-       <span class="m">${esc(p.client)}</span><span class="m">${esc(cats(p).join(" · "))}</span><span class="y">${esc(p.year)}</span></div>`).join('');
 
-    // 필터: 역량별(Capability) / 회사별(Company)
-    const rowEls = [...$("rows").querySelectorAll(".row")];
-    let mode = "cap", pick = "All";
-    const keysOf = p => mode === "cap" ? cats(p) : (p.company || []);
+    // 보기 전환: Company = About 경력 순서대로 회사별 묶음 / Capability = 역량 필터
+    let mode = 'co', pick = 'All', firstDraw = true;
+    const rowHTML = i => { const p = ps[i]; return `<div class="row${firstDraw ? ' rv' : ''}" data-i="${i}"><span class="n">${pad(i+1)}</span><span class="t">${esc(p.title)}</span>
+       <span class="m">${esc(p.client)}</span><span class="m">${esc(cats(p).join(' · '))}</span><span class="y">${esc(p.year)}</span></div>`; };
+    function groups(){
+      const names = career.map(x => x.company);
+      ps.forEach(p => (p.company || []).forEach(k => { if (!names.includes(k)) names.push(k); }));
+      const gs = names.map(n => ({ n, info: career.find(x => x.company === n), idx: ps.map((p, i) => i).filter(i => (ps[i].company || []).includes(n)) }));
+      const rest = ps.map((p, i) => i).filter(i => !(ps[i].company || []).length);
+      if (rest.length) gs.push({ n: 'Others', idx: rest });
+      return gs.filter(g => g.idx.length);
+    }
+    function drawRows(){
+      rows.innerHTML = mode === 'co'
+        ? groups().map(g => `<div class="grp${firstDraw ? ' rv' : ''}"><span class="g-name">${esc(g.n)}</span>
+            <span class="g-meta">${esc([g.info && g.info.role, g.info && g.info.period].filter(Boolean).join(' · '))}</span></div>`
+            + g.idx.map(rowHTML).join('')).join('')
+        : ps.map((p, i) => rowHTML(i)).join('');
+      if (!firstDraw) {
+        rows.classList.remove('redraw'); void rows.offsetWidth; rows.classList.add('redraw');
+        [...rows.children].forEach((el, k) => el.style.animationDelay = (k * .04) + 's');
+      }
+      firstDraw = false;
+      applyPick();
+    }
     function drawChips(){
       const counts = new Map();
-      ps.forEach(p => keysOf(p).forEach(k => counts.set(k, (counts.get(k) || 0) + 1)));
-      const order = mode === "cap" ? (c.categories || []).filter(k => counts.has(k)) : [];
-      const keys = [...new Set([...order, ...counts.keys()])];
-      $("chips").innerHTML = [["All", ps.length], ...keys.map(k => [k, counts.get(k)])].map(([k, n]) =>
-        `<button class="${k === pick ? "on" : ""}" data-k="${esc(k)}">${esc(k)}<sup>${pad(n)}</sup></button>`).join("");
+      ps.forEach(p => cats(p).forEach(k => counts.set(k, (counts.get(k) || 0) + 1)));
+      const keys = [...new Set([...(c.categories || []).filter(k => counts.has(k)), ...counts.keys()])];
+      $('chips').innerHTML = [['All', ps.length], ...keys.map(k => [k, counts.get(k)])].map(([k, n]) =>
+        `<button class="${k === pick ? 'on' : ''}" data-k="${esc(k)}">${esc(k)}<sup>${pad(n)}</sup></button>`).join('');
     }
-    function applyFilter(){
-      rowEls.forEach((r, i) => r.classList.toggle("hide", pick !== "All" && !keysOf(ps[i]).includes(pick)));
+    function applyPick(){
+      if (mode !== 'cap') return;
+      rows.querySelectorAll('.row').forEach(r => r.classList.toggle('hide', pick !== 'All' && !cats(ps[+r.dataset.i]).includes(pick)));
       drawChips();
     }
-    $("chips").addEventListener("click", e => { const b = e.target.closest("button"); if (b) { pick = b.dataset.k; applyFilter(); } });
-    document.querySelectorAll(".modes button").forEach(b => b.addEventListener("click", () => {
-      mode = b.dataset.mode; pick = "All";
-      document.querySelectorAll(".modes button").forEach(x => x.classList.toggle("on", x === b));
-      applyFilter();
+    $('chips').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { pick = b.dataset.k; applyPick(); } });
+    document.querySelectorAll('.modes button').forEach(b => b.addEventListener('click', () => {
+      if (mode === b.dataset.mode) return;
+      mode = b.dataset.mode; pick = 'All';
+      document.querySelectorAll('.modes button').forEach(x => x.classList.toggle('on', x === b));
+      $('filter').classList.toggle('off', mode !== 'cap');
+      drawRows();
     }));
-    applyFilter();
+    drawRows();
 
     // Index 클릭 → 주소가 #p02 처럼 바뀌고 프로젝트 뷰가 열림 (뒤로가기로도 닫힘)
-    $('rows').querySelectorAll('.row').forEach(r => r.addEventListener('click', () => {
-      location.hash = 'p' + pad(+r.dataset.i + 1);
-    }));
+    rows.addEventListener('click', e => { const r = e.target.closest('.row'); if (r) location.hash = 'p' + pad(+r.dataset.i + 1); });
 
     // 커서 따라다니는 프리뷰
     const pv = $('preview');
     let tx = 0, ty = 0, cx = 0, cy = 0;
-    $('rows').addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
-    $('rows').querySelectorAll('.row').forEach(r => r.addEventListener('mouseenter', () => {
+    rows.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
+    rows.addEventListener('mouseover', e => {
+      const r = e.target.closest('.row');
+      if (!r) return pv.classList.remove('on');
       const p = ps[+r.dataset.i];
       pv.innerHTML = p.thumbnail ? `<img src="${esc(p.thumbnail)}" alt="">` : esc(pad(+r.dataset.i + 1) + ' · ' + p.title.toUpperCase());
       pv.classList.add('on');
-    }));
-    $('rows').addEventListener('mouseleave', () => pv.classList.remove('on'));
+    });
+    rows.addEventListener('mouseleave', () => pv.classList.remove('on'));
     (function loop(){
       cx += (tx - cx) * .1; cy += (ty - cy) * .1;
       const u = innerWidth / 1920;

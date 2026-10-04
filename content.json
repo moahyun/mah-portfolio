@@ -12,11 +12,6 @@
     "intro": "브랜드와 맥락을 먼저 이해하고, 그에 맞는 비주얼을 찾아갑니다. 타이포·그래픽·AI 등 필요한 방법을 적극적으로 활용하되, 디테일에는 저만의 결을 남깁니다.",
     "career": [
       {
-        "period": "20XX — Now",
-        "company": "밴드 기린",
-        "role": "Freelance · SNS 운영"
-      },
-      {
         "period": "20XX — 2026",
         "company": "andar",
         "role": "Content Design Team · Campaign, CRM, Offline"
@@ -30,6 +25,11 @@
         "period": "20XX — 20XX",
         "company": "CJ ENM · ZEROBASEONE",
         "role": "인코스파트너스 파견 · 제작팀 · Album, Logo, Promotion"
+      },
+      {
+        "period": "20XX — Now",
+        "company": "밴드 기린",
+        "role": "Freelance · SNS 운영"
       }
     ],
     "capabilities": [
@@ -41,7 +41,6 @@
       "AI Workflow"
     ]
   },
-  "indexCaption": "Selected Works 20XX — 2026",
   "categories": [
     "Campaign",
     "Album & Art Direction",
@@ -115,7 +114,7 @@
       "subtitle": "Art Direction",
       "client": "CJ ENM · ZEROBASEONE",
       "company": [
-        "CJ ENM"
+        "CJ ENM · ZEROBASEONE"
       ],
       "categories": [
         "Album & Art Direction"
@@ -171,7 +170,7 @@
       "subtitle": "",
       "client": "ZEROBASEONE · 밴드 기린",
       "company": [
-        "CJ ENM",
+        "CJ ENM · ZEROBASEONE",
         "밴드 기린"
       ],
       "categories": [
@@ -200,7 +199,7 @@
       "subtitle": "Poster · Digital Cover · Story",
       "client": "CJ ENM · ZEROBASEONE",
       "company": [
-        "CJ ENM"
+        "CJ ENM · ZEROBASEONE"
       ],
       "categories": [
         "Campaign",
