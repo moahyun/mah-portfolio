@@ -173,7 +173,7 @@ content:
             type: number
           - name: bgColor
             label: 프로젝트 배경색
-            description: "#F8F8F6" 형식 (기본 화이트). 프로젝트마다 다른 무드를 줄 수 있어요.
+            description: "#F9F9F9" 형식 (기본 화이트). 프로젝트마다 다른 무드를 줄 수 있어요.
             type: string
           - name: textColor
             label: 프로젝트 글자색
