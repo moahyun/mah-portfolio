@@ -31,12 +31,8 @@ content:
             description: SVG 또는 배경이 투명한 PNG. 비워두면 글자로 표시돼요.
             type: image
           - name: subtitle
-            label: 로고 아래 작은 글씨
+            label: 왼쪽 아래 작은 글씨
             type: string
-          - name: copy
-            label: 왼쪽 아래 카피
-            description: 줄바꿈하면 사이트에서도 줄이 바뀌어요.
-            type: text
 
       - name: about
         label: About

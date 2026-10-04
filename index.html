@@ -29,7 +29,7 @@
   .wf::before{content:'WF — '}
   .wf.abs{position:absolute}
   body.hide-notes .wf{display:none}
-  .toggle{position:fixed;left:calc(40*var(--u));bottom:calc(40*var(--u));z-index:50;
+  .toggle{position:fixed;right:calc(40*var(--u));bottom:calc(40*var(--u));z-index:50;
     font-family:var(--mono);font-size:calc(12*var(--u));padding:calc(10*var(--u)) calc(16*var(--u));
     background:var(--note);color:#fff;border:0;border-radius:99px;cursor:pointer}
 
@@ -81,10 +81,7 @@
   .hero-wrap{height:calc(4240*var(--u))}
   .hero{position:sticky;top:0;height:calc(1080*var(--u));display:flex;flex-direction:column;align-items:center;justify-content:center}
   .mah{font-family:var(--serif);font-size:calc(280*var(--u));line-height:.8;letter-spacing:-.02em;will-change:filter,opacity}
-  .sub{margin-top:calc(44*var(--u));font-size:calc(11*var(--u));letter-spacing:.36em;color:var(--mute);opacity:0}
-  .hero .copy{position:absolute;left:calc(60*var(--u));bottom:calc(60*var(--u));font-family:var(--serif);
-    font-size:calc(22*var(--u));font-style:italic;line-height:1.25}
-  .hero .scroll{position:absolute;right:calc(60*var(--u));bottom:calc(60*var(--u));font-size:calc(11*var(--u));letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+  .sub{position:absolute;left:calc(60*var(--u));bottom:calc(52*var(--u));font-size:calc(11*var(--u));letter-spacing:.24em;color:var(--mute)}
 
   /* ── 02 Index ── */
   .index{padding-top:calc(200*var(--u));padding-bottom:calc(200*var(--u));position:relative;min-height:100vh}
@@ -251,10 +248,8 @@
 <section class="hero">
   <span class="wf abs" style="top:calc(110*var(--u));left:calc(60*var(--u))">01 HERO · 1920×1080 한 화면 · 관리자 화면에서 로고 이미지를 올리면 글자 대신 이미지로 바뀜</span>
   <div class="mah" id="mah">MaH</div>
+  <span class="wf" style="margin-top:calc(24*var(--u))">처음엔 흐릿하게 · 스크롤할수록 블러가 풀리며 또렷해짐</span>
   <div class="sub" id="sub"></div>
-  <span class="wf" style="margin-top:calc(24*var(--u))">처음엔 흐릿하게 · 스크롤할수록 블러가 풀리며 또렷해짐 · 다 또렷해지면 이름이 나타남</span>
-  <div class="copy" id="heroCopy"></div>
-  <div class="scroll" id="scrollHint">Scroll ↓</div>
 </section>
 </div>
 
@@ -321,7 +316,6 @@
     // Hero
     if (c.hero.logo) $('mah').innerHTML = `<img src="${esc(c.hero.logo)}" alt="MaH">`;
     $('sub').textContent = c.hero.subtitle;
-    $('heroCopy').innerHTML = br(c.hero.copy);
 
     // About
     $('aboutIntro').innerHTML = br(c.about.intro);
@@ -582,7 +576,7 @@
   }
 
   // 히어로: 스크롤 진행도에 따라 블러가 풀림
-  const mah = $('mah'), sub = $('sub'), hint = $('scrollHint');
+  const mah = $('mah');
   const clamp = v => Math.min(1, Math.max(0, v));
   function heroScroll(){
     const u = innerWidth / 1920;
@@ -590,8 +584,6 @@
     const e = 1 - Math.pow(1 - p, 3);                 // 끝으로 갈수록 부드럽게 감속
     mah.style.filter = `blur(${(1 - e) * 40 * u}px)`;
     mah.style.opacity = .15 + e * .85;
-    sub.style.opacity = clamp((p - .7) / .3);
-    hint.style.opacity = 1 - clamp(p / .3);
   }
   addEventListener('scroll', heroScroll, {passive:true});
   addEventListener('resize', heroScroll);
