@@ -76,10 +76,13 @@
   .nav{position:fixed;inset:0 0 auto 0;z-index:40;display:flex;justify-content:space-between;align-items:center;
     padding:calc(36*var(--u)) calc(60*var(--u));color:var(--ink);transition:color .5s var(--ease)}
   html.on-hero .nav{color:#fff}
-  /* 화이트 영역(또는 프로젝트 화면)에서는 메뉴 뒤를 흐린 유리처럼 */
-  .nav{transition:color .5s var(--ease),opacity .8s var(--ease),background-color .5s var(--ease),backdrop-filter .5s var(--ease)}
-  html:not(.on-hero) .nav,html.pv-open .nav{background-color:rgba(249,249,249,.72);
-    -webkit-backdrop-filter:blur(16px) saturate(1.1);backdrop-filter:blur(16px) saturate(1.1)}
+  /* 화이트 영역(또는 프로젝트 화면)에서는 메뉴 뒤를 흐리게 · 아래로 갈수록 흐림이 풀어지며 경계선이 없음 */
+  .nav::before{content:"";position:absolute;left:0;right:0;top:0;height:calc(100% + 56*var(--u));z-index:-1;pointer-events:none;
+    background:linear-gradient(180deg,rgba(249,249,249,.85) 0%,rgba(249,249,249,.55) 55%,rgba(249,249,249,0) 100%);
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+    -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 45%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 45%,transparent 100%);
+    opacity:0;transition:opacity .5s var(--ease)}
+  html:not(.on-hero) .nav::before,html.pv-open .nav::before{opacity:1}
   .nav a{transition:color .3s var(--ease)}
   .nav ul a:hover{opacity:.5}
   .nav .logo{font-family:var(--serif);font-size:calc(22*var(--u));line-height:1;transition:opacity .5s var(--ease)}
