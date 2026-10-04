@@ -9,6 +9,19 @@ content:
     path: content.json
     format: json
     fields:
+      - name: cursor
+        label: 마우스 커서
+        type: object
+        fields:
+          - name: image
+            label: 커서 이미지 (PNG)
+            description: 배경이 투명한 PNG. 이미지 정중앙이 클릭 지점이에요. 비워두면 작은 흰 점으로 보여요.
+            type: image
+          - name: size
+            label: 커서 크기 (px)
+            description: 1920 화면 기준 가로 크기. 기본 32.
+            type: number
+
       - name: hero
         label: 메인 (첫 화면)
         type: object

@@ -55,6 +55,17 @@
   .to-index:hover .cur{color:#555}
   .to-index:hover .arr{transform:translateY(calc(-3*var(--u)))}
 
+  /* ── 커스텀 커서 (마우스가 있는 기기에서만) ── */
+  @media (pointer:fine){ html.custom-cursor, html.custom-cursor *{cursor:none !important} }
+  .cursor{position:fixed;left:0;top:0;z-index:100;pointer-events:none;opacity:0;transition:opacity .4s var(--ease)}
+  .cursor.on{opacity:1}
+  .cursor .dot{width:calc(12*var(--u));height:calc(12*var(--u));border-radius:50%;background:#fff;
+    transform:translate(-50%,-50%);transition:width .6s var(--ease),height .6s var(--ease)}
+  .cursor.dot-mode{mix-blend-mode:difference}
+  .cursor.hover .dot{width:calc(64*var(--u));height:calc(64*var(--u))}
+  .cursor img{display:block;transform:translate(-50%,-50%);transition:transform .6s var(--ease)}
+  .cursor.hover img{transform:translate(-50%,-50%) scale(1.25)}
+
   /* ── Nav ── */
   .nav{position:fixed;inset:0 0 auto 0;z-index:40;display:flex;justify-content:space-between;align-items:center;
     padding:calc(36*var(--u)) calc(60*var(--u));mix-blend-mode:difference;color:#fff}
@@ -177,6 +188,8 @@
 </head>
 <body>
 
+<div class="cursor" id="cursor"></div>
+
 <nav class="nav">
   <a href="#top" class="logo">MaH</a>
   <ul><li><a href="#about">About</a></li><li><a href="#index">Index</a></li><li><a href="#contact">Contact</a></li></ul>
@@ -258,6 +271,9 @@
     .catch(() => { document.body.insertAdjacentHTML('afterbegin', '<p class="wf" style="position:fixed;top:80px;left:60px;z-index:99">content.json을 불러오지 못했어요 (로컬 서버로 열어야 함)</p>'); });
 
   function render(c){
+    // 커서: 관리자 화면에서 PNG를 올리면 그 이미지, 없으면 작은 흰 점
+    setupCursor(c.cursor || {});
+
     // Hero
     if (c.hero.logo) $('mah').innerHTML = `<img src="${esc(c.hero.logo)}" alt="MaH">`;
     $('sub').textContent = c.hero.subtitle;
@@ -394,6 +410,27 @@
     tb.onclick = () => $("index").scrollIntoView({behavior:"smooth"});
     addEventListener("scroll", updateToIndex, {passive:true});
     updateToIndex();
+  }
+
+  function setupCursor(cfg){
+    if (!matchMedia("(pointer:fine)").matches) return;      // 터치 기기에서는 기본 커서 유지
+    const cur = $("cursor");
+    const size = +cfg.size || 32;
+    cur.innerHTML = cfg.image
+      ? `<img src="${esc(cfg.image)}" alt="" style="width:calc(${size}*var(--u))">`
+      : `<div class="dot"></div>`;
+    cur.classList.toggle("dot-mode", !cfg.image);
+    document.documentElement.classList.add("custom-cursor");
+    let x = innerWidth / 2, y = innerHeight / 2, cx = x, cy = y;
+    addEventListener("mousemove", e => { x = e.clientX; y = e.clientY; cur.classList.add("on"); }, {passive:true});
+    document.addEventListener("mouseleave", () => cur.classList.remove("on"));
+    // 클릭할 수 있는 곳 위에서는 커서가 커짐
+    document.addEventListener("mouseover", e => cur.classList.toggle("hover", !!e.target.closest("a, button, .row, .mk")));
+    (function loop(){
+      cx += (x - cx) * .35; cy += (y - cy) * .35;
+      cur.style.transform = `translate(${cx}px, ${cy}px)`;
+      requestAnimationFrame(loop);
+    })();
   }
 
   // 히어로: 스크롤 진행도에 따라 블러가 풀림
