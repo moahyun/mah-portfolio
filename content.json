@@ -18,17 +18,17 @@
       },
       {
         "period": "20XX — 20XX",
-        "company": "HBAF",
-        "role": "Brand Planning Team · Package, Character"
-      },
-      {
-        "period": "20XX — 20XX",
         "company": "CJ ENM · ZEROBASEONE",
         "role": "인코스파트너스 파견 · 제작팀 · Album, Logo, Promotion"
       },
       {
+        "period": "20XX — 20XX",
+        "company": "HBAF",
+        "role": "Brand Planning Team · Package, Character"
+      },
+      {
         "period": "20XX — Now",
-        "company": "밴드 기린",
+        "company": "BandKirin",
         "role": "Freelance · SNS 운영"
       }
     ],
@@ -168,10 +168,10 @@
     {
       "title": "Logotype Archive",
       "subtitle": "",
-      "client": "ZEROBASEONE · 밴드 기린",
+      "client": "ZEROBASEONE · BandKirin",
       "company": [
         "CJ ENM · ZEROBASEONE",
-        "밴드 기린"
+        "BandKirin"
       ],
       "categories": [
         "Logo & Type"
