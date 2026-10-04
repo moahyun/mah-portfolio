@@ -48,8 +48,8 @@
   .nav ul{display:flex;gap:calc(40*var(--u));list-style:none;font-size:calc(14*var(--u))}
 
   /* ── 01 Hero ── */
-  /* 스크롤 트랙: 약 2화면 높이만큼 스크롤하는 동안 화면에 고정된 채 블러가 풀림 */
-  .hero-wrap{height:calc(3240*var(--u))}
+  /* 스크롤 트랙: 약 3화면 높이만큼 스크롤하는 동안 화면에 고정된 채 블러가 풀림 */
+  .hero-wrap{height:calc(4240*var(--u))}
   .hero{position:sticky;top:0;height:calc(1080*var(--u));display:flex;flex-direction:column;align-items:center;justify-content:center}
   .mah{font-family:var(--serif);font-size:calc(380*var(--u));line-height:.8;letter-spacing:-.02em;will-change:filter,opacity}
   .sub{margin-top:calc(48*var(--u));font-size:calc(13*var(--u));letter-spacing:.32em;color:var(--mute);opacity:0}
@@ -361,7 +361,7 @@
   const clamp = v => Math.min(1, Math.max(0, v));
   function heroScroll(){
     const u = innerWidth / 1920;
-    const p = clamp(scrollY / (2000 * u));
+    const p = clamp(scrollY / (3000 * u));
     const e = 1 - Math.pow(1 - p, 3);                 // 끝으로 갈수록 부드럽게 감속
     mah.style.filter = `blur(${(1 - e) * 40 * u}px)`;
     mah.style.opacity = .15 + e * .85;
