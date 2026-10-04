@@ -76,13 +76,8 @@
   .nav{position:fixed;inset:0 0 auto 0;z-index:40;display:flex;justify-content:space-between;align-items:center;
     padding:calc(36*var(--u)) calc(60*var(--u));color:var(--ink);transition:color .5s var(--ease)}
   html.on-hero .nav{color:#fff}
-  /* 화이트 영역(또는 프로젝트 화면)에서는 메뉴 뒤를 흐리게 · 아래로 갈수록 흐림이 풀어지며 경계선이 없음 */
-  .nav::before{content:"";position:absolute;left:0;right:0;top:0;height:calc(100% + 56*var(--u));z-index:-1;pointer-events:none;
-    background:linear-gradient(180deg,rgba(249,249,249,.85) 0%,rgba(249,249,249,.55) 55%,rgba(249,249,249,0) 100%);
-    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
-    -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 45%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 45%,transparent 100%);
-    opacity:0;transition:opacity .5s var(--ease)}
-  html:not(.on-hero) .nav::before,html.pv-open .nav::before{opacity:1}
+  /* 화이트 영역(또는 프로젝트 화면)에서는 메뉴 글씨가 뒤 색에 따라 자동 반전 (흰 배경 = 검정, 검정 글씨·이미지 위 = 흰색) */
+  html:not(.on-hero) .nav,html.pv-open .nav{color:#fff;mix-blend-mode:difference}
   .nav a{transition:color .3s var(--ease)}
   .nav ul a:hover{opacity:.5}
   .nav .logo{font-family:var(--serif);font-size:calc(22*var(--u));line-height:1;transition:opacity .5s var(--ease)}
@@ -163,7 +158,7 @@
   .row .n{font-family:var(--serif);font-size:calc(15*var(--u));color:var(--mute)}
   .row .m{font-size:calc(12*var(--u));color:var(--mute);text-align:right}
   .row .y{font-size:calc(12*var(--u));color:var(--mute);text-align:right}
-  .rows:has(.row.open) .row{opacity:.3}
+  .rows:has(.row.open) .row:not(.open){opacity:.3}
   .rows .row.open{opacity:1}
   .rows .row.open .t{transform:translateX(calc(16*var(--u)))}
   /* ── Index 보기 전환: Company(회사별 묶음) / Category(카테고리 필터) ── */
@@ -267,7 +262,7 @@
   @keyframes mq{to{transform:translateX(-50%)}}
 
   /* ── 02 About Me: 한 화면 · 제목은 위 / 소개 문장은 아래에 크게 (선 없음) ── */
-  .about{padding-top:calc(160*var(--u));padding-bottom:calc(220*var(--u))}
+  .about{min-height:max(calc(1080*var(--u)),100vh);padding-top:calc(160*var(--u));padding-bottom:calc(220*var(--u))}
   .sec-title{font-family:var(--serif);font-weight:400;font-size:calc(56*var(--u));line-height:1}
   /* 제목 아래에 디자인 가치관 글 · 왼쪽 선에 맞춰 차분하게 */
   .ab-text{margin-top:calc(96*var(--u));max-width:calc(760*var(--u))}
