@@ -84,12 +84,20 @@
   .nav ul{display:flex;gap:calc(40*var(--u));list-style:none;font-size:calc(11*var(--u));font-weight:500;letter-spacing:.12em;text-transform:uppercase}
 
   /* ── 01 Hero ── */
-  .hero-wrap{height:max(calc(1080*var(--u)),100vh)}
+
   .hero{position:sticky;top:0;height:max(calc(1080*var(--u)),100vh);display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;
     padding:0 calc(60*var(--u)) calc(56*var(--u))}
   /* 뮤트한 하늘 그라데이션 + 필름 같은 노이즈 (메인 · Contact) */
   .sky{position:relative;color:#fff;overflow:hidden;background:radial-gradient(120% 95% at 28% 8%, #C9DDE5 0%, #A9C6D2 48%, #94B5C3 100%)}
-  .sky::before,.noisy::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.55;mix-blend-mode:overlay;
+  .hero.sky{background:linear-gradient(180deg, rgba(154,185,198,0) 70%, #9AB9C6 100%),radial-gradient(120% 95% at 28% 8%, #C9DDE5 0%, #A9C6D2 48%, #94B5C3 100%)}
+  .contact.sky{background:linear-gradient(0deg, rgba(185,208,218,0) 70%, #B9D0DA 100%),radial-gradient(120% 95% at 28% 8%, #C9DDE5 0%, #A9C6D2 48%, #94B5C3 100%)}
+  /* 경계 띠: 하늘색 → 화이트로 서서히 (노이즈도 같이 옅어짐) */
+  .sky-fade{position:relative;height:calc(360*var(--u));overflow:hidden}
+  .sky-fade.down{background:linear-gradient(180deg,#9AB9C6 0%,#C3D5DD 35%,#E9EFF1 70%,#F9F9F9 100%)}
+  .sky-fade.up{background:linear-gradient(0deg,#B9D0DA 0%,#D6E3E8 35%,#EFF3F4 70%,#F9F9F9 100%)}
+  .sky-fade::before{-webkit-mask-image:linear-gradient(180deg,#000,transparent);mask-image:linear-gradient(180deg,#000,transparent)}
+  .sky-fade.up::before{-webkit-mask-image:linear-gradient(0deg,#000,transparent);mask-image:linear-gradient(0deg,#000,transparent)}
+  .sky::before,.noisy::before,.sky-fade::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.55;mix-blend-mode:overlay;
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
   .sky > *{position:relative}
   /* MaH 묶음은 가운데 하단에 · 메모(wf)는 흐름에서 빼서 위치에 영향 없게 */
@@ -109,10 +117,7 @@
   #intro .fin.in{opacity:1}
   #intro .i-mah,#intro .skip{z-index:3}
 
-  /* 마우스가 지나간 자리에 노이즈가 일렁였다 사라짐 (하늘 배경 · 인트로) */
-  .grain{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;mix-blend-mode:overlay;z-index:2}
-  .sky > .grain{position:absolute}
-  .sky > *:not(.grain){z-index:3}
+  .sky > *{z-index:3}
   #intro .i-mah{position:fixed;color:#fff;font-family:var(--serif);font-weight:300;line-height:.74;letter-spacing:-.045em;
     transform-origin:0 0;white-space:nowrap}
   #intro .i-mah .ch{display:inline-block;opacity:0;transform:translateY(.22em);filter:blur(.04em);
@@ -135,24 +140,32 @@
   .cols,.row{display:grid;grid-template-columns:calc(140*var(--u)) 1fr auto calc(260*var(--u));
     align-items:center}
   .cols{padding:calc(20*var(--u)) 0;border-bottom:1px solid var(--line)}
-  .row{height:calc(72*var(--u));border-bottom:1px solid var(--line);cursor:pointer;overflow:hidden;
-    transition:opacity .6s var(--ease),height .8s var(--ease),border-color .8s var(--ease)}
+  .row{position:relative;height:calc(72*var(--u));padding-top:calc(22*var(--u));align-items:baseline;border-bottom:1px solid var(--line);cursor:pointer;overflow:hidden;
+    transition:opacity .6s var(--ease),height .8s var(--ease),border-color .8s var(--ease),padding .8s var(--ease)}
+  /* 마우스를 올린 칸이 넓어지고, 오른쪽에서 이미지가 밀려 들어옴 */
+  .rows .row.open{height:calc(340*var(--u))}
+  .row .th{position:absolute;right:0;top:calc(72*var(--u));width:calc(400*var(--u));height:calc(240*var(--u));
+    background:var(--box2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:calc(11*var(--u));color:var(--mute);
+    clip-path:inset(0 0 0 100%);transform:translateX(calc(40*var(--u)));
+    transition:clip-path .8s var(--ease),transform .9s var(--ease)}
+  .row .th img{width:100%;height:100%;object-fit:cover;display:block}
+  .rows .row.open .th{clip-path:inset(0 0 0 0);transform:none;transition-delay:.12s}
   /* 필터에서 빠진 행은 부드럽게 접힘 */
-  .row.hide{height:0;opacity:0 !important;border-bottom-color:transparent;pointer-events:none}
+  .row.hide{height:0;padding-top:0;opacity:0 !important;border-bottom-color:transparent;pointer-events:none}
   .row .t{font-size:calc(24*var(--u));font-weight:400;letter-spacing:-.005em;transition:transform .8s var(--ease)}
   .row .n{font-family:var(--serif);font-size:calc(15*var(--u));color:var(--mute)}
   .row .m{font-size:calc(12*var(--u));color:var(--mute);text-align:right}
   .row .y{font-size:calc(12*var(--u));color:var(--mute);text-align:right}
-  .rows:has(.row:hover) .row{opacity:.22}
-  .rows .row:hover{opacity:1}
-  .rows .row:hover .t{transform:translateX(calc(16*var(--u)))}
+  .rows:has(.row.open) .row{opacity:.3}
+  .rows .row.open{opacity:1}
+  .rows .row.open .t{transform:translateX(calc(16*var(--u)))}
   /* ── Index 보기 전환: Company(회사별 묶음) / Category(카테고리 필터) ── */
   .modes{display:flex;align-items:baseline;gap:calc(12*var(--u));font-size:calc(11*var(--u));font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
   .modes button,.chips button{background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;padding:0;transition:color .4s var(--ease)}
   .modes button:hover,.modes button.on,.chips button:hover,.chips button.on{color:var(--ink)}
   .modes button.on{color:var(--accent);text-decoration:underline;text-underline-offset:calc(6*var(--u))}
   .chips button.on{color:var(--accent)}
-  .rows .row:hover .n{color:var(--accent)}
+  .rows .row.open .n{color:var(--accent)}
   .filter{overflow:hidden;max-height:calc(120*var(--u));transition:max-height .8s var(--ease),opacity .6s var(--ease)}
   .filter.off{max-height:0;opacity:0}
   .chips{display:flex;flex-wrap:wrap;gap:calc(8*var(--u)) calc(32*var(--u));padding:calc(24*var(--u)) 0 calc(8*var(--u));font-size:calc(13*var(--u));color:var(--mute)}
@@ -162,9 +175,6 @@
   .grp .g-name{font-family:var(--serif);font-size:calc(22*var(--u));line-height:1}
   .rows.redraw > *{animation:rowIn .9s var(--ease) both}
   @keyframes rowIn{from{opacity:0;transform:translateY(calc(24*var(--u)))}}
-  .preview{position:fixed;left:0;top:0;width:calc(360*var(--u));height:calc(240*var(--u));z-index:30;pointer-events:none;
-    opacity:0;transform-origin:center;transition:opacity .5s var(--ease);background:var(--box2)}
-  .preview.on{opacity:1}
 
   /* ── 03 Project detail ── */
   .detail{padding-top:calc(200*var(--u))}
@@ -317,6 +327,7 @@
   </div>
   <span class="wf" style="margin-top:calc(24*var(--u))">인트로: 배경 블랙→그레이→화이트→블루 → MaH가 한 글자씩 떠오름 → 작아지며 이 자리에 안착 (방문당 한 번 · 클릭 시 건너뜀)</span>
 </section>
+<div class="sky-fade down" aria-hidden="true"></div>
 </div>
 
 <!-- 02 ABOUT ME (한 화면) -->
@@ -340,16 +351,16 @@
 
 <!-- 04 INDEX -->
 <section class="index pad" id="index">
-  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">04 INDEX · 행에 호버하면 대표 이미지가 커서를 따라다님 · 클릭하면 화면 전체가 프로젝트 뷰로 전환 (커버 이미지 + 딤 + 제목이 올라옴)</span>
+  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">04 INDEX · 행에 호버하면 칸이 넓어지며 오른쪽에서 대표 이미지가 등장 · 클릭하면 화면 전체가 프로젝트 뷰로 전환 (커버 이미지 + 딤 + 제목이 올라옴)</span>
   <div class="sec-head"><h2>Index<sup id="count"></sup></h2>
     <div class="modes"><button class="on" data-mode="co">Company</button><span>/</span><button data-mode="cap">Category</button></div></div>
   <div class="filter off" id="filter"><div class="chips" id="chips"></div></div>
   <div class="cols label rv"><span>No.</span><span>Project</span><span style="text-align:right">Category</span><span style="text-align:right">Period</span></div>
   <div class="rows" id="rows"></div>
 </section>
-<div class="preview box" id="preview"></div>
 
-<!-- 05 CONTACT -->
+<!-- 05 CONTACT (위에 화이트 → 하늘 경계 띠) -->
+<div class="sky-fade up" aria-hidden="true"></div>
 <section class="contact pad sky" id="contact">
   <div>
     <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">05 CONTACT · 큰 타이포로 마무리</span>
@@ -383,7 +394,6 @@
   function render(c){
     // 커서: 관리자 화면에서 PNG를 올리면 그 이미지, 없으면 작은 흰 점
     setupCursor(c.cursor || {});
-    document.querySelectorAll('.hero, .contact').forEach(attachGrain);
 
     // Hero
     if (c.hero.logo) $('mah').innerHTML = `<img src="${esc(c.hero.logo)}" alt="MaH">`;
@@ -408,7 +418,8 @@
     // 보기 전환: Company = About 경력 순서대로 회사별 묶음 / Category = 카테고리 필터
     let mode = 'co', pick = 'All', firstDraw = true;
     const rowHTML = i => { const p = ps[i]; return `<div class="row${firstDraw ? ' rv' : ''}" data-i="${i}"><span class="n">${pad(i+1)}</span><span class="t">${esc(p.title)}</span>
-       <span class="m">${esc(cats(p).join(' · '))}</span><span class="y">${esc(p.period)}</span></div>`; };
+       <span class="m">${esc(cats(p).join(' · '))}</span><span class="y">${esc(p.period)}</span>
+       <span class="th">${p.thumbnail ? `<img src="${esc(p.thumbnail)}" alt="" loading="lazy">` : 'THUMBNAIL'}</span></div>`; };
     function groups(){
       const names = career.map(x => x.company);
       ps.forEach(p => (p.company || []).forEach(k => { if (!names.includes(k)) names.push(k); }));
@@ -454,24 +465,16 @@
     // Index 클릭 → 주소가 #p02 처럼 바뀌고 프로젝트 뷰가 열림 (뒤로가기로도 닫힘)
     rows.addEventListener('click', e => { const r = e.target.closest('.row'); if (r) location.hash = 'p' + pad(+r.dataset.i + 1); });
 
-    // 커서 따라다니는 프리뷰
-    const pv = $('preview');
-    let tx = 0, ty = 0, cx = 0, cy = 0;
-    rows.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
-    rows.addEventListener('mouseover', e => {
-      const r = e.target.closest('.row');
-      if (!r) return pv.classList.remove('on');
-      const p = ps[+r.dataset.i];
-      pv.innerHTML = p.thumbnail ? `<img src="${esc(p.thumbnail)}" alt="">` : esc(pad(+r.dataset.i + 1) + ' · ' + p.title.toUpperCase());
-      pv.classList.add('on');
-    });
-    rows.addEventListener('mouseleave', () => pv.classList.remove('on'));
-    (function loop(){
-      cx += (tx - cx) * .1; cy += (ty - cy) * .1;
-      const u = innerWidth / 1920;
-      pv.style.transform = `translate(${cx + 40*u}px, ${cy - 150*u}px) rotate(${(tx - cx) * .02}deg)`;
-      requestAnimationFrame(loop);
-    })();
+    // 마우스를 올린 칸 펼치기: 칸이 커지며 아래 줄이 밀려도 연달아 열리지 않게, 바뀐 뒤 잠깐 잠금
+    let openRow = null, lockOpen = false, mx = 0, my = 0;
+    const setOpen = r => { if (openRow === r) return; if (openRow) openRow.classList.remove("open"); openRow = r; if (r) r.classList.add("open"); };
+    function pickRow(){
+      if (lockOpen) return;
+      const el = document.elementFromPoint(mx, my), r = el && el.closest("#rows .row");
+      if (r && r !== openRow) { setOpen(r); lockOpen = true; setTimeout(() => { lockOpen = false; pickRow(); }, 650); }
+    }
+    rows.addEventListener("mousemove", e => { mx = e.clientX; my = e.clientY; pickRow(); });
+    rows.addEventListener("mouseleave", () => setOpen(null));
 
     // Contact
     $('contactHeading').innerHTML = br(c.contact.heading);
@@ -634,57 +637,6 @@
     root.querySelectorAll(".rv").forEach(el => io.observe(el));
   }
 
-  // 마우스가 지나간 자리에 노이즈 알갱이가 일렁이다 사라짐
-  const grains = [];
-  function attachGrain(el){
-    if (!matchMedia('(pointer:fine)').matches) return;
-    const cv = document.createElement('canvas');
-    cv.className = 'grain';
-    el.appendChild(cv);
-    const g = { el, cv, ctx: cv.getContext('2d'), pts: [], lx: null, ly: null };
-    const size = () => { cv.width = el.clientWidth; cv.height = el.clientHeight; };
-    size(); addEventListener('resize', size);
-    grains.push(g);
-  }
-  addEventListener('mousemove', e => {
-    for (const g of grains) {
-      if (!g.el.isConnected) continue;
-      const r = g.el.getBoundingClientRect();
-      const x = e.clientX - r.left, y = e.clientY - r.top;
-      if (x < 0 || y < 0 || x > r.width || y > r.height) { g.lx = null; continue; }
-      // 빠르게 움직여도 끊기지 않게 사이를 채움
-      const steps = g.lx === null ? 1 : Math.min(8, Math.ceil(Math.hypot(x - g.lx, y - g.ly) / 18));
-      for (let k = 1; k <= steps; k++) {
-        const t = k / steps;
-        g.pts.push({ x: g.lx === null ? x : g.lx + (x - g.lx) * t, y: g.ly === null ? y : g.ly + (y - g.ly) * t, life: 1 });
-      }
-      if (g.pts.length > 90) g.pts.splice(0, g.pts.length - 90);
-      g.lx = x; g.ly = y;
-    }
-  }, {passive:true});
-  (function grainLoop(){
-    const u = innerWidth / 1920, rad = 90 * u;
-    for (const g of grains) {
-      if (!g.el.isConnected) continue;
-      const { ctx, cv } = g;
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.fillStyle = 'rgba(0,0,0,.12)';
-      ctx.fillRect(0, 0, cv.width, cv.height);
-      ctx.globalCompositeOperation = 'source-over';
-      for (const p of g.pts) {
-        const n = 26 * p.life, rr = rad * (.5 + (1 - p.life) * .8);
-        for (let i = 0; i < n; i++) {
-          const a = Math.random() * Math.PI * 2, d = Math.sqrt(Math.random()) * rr;
-          ctx.fillStyle = Math.random() < .55 ? `rgba(255,255,255,${.75 * p.life})` : `rgba(20,30,35,${.5 * p.life})`;
-          ctx.fillRect(p.x + Math.cos(a) * d, p.y + Math.sin(a) * d, Math.random() < .3 ? 2 : 1.2, Math.random() < .3 ? 2 : 1.2);
-        }
-        p.life -= .035;
-      }
-      g.pts = g.pts.filter(p => p.life > 0);
-    }
-    requestAnimationFrame(grainLoop);
-  })();
-
   function setupCursor(cfg){
     if (!matchMedia("(pointer:fine)").matches) return;      // 터치 기기에서는 기본 커서 유지
     const cur = $("cursor");
@@ -710,7 +662,7 @@
   const contactSec = $('contact');
   function heroTheme(){
     const navH = 80 * innerWidth / 1920;
-    const onSky = scrollY < heroWrap.offsetHeight - navH || contactSec.getBoundingClientRect().top <= navH;
+    const onSky = scrollY < heroWrap.querySelector('.hero').offsetHeight - navH || contactSec.getBoundingClientRect().top <= navH;
     document.documentElement.classList.toggle('on-hero', onSky);
   }
   addEventListener('scroll', heroTheme, {passive:true});
@@ -738,7 +690,6 @@
     intro.hidden = false;
     intro.innerHTML = '<div class="flow"></div><div class="fin sky"></div>'
       + '<div class="i-mah" id="iMah"></div><span class="skip">Click to skip</span>';
-    attachGrain(intro);
     intro.addEventListener('click', () => { skipped = true; end(); });
 
     (async () => {
