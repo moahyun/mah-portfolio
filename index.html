@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>MaH — Mo Ahyun</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@200;300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css">
 <style>
   /* 1920 기준 단위: calc(N * var(--u)) = 1920 화면에서 Npx */
@@ -39,7 +39,7 @@
   /* ── 공통 ── */
   .box{background:var(--box);position:relative;display:flex;align-items:center;justify-content:center;
     font-family:var(--mono);font-size:calc(12*var(--u));color:var(--mute);letter-spacing:.04em}
-  .label{font-size:calc(11*var(--u));color:var(--mute);letter-spacing:.12em;text-transform:uppercase}
+  .label{font-size:calc(11*var(--u));font-weight:500;color:var(--mute);letter-spacing:.12em;text-transform:uppercase}
   body .rv{opacity:0;transform:translateY(calc(70*var(--u)));transition:opacity 1.6s var(--ease),transform 1.6s var(--ease)}
   body .rv.in{opacity:1;transform:none}
   .pad{padding-left:calc(60*var(--u));padding-right:calc(60*var(--u))}
@@ -48,7 +48,7 @@
   .to-index{position:fixed;left:calc(48*var(--u));top:calc(24*var(--u));z-index:45;display:flex;align-items:center;
     gap:calc(14*var(--u));height:calc(40*var(--u));padding:0 calc(20*var(--u));border:1px solid rgba(17,17,17,.12);
     border-radius:99px;background:rgba(255,255,255,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-    color:var(--ink);font-family:var(--sans);font-size:calc(11*var(--u));letter-spacing:.12em;text-transform:uppercase;cursor:pointer;
+    color:var(--ink);font-family:var(--sans);font-size:calc(11*var(--u));font-weight:500;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;
     opacity:0;transform:translateY(calc(-12*var(--u)));pointer-events:none;
     transition:opacity .8s var(--ease),transform .8s var(--ease),background .5s var(--ease),color .5s var(--ease)}
   .to-index.on{opacity:1;transform:none;pointer-events:auto}
@@ -81,12 +81,11 @@
   .nav .logo{font-family:var(--serif);font-size:calc(22*var(--u));line-height:1;transition:opacity .5s var(--ease)}
   /* 프로젝트 뷰가 열리면 왼쪽 위 로고 자리에 Back 버튼이 대신 나타남 */
   html.pv-open .nav .logo{opacity:0;pointer-events:none}
-  .nav ul{display:flex;gap:calc(40*var(--u));list-style:none;font-size:calc(11*var(--u));letter-spacing:.12em;text-transform:uppercase}
+  .nav ul{display:flex;gap:calc(40*var(--u));list-style:none;font-size:calc(11*var(--u));font-weight:500;letter-spacing:.12em;text-transform:uppercase}
 
   /* ── 01 Hero ── */
-  /* 스크롤 트랙: 약 3화면 높이만큼 스크롤하는 동안 화면에 고정된 채 블러가 풀림 */
-  .hero-wrap{height:calc(4240*var(--u))}
-  .hero{position:sticky;top:0;height:calc(1080*var(--u));display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;
+  .hero-wrap{height:max(calc(1080*var(--u)),100vh)}
+  .hero{position:sticky;top:0;height:max(calc(1080*var(--u)),100vh);display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;
     padding:0 calc(60*var(--u)) calc(56*var(--u));color:#fff;overflow:hidden;
     background:radial-gradient(120% 95% at 28% 8%, #C9DDE5 0%, #A9C6D2 48%, #94B5C3 100%)}
   /* 필름 같은 노이즈 */
@@ -95,8 +94,22 @@
   .hero > *{position:relative}
   /* MaH 묶음은 가운데 하단에 · 메모(wf)는 흐름에서 빼서 위치에 영향 없게 */
   .hero > .wf:not(.abs){position:absolute;top:calc(140*var(--u));left:calc(60*var(--u));white-space:nowrap}
-  .mah{font-family:var(--serif);font-weight:200;font-size:calc(520*var(--u));line-height:.74;letter-spacing:-.045em;margin-left:calc(-24*var(--u))}
-  .mah-wrap{display:flex;align-items:flex-start;will-change:filter,opacity}
+  .mah{font-family:var(--serif);font-weight:500;font-size:calc(520*var(--u));line-height:.74;letter-spacing:-.045em;margin-left:calc(-24*var(--u))}
+  .mah-wrap{display:flex;align-items:flex-start}
+  .hero .sub{transition:opacity 1s var(--ease)}
+
+  /* ── 인트로: 이미지가 빠르게 바뀜 → MaH 크게 → 작아지며 히어로 자리로 (방문당 한 번 · 클릭하면 건너뜀) ── */
+  #intro{position:fixed;inset:0;z-index:90;cursor:pointer}
+  #intro .frame{position:absolute;left:50%;top:46%;width:calc(440*var(--u));height:calc(300*var(--u));transform:translate(-50%,-50%);
+    background-size:cover;background-position:center}
+  #intro .i-mah{position:fixed;color:#fff;font-family:var(--serif);font-weight:500;line-height:.74;letter-spacing:-.045em;
+    transform-origin:0 0;opacity:0;white-space:nowrap}
+  #intro .i-mah img{display:block}
+  #intro .skip{position:fixed;right:calc(60*var(--u));bottom:calc(56*var(--u));font-size:calc(11*var(--u));font-weight:500;
+    letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+  html.intro-on{overflow:hidden}
+  html.intro-on .hero .mah,html.intro-on .hero .sub,html.intro-on .nav,html.intro-on .toggle{opacity:0}
+  .nav{transition:color .5s var(--ease),opacity .8s var(--ease)}
   .sub{margin-left:calc(20*var(--u));margin-top:calc(6*var(--u));font-size:calc(16*var(--u));font-weight:400;line-height:1.3;letter-spacing:.01em;max-width:calc(120*var(--u))}
 
   /* ── 02 Index ── */
@@ -112,7 +125,7 @@
     transition:opacity .6s var(--ease),height .8s var(--ease),border-color .8s var(--ease)}
   /* 필터에서 빠진 행은 부드럽게 접힘 */
   .row.hide{height:0;opacity:0 !important;border-bottom-color:transparent;pointer-events:none}
-  .row .t{font-size:calc(24*var(--u));font-weight:300;letter-spacing:-.005em;transition:transform .8s var(--ease)}
+  .row .t{font-size:calc(24*var(--u));font-weight:400;letter-spacing:-.005em;transition:transform .8s var(--ease)}
   .row .n{font-family:var(--serif);font-size:calc(15*var(--u));color:var(--mute)}
   .row .m{font-size:calc(12*var(--u));color:var(--mute);text-align:right}
   .row .y{font-size:calc(12*var(--u));color:var(--mute);text-align:right}
@@ -120,7 +133,7 @@
   .rows .row:hover{opacity:1}
   .rows .row:hover .t{transform:translateX(calc(16*var(--u)))}
   /* ── Index 보기 전환: Company(회사별 묶음) / Category(카테고리 필터) ── */
-  .modes{display:flex;align-items:baseline;gap:calc(12*var(--u));font-size:calc(11*var(--u));letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+  .modes{display:flex;align-items:baseline;gap:calc(12*var(--u));font-size:calc(11*var(--u));font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
   .modes button,.chips button{background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;padding:0;transition:color .4s var(--ease)}
   .modes button:hover,.modes button.on,.chips button:hover,.chips button.on{color:var(--ink)}
   .modes button.on{color:var(--accent);text-decoration:underline;text-underline-offset:calc(6*var(--u))}
@@ -143,14 +156,14 @@
   .detail{padding-top:calc(200*var(--u))}
   .d-head{display:grid;grid-template-columns:calc(420*var(--u)) 1fr;align-items:end;padding-bottom:calc(60*var(--u))}
   .d-no{font-family:var(--serif);font-size:calc(200*var(--u));line-height:.8}
-  .d-title{font-size:calc(72*var(--u));font-weight:300;letter-spacing:-.02em;line-height:1.05}
+  .d-title{font-size:calc(72*var(--u));font-weight:400;letter-spacing:-.02em;line-height:1.05}
   .meta{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);padding-top:calc(20*var(--u));
     margin-top:calc(60*var(--u))}
   .meta div span{display:block}
   .meta div span:last-child{font-size:calc(14*var(--u));margin-top:calc(6*var(--u))}
   .d-hero{height:calc(940*var(--u));margin-top:calc(80*var(--u))}
   .two{display:grid;grid-template-columns:calc(420*var(--u)) 1fr;padding-top:calc(160*var(--u));padding-bottom:calc(160*var(--u))}
-  .two p{max-width:calc(720*var(--u));font-size:calc(17*var(--u));line-height:1.85;font-weight:300}
+  .two p{max-width:calc(720*var(--u));font-size:calc(17*var(--u));line-height:1.85;font-weight:400}
   .two p + p{margin-top:calc(24*var(--u))}
 
   .touch{display:grid;grid-template-columns:calc(1140*var(--u)) 1fr;gap:calc(80*var(--u));align-items:end}
@@ -166,7 +179,7 @@
     opacity:0;pointer-events:none;transition:all .6s var(--ease);border:1px solid var(--line)}
   .mk:hover .tip{opacity:1;transform:translateY(-50%)}
   .touch h3,.spread h3{font-family:var(--serif);font-weight:400;font-size:calc(32*var(--u));line-height:1.1}
-  .touch p{margin-top:calc(16*var(--u));font-size:calc(14*var(--u));color:var(--mute);font-weight:300}
+  .touch p{margin-top:calc(16*var(--u));font-size:calc(14*var(--u));color:var(--mute);font-weight:400}
 
   .spread{padding-top:calc(200*var(--u))}
   .spread-grid{display:grid;grid-template-columns:calc(700*var(--u)) 1fr;gap:calc(24*var(--u));margin-top:calc(60*var(--u))}
@@ -180,7 +193,7 @@
 
   .next{margin-top:calc(200*var(--u));border-top:1px solid var(--ink);padding-top:calc(40*var(--u));padding-bottom:calc(160*var(--u));
     display:flex;justify-content:space-between;align-items:end;cursor:pointer}
-  .next .t{font-size:calc(48*var(--u));font-weight:300;letter-spacing:-.015em;line-height:1;transition:transform .9s var(--ease)}
+  .next .t{font-size:calc(48*var(--u));font-weight:400;letter-spacing:-.015em;line-height:1;transition:transform .9s var(--ease)}
   .next:hover .t{transform:translateX(calc(24*var(--u)))}
 
   /* ── 04 프로젝트 뷰: Index에서 클릭하면 화면 전체가 새 무드로 전환 ── */
@@ -199,7 +212,7 @@
   .cover .dim{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,0) 55%),rgba(0,0,0,var(--dim))}
   .cover .ttl{position:absolute;left:calc(60*var(--u));right:calc(60*var(--u));bottom:calc(80*var(--u))}
   .cover .c-no{font-family:var(--serif);font-size:calc(20*var(--u));line-height:1}
-  .cover .c-title{font-size:calc(88*var(--u));font-weight:300;letter-spacing:-.025em;line-height:1.05;margin-top:calc(20*var(--u))}
+  .cover .c-title{font-size:calc(88*var(--u));font-weight:400;letter-spacing:-.025em;line-height:1.05;margin-top:calc(20*var(--u))}
   .cover .c-sub{font-family:var(--serif);font-size:calc(26*var(--u));line-height:1.2;margin-top:calc(16*var(--u))}
   .cover .meta{border-color:rgba(255,255,255,.35);margin-top:calc(48*var(--u))}
   .cover .meta .label{color:rgba(255,255,255,.55)}
@@ -227,7 +240,7 @@
     padding-top:calc(160*var(--u));padding-bottom:calc(140*var(--u))}
   .sec-title{font-family:var(--serif);font-weight:400;font-size:calc(56*var(--u));line-height:1}
   .ab-intro{margin-left:calc(420*var(--u));max-width:calc(1180*var(--u));font-size:calc(40*var(--u));line-height:1.6;
-    font-weight:300;letter-spacing:-.015em;word-break:keep-all}
+    font-weight:400;letter-spacing:-.015em;word-break:keep-all}
 
   /* ── 03 Career: 한 화면 · 위 = 경력 3단(큰 세리프) / 아래 = 나머지 4단(작은 글씨) · Index의 줄 목록과 다른 단 구성 ── */
   .career{min-height:calc(1080*var(--u));display:flex;flex-direction:column;justify-content:space-between;
@@ -245,15 +258,16 @@
   .sub-cols .de{display:block;font-size:calc(12*var(--u));color:var(--mute);line-height:1.5}
 
   /* 디스플레이 글씨(구 세리프 자리)는 가는 산세리프로 */
-  .sec-title,.sec-head h2,.grp .g-name,.exp-cols .co,.contact .big,.cover .c-no,.cover .c-sub,.touch h3,.spread h3,.result .big,.nav .logo
-    {font-weight:300;letter-spacing:-.03em}
+  .sec-title,.sec-head h2,.exp-cols .co,.contact .big,.cover .c-title,.touch h3,.spread h3,.result .big,.next .t
+    {font-weight:500;letter-spacing:-.035em}
+  .grp .g-name,.cover .c-no,.cover .c-sub{font-weight:400;letter-spacing:-.02em}
   .nav .logo{font-weight:500;letter-spacing:-.02em}
 
   /* ── 06 Contact ── */
   .contact{height:calc(1080*var(--u));display:flex;flex-direction:column;justify-content:space-between;
     padding-top:calc(200*var(--u));padding-bottom:calc(60*var(--u));border-top:1px solid var(--line)}
   .contact .big{font-family:var(--serif);font-size:calc(120*var(--u));line-height:.9;letter-spacing:-.02em}
-  .contact .mail{font-size:calc(22*var(--u));font-weight:300;margin-top:calc(48*var(--u));display:inline-block;border-bottom:1px solid}
+  .contact .mail{font-size:calc(22*var(--u));font-weight:400;margin-top:calc(48*var(--u));display:inline-block;border-bottom:1px solid}
   .contact .foot{display:flex;justify-content:space-between;font-size:calc(11*var(--u));letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
   /* ── 이미지가 들어가면 원본 비율대로 ── */
   .box img{display:block;width:100%;height:100%;object-fit:cover}
@@ -276,6 +290,9 @@
   <ul><li><a href="#about">About Me</a></li><li><a href="#career">Career</a></li><li><a href="#index">Index</a></li><li><a href="#contact">Contact</a></li></ul>
 </nav>
 
+<!-- 00 INTRO (스크립트가 채움) -->
+<div id="intro" hidden></div>
+
 <!-- 01 HERO -->
 <div class="hero-wrap" id="top">
 <section class="hero">
@@ -284,7 +301,7 @@
     <div class="mah" id="mah">MaH</div>
     <div class="sub" id="sub"></div>
   </div>
-  <span class="wf" style="margin-top:calc(24*var(--u))">처음엔 흐릿하게 · 스크롤할수록 MaH와 아래 글씨가 함께 또렷해짐</span>
+  <span class="wf" style="margin-top:calc(24*var(--u))">인트로: 이미지가 빠르게 바뀜 → MaH가 화면 가득 → 작아지며 이 자리에 안착 (방문당 한 번 · 클릭 시 건너뜀)</span>
 </section>
 </div>
 
@@ -506,7 +523,7 @@
         }
         if (p.resultText || p.resultValue) {
           h += `<div class="result rv"><div><span class="label">Result</span>
-            <p style="font-size:calc(20*var(--u));margin-top:calc(8*var(--u));font-weight:300">${esc(p.resultText)}</p></div>
+            <p style="font-size:calc(20*var(--u));margin-top:calc(8*var(--u));font-weight:400">${esc(p.resultText)}</p></div>
             <div class="big">${esc(p.resultValue)}</div></div>`;
         }
         h += `</div>`;
@@ -582,6 +599,7 @@
     addEventListener('keydown', e => { if (e.key === 'Escape' && openIdx >= 0) location.hash = 'index'; });
     tb.onclick = () => { location.hash = 'index'; };
     route();
+    runIntro(c);
   }
 
   // 스크롤 리빌: 같이 화면에 들어온 요소들은 위에서부터 차례로 떠오름
@@ -621,23 +639,72 @@
     })();
   }
 
-  // 히어로: 스크롤 진행도에 따라 블러가 풀림
-  const mah = $("mahWrap");
-  const clamp = v => Math.min(1, Math.max(0, v));
-  function heroScroll(){
-    const u = innerWidth / 1920;
-    const p = clamp(scrollY / (3000 * u));
-    const e = 1 - Math.pow(1 - p, 3);                 // 끝으로 갈수록 부드럽게 감속
-    mah.style.filter = `blur(${(1 - e) * 40 * u}px)`;
-    mah.style.opacity = .15 + e * .85;
-  }
+  // 메뉴 색: 하늘(히어로) 위에서는 흰 글씨
   const heroWrap = document.querySelector('.hero-wrap');
-  function heroTheme(){ document.documentElement.classList.toggle('on-hero', scrollY < heroWrap.offsetHeight - innerHeight * .9); }
+  function heroTheme(){ document.documentElement.classList.toggle('on-hero', scrollY < heroWrap.offsetHeight - 80 * innerWidth / 1920); }
   addEventListener('scroll', heroTheme, {passive:true});
   heroTheme();
-  addEventListener('scroll', heroScroll, {passive:true});
-  addEventListener('resize', heroScroll);
-  heroScroll();
+
+  // 인트로: 처음 방문했을 때 한 번만 (프로젝트 링크로 바로 들어오면 생략)
+  let introSeen = false;
+  try { introSeen = sessionStorage.getItem('mah-intro') === '1'; } catch (e) {}
+  const playIntro = !introSeen && !location.hash && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (playIntro) document.documentElement.classList.add('intro-on');
+
+  function runIntro(c){
+    const root = document.documentElement;
+    if (!playIntro) return;
+    try { sessionStorage.setItem('mah-intro', '1'); } catch (e) {}
+    const intro = $('intro'), target = $('mah');
+    const wait = ms => new Promise(r => setTimeout(r, ms));
+    let skipped = false, ended = false;
+    function end(){
+      if (ended) return; ended = true;
+      root.classList.remove('intro-on');
+      intro.style.transition = 'opacity .6s'; intro.style.opacity = 0;
+      setTimeout(() => intro.remove(), 650);
+    }
+    intro.hidden = false;
+    intro.innerHTML = '<div class="frame" id="iFrame"></div><div class="i-mah" id="iMah"></div><span class="skip">Click to skip</span>';
+    intro.addEventListener('click', () => { skipped = true; end(); });
+
+    (async () => {
+      // ① 이미지(없으면 색 블록)가 빠르게 바뀜
+      const imgs = c.projects.map(p => p.thumbnail || p.coverImage).filter(Boolean);
+      const palette = ['#E2412E', '#F8F8F6', '#111111', '#C9DDE5', '#8C8C88', '#E3E3DE', '#94B5C3', '#E2412E'];
+      const frames = imgs.length ? imgs : palette;
+      const fr = $('iFrame');
+      for (let k = 0; k < 9 && !skipped; k++) {
+        const f = frames[k % frames.length];
+        fr.style.background = imgs.length ? `center/cover url('${f}')` : f;
+        fr.style.transform = `translate(calc(-50% + ${(k % 3 - 1) * 14}px), calc(-50% + ${(k % 2 ? -1 : 1) * 10}px))`;
+        await wait(k < 6 ? 130 : 170);
+      }
+      if (skipped) return;
+      fr.remove();
+
+      // ② MaH가 화면 가득 등장 (히어로 MaH와 같은 크기로 겹쳐 둔 뒤, 키워서 가운데로)
+      const im = $('iMah');
+      im.innerHTML = target.innerHTML;
+      const r = target.getBoundingClientRect();
+      im.style.left = r.left + 'px'; im.style.top = r.top + 'px';
+      im.style.fontSize = getComputedStyle(target).fontSize;
+      const S = innerWidth * .9 / r.width;
+      const dx = innerWidth / 2 - (r.left + r.width * S / 2), dy = innerHeight / 2 - (r.top + r.height * S / 2);
+      im.style.transform = `translate(${dx}px, ${dy}px) scale(${S})`;
+      im.style.transition = 'opacity .5s ease';
+      await wait(30);
+      im.style.opacity = 1;
+      await wait(750);
+      if (skipped) return;
+
+      // ③ 작아지며 히어로 MaH 자리로 이동
+      im.style.transition = 'transform 1.2s cubic-bezier(.76,0,.24,1)';
+      im.style.transform = 'none';
+      await wait(1250);
+      end();
+    })();
+  }
 
   // 메모 토글
   const tg = $('toggle');
