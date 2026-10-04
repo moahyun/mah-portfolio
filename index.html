@@ -106,7 +106,7 @@
   .rows:has(.row:hover) .row{opacity:.22}
   .rows .row:hover{opacity:1}
   .rows .row:hover .t{transform:translateX(calc(24*var(--u)))}
-  /* ── Index 보기 전환: Company(회사별 묶음) / Capability(역량 필터) ── */
+  /* ── Index 보기 전환: Company(회사별 묶음) / Category(카테고리 필터) ── */
   .modes{display:flex;align-items:baseline;gap:calc(14*var(--u));font-size:calc(15*var(--u));letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
   .modes button,.chips button{background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;padding:0;transition:color .4s var(--ease)}
   .modes button:hover,.modes button.on,.chips button:hover,.chips button.on{color:var(--ink)}
@@ -271,7 +271,7 @@
 <section class="index pad" id="index">
   <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">03 INDEX · 행에 호버하면 대표 이미지가 커서를 따라다님 · 클릭하면 화면 전체가 프로젝트 뷰로 전환 (커버 이미지 + 딤 + 제목이 올라옴)</span>
   <div class="sec-head"><h2>Index<sup id="count"></sup></h2>
-    <div class="modes"><button class="on" data-mode="co">Company</button><span>/</span><button data-mode="cap">Capability</button></div></div>
+    <div class="modes"><button class="on" data-mode="co">Company</button><span>/</span><button data-mode="cap">Category</button></div></div>
   <div class="filter off" id="filter"><div class="chips" id="chips"></div></div>
   <div class="cols label rv"><span>No.</span><span>Project</span><span style="text-align:right">Category</span><span style="text-align:right">Period</span></div>
   <div class="rows" id="rows"></div>
@@ -330,7 +330,7 @@
     const career = c.about.career || [];
     $('count').textContent = `(${pad(ps.length)})`;
 
-    // 보기 전환: Company = About 경력 순서대로 회사별 묶음 / Capability = 역량 필터
+    // 보기 전환: Company = About 경력 순서대로 회사별 묶음 / Category = 카테고리 필터
     let mode = 'co', pick = 'All', firstDraw = true;
     const rowHTML = i => { const p = ps[i]; return `<div class="row${firstDraw ? ' rv' : ''}" data-i="${i}"><span class="n">${pad(i+1)}</span><span class="t">${esc(p.title)}</span>
        <span class="m">${esc(cats(p).join(' · '))}</span><span class="y">${esc(p.period)}</span></div>`; };

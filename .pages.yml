@@ -65,7 +65,7 @@ content:
             list: true
 
       - name: categories
-        label: 역량 카테고리 순서
+        label: 카테고리 순서
         type: string
         list: true
         hidden: true
@@ -92,7 +92,7 @@ content:
             type: string
             list: true
           - name: categories
-            label: 역량 카테고리 (Capability 필터)
+            label: 카테고리 (Category 필터)
             description: 여러 개 고를 수 있어요.
             type: select
             options:
