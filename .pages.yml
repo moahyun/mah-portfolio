@@ -103,8 +103,9 @@ content:
                 - Logo & Type
                 - Character
                 - Contents
-          - name: year
-            label: 연도
+          - name: period
+            label: 프로젝트 기간
+            description: "예: 2025.03 — 2025.06 (한 달짜리면 2025.03만 써도 돼요)"
             type: string
           - name: role
             label: 역할
