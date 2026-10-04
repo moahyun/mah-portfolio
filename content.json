@@ -9,26 +9,75 @@
   },
   "about": {
     "intro": "브랜드와 맥락을 먼저 이해하고, 그에 맞는 비주얼을 찾아갑니다. 타이포·그래픽·AI 등 필요한 방법을 적극적으로 활용하되, 디테일에는 저만의 결을 남깁니다.",
+    "name": "Mo Ahyun 모아현 · Seoul, KR",
     "career": [
       {
-        "period": "20XX — 2026",
+        "period": "2026.01 — Now",
         "company": "andar",
-        "role": "Content Design Team · Campaign, CRM, Offline"
+        "role": "콘텐츠디자인팀 · 콘텐츠 디자이너"
       },
       {
-        "period": "20XX — 20XX",
+        "period": "2024.09 — 2025.06",
         "company": "CJ ENM · ZEROBASEONE",
-        "role": "인코스파트너스 파견 · 제작팀 · Album, Logo, Promotion"
+        "role": "ZB1 제작팀 · 앨범 디자이너 (파견)"
       },
       {
-        "period": "20XX — 20XX",
+        "period": "2025.10 — 2025.12",
         "company": "HBAF",
-        "role": "Brand Planning Team · Package, Character"
-      },
+        "role": "브랜드기획팀 · 브랜드 디자이너 (파견)"
+      }
+    ],
+    "freelance": [
       {
         "period": "20XX — Now",
-        "company": "BandKirin",
-        "role": "Freelance · SNS 운영"
+        "title": "BandKirin",
+        "desc": "SNS 운영 · 로고 디자인"
+      },
+      {
+        "period": "2022.07 — 2022.09",
+        "title": "야나두",
+        "desc": "퍼포먼스마케팅팀 · 광고 콘텐츠 디자인"
+      }
+    ],
+    "education": [
+      {
+        "period": "2019.03 — 2024.02",
+        "title": "세종대학교",
+        "desc": "디자인이노베이션학과 시각디자인 전공 · 뉴미디어퍼포먼스 복수전공"
+      }
+    ],
+    "awards": [
+      {
+        "period": "2023.10",
+        "title": "세종대학교 디자인과 졸업 전시",
+        "desc": ""
+      },
+      {
+        "period": "2023.09",
+        "title": "넥센타이어 산학협업 전시",
+        "desc": "Sensus Universe"
+      },
+      {
+        "period": "2019.07",
+        "title": "네오정보시스템 산학협업 최우수상",
+        "desc": "생활정보지 디자인"
+      }
+    ],
+    "activities": [
+      {
+        "period": "2025.04 — 2025.08",
+        "title": "bxd 브랜드 경험디자인 워크숍",
+        "desc": ""
+      },
+      {
+        "period": "2023.12 — 2024.02",
+        "title": "노트폴리오 패키지 디자인 워크숍",
+        "desc": ""
+      },
+      {
+        "period": "2022.03 — 2022.12",
+        "title": "일러스트 & 캐릭터 Design LAB",
+        "desc": "RUSH"
       }
     ]
   },

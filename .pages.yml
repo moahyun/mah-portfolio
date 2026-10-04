@@ -35,14 +35,18 @@ content:
             type: string
 
       - name: about
-        label: About
+        label: Info
         type: object
         fields:
           - name: intro
             label: 소개 문구
             type: text
+          - name: name
+            label: 소개 아래 작은 글씨
+            type: string
           - name: career
-            label: 경력
+            label: Experience (경력)
+            description: 회사 이름은 Index의 Company 묶음 이름으로도 쓰여요. 위에서부터 순서대로 보여요.
             type: object
             list: true
             fields:
@@ -53,7 +57,67 @@ content:
                 label: 회사
                 type: string
               - name: role
-                label: 팀 · 업무
+                label: 팀 · 직무
+                type: string
+          - name: freelance
+            label: Freelance
+            description: 외주·프리랜스 작업
+            type: object
+            list: true
+            fields:
+              - name: period
+                label: 기간
+                type: string
+              - name: title
+                label: 이름
+                type: string
+              - name: desc
+                label: 설명 (작은 글씨)
+                type: string
+          - name: education
+            label: Education
+            description: 학력
+            type: object
+            list: true
+            fields:
+              - name: period
+                label: 기간
+                type: string
+              - name: title
+                label: 이름
+                type: string
+              - name: desc
+                label: 설명 (작은 글씨)
+                type: string
+          - name: awards
+            label: Awards & Exhibitions
+            description: 수상·전시
+            type: object
+            list: true
+            fields:
+              - name: period
+                label: 기간
+                type: string
+              - name: title
+                label: 이름
+                type: string
+              - name: desc
+                label: 설명 (작은 글씨)
+                type: string
+          - name: activities
+            label: Activities
+            description: 워크숍·스터디·대외활동
+            type: object
+            list: true
+            fields:
+              - name: period
+                label: 기간
+                type: string
+              - name: title
+                label: 이름
+                type: string
+              - name: desc
+                label: 설명 (작은 글씨)
                 type: string
 
       - name: categories

@@ -204,17 +204,20 @@
   .daily:hover .track{animation-play-state:paused}
   @keyframes mq{to{transform:translateX(-50%)}}
 
-  /* ── 02 About: 1920×2160 (두 화면 높이) · 위 = 소개 / 아래 = 경력 ── */
+  /* ── 02 Info: 1920×2160 (두 화면 높이) · 위 = 소개 / 아래 = 이력 ── */
   .about{min-height:calc(2160*var(--u));display:flex;flex-direction:column;padding-top:calc(200*var(--u));padding-bottom:calc(120*var(--u))}
   .ab-block{flex:1;display:grid;grid-template-columns:calc(420*var(--u)) 1fr;align-content:center}
   .ab-intro{font-size:calc(26*var(--u));line-height:1.8;font-weight:300;max-width:calc(960*var(--u));letter-spacing:-.005em}
   .ab-name{margin-top:calc(48*var(--u))}
-  .exp li{list-style:none;display:grid;grid-template-columns:calc(480*var(--u)) 1fr auto;align-items:baseline;
-    padding:calc(22*var(--u)) 0;border-bottom:1px solid var(--line)}
-  .exp li:first-child{border-top:1px solid var(--line)}
-  .exp .co{font-family:var(--serif);font-size:calc(22*var(--u));line-height:1.2}
-  .exp .ro{font-size:calc(13*var(--u));color:var(--mute)}
-  .exp .pe{font-size:calc(12*var(--u));color:var(--mute);letter-spacing:.04em}
+  /* 이력: 왼쪽 라벨 축은 비우고, 오른쪽을 두 단으로 */
+  .cv{flex:1;display:grid;grid-template-columns:calc(420*var(--u)) 1fr 1fr;column-gap:calc(80*var(--u));align-content:center}
+  .cv-col{display:flex;flex-direction:column;gap:calc(72*var(--u))}
+  .cv-group .label{display:block;padding-bottom:calc(14*var(--u));border-bottom:1px solid var(--line)}
+  .cv-group ul{list-style:none}
+  .cv-group li{display:grid;grid-template-columns:calc(150*var(--u)) 1fr;padding:calc(16*var(--u)) 0;border-bottom:1px solid var(--line)}
+  .cv-group .pe{font-size:calc(12*var(--u));color:var(--mute);letter-spacing:.04em;padding-top:calc(3*var(--u))}
+  .cv-group .ti{font-size:calc(15*var(--u));line-height:1.5}
+  .cv-group .de{display:block;font-size:calc(12*var(--u));color:var(--mute);margin-top:calc(2*var(--u))}
 
   /* ── 06 Contact ── */
   .contact{height:calc(1080*var(--u));display:flex;flex-direction:column;justify-content:space-between;
@@ -240,7 +243,7 @@
 
 <nav class="nav">
   <a href="#top" class="logo">MaH</a>
-  <ul><li><a href="#about">About</a></li><li><a href="#index">Index</a></li><li><a href="#contact">Contact</a></li></ul>
+  <ul><li><a href="#info">Info</a></li><li><a href="#index">Index</a></li><li><a href="#contact">Contact</a></li></ul>
 </nav>
 
 <!-- 01 HERO -->
@@ -253,17 +256,18 @@
 </section>
 </div>
 
-<!-- 02 ABOUT -->
-<section class="about pad" id="about">
-  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 ABOUT · 1920×2160 (두 화면 높이) · 위 화면 = 소개 문장 / 아래 화면 = 경력 · 왼쪽 라벨 + 오른쪽 내용이 같은 축</span>
-  <div class="sec-head"><h2>About</h2><span class="label">Mo Ahyun</span></div>
+<!-- 02 INFO -->
+<section class="about pad" id="info">
+  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 INFO · 1920×2160 (두 화면 높이) · 위 화면 = 소개 / 아래 화면 = 이력 두 단 · 연락처·주소는 공개 사이트라 넣지 않음</span>
+  <div class="sec-head"><h2>Info</h2><span class="label">Mo Ahyun</span></div>
   <div class="ab-block">
     <span class="label rv">Profile</span>
-    <div><p class="ab-intro rv" id="aboutIntro"></p><p class="ab-name label rv">Mo Ahyun — Visual Content Designer</p></div>
+    <div><p class="ab-intro rv" id="aboutIntro"></p><p class="ab-name label rv" id="aboutName"></p></div>
   </div>
-  <div class="ab-block">
-    <span class="label rv">Experience</span>
-    <ul class="exp" id="career"></ul>
+  <div class="cv">
+    <span></span>
+    <div class="cv-col" id="cvA"></div>
+    <div class="cv-col" id="cvB"></div>
   </div>
 </section>
 
@@ -319,8 +323,14 @@
 
     // About
     $('aboutIntro').innerHTML = br(c.about.intro);
-    $('career').innerHTML = c.about.career.map(x =>
-      `<li class="rv"><span class="co">${esc(x.company)}</span><span class="ro">${esc(x.role)}</span><span class="pe">${esc(x.period)}</span></li>`).join('');
+    $('aboutName').textContent = c.about.name || '';
+    // 이력 그룹: 왼쪽 단 = Experience · Freelance · Education / 오른쪽 단 = Awards & Exhibitions · Activities
+    const cvGroup = (label, items) => items && items.length ? `<div class="cv-group"><span class="label rv">${esc(label)}</span><ul>${
+      items.map(x => `<li class="rv"><span class="pe">${esc(x.period)}</span><span class="ti">${esc(x.title)}<span class="de">${esc(x.desc)}</span></span></li>`).join('')}</ul></div>` : '';
+    const ab = c.about;
+    $('cvA').innerHTML = cvGroup('Experience', (ab.career || []).map(x => ({ period: x.period, title: x.company, desc: x.role })))
+      + cvGroup('Freelance', ab.freelance) + cvGroup('Education', ab.education);
+    $('cvB').innerHTML = cvGroup('Awards & Exhibitions', ab.awards) + cvGroup('Activities', ab.activities);
 
     // Index
     const ps = c.projects, rows = $('rows');
