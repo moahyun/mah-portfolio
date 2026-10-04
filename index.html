@@ -263,9 +263,12 @@
   .about{height:calc(1080*var(--u));display:flex;flex-direction:column;justify-content:space-between;
     padding-top:calc(160*var(--u));padding-bottom:calc(140*var(--u))}
   .sec-title{font-family:var(--serif);font-weight:400;font-size:calc(56*var(--u));line-height:1}
-  /* 소개 문장: About Me 제목과 같은 줄, 오른쪽 끝에 작게 */
-  .ab-top{display:flex;justify-content:space-between;align-items:flex-start}
-  .ab-intro{width:calc(540*var(--u));padding-top:calc(6*var(--u));font-size:calc(17*var(--u));line-height:1.9;font-weight:400;letter-spacing:-.01em;word-break:keep-all}
+  /* 위 = 제목 / 가운데 = 큰 한 줄 문장(강) / 아래 = 4단 중 오른쪽 두 단에 작은 정보(약) · Career 아래 4단과 같은 그리드 */
+  .ab-statement{font-size:calc(128*var(--u));font-weight:400;line-height:.98;letter-spacing:-.045em}
+  .ab-bottom{display:grid;grid-template-columns:repeat(4,1fr);column-gap:calc(40*var(--u))}
+  .ab-bottom .label{display:block;margin-bottom:calc(18*var(--u))}
+  .ab-bottom .label + p + .label{margin-top:calc(36*var(--u))}
+  .ab-intro,.ab-bottom p{font-size:calc(15*var(--u));line-height:1.85;word-break:keep-all;max-width:calc(400*var(--u))}
 
   /* ── 03 Career: 한 화면 · 위 = 경력 3단(큰 세리프) / 아래 = 나머지 4단(작은 글씨) · Index의 줄 목록과 다른 단 구성 ── */
   .career{min-height:calc(1080*var(--u));display:flex;flex-direction:column;justify-content:space-between;
@@ -334,8 +337,14 @@
 <!-- 02 ABOUT ME (한 화면) -->
 <section class="about pad" id="about">
   <div>
-    <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 ABOUT ME · 1920×1080 한 화면 · 제목과 같은 줄 오른쪽에 소개 문장 (작게)</span>
-    <div class="ab-top"><h2 class="sec-title">About Me</h2><p class="ab-intro rv" id="aboutIntro"></p></div>
+    <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 ABOUT ME · 1920×1080 한 화면 · 위 = 제목 / 가운데 = 큰 문장 / 아래 = Career와 같은 4단 그리드의 오른쪽 두 단에 작은 정보</span>
+    <h2 class="sec-title">About Me</h2>
+  </div>
+  <p class="ab-statement rv" id="abStatement"></p>
+  <div class="ab-bottom">
+    <div></div><div></div>
+    <div class="rv"><span class="label">Profile</span><p class="ab-intro" id="aboutIntro"></p></div>
+    <div class="rv"><span class="label">Focus</span><p id="abFocus"></p><span class="label">Based</span><p id="abBased"></p></div>
   </div>
 </section>
 
@@ -401,6 +410,9 @@
 
     // About
     $('aboutIntro').innerHTML = br(c.about.intro);
+    $('abStatement').innerHTML = br(c.about.statement || '');
+    $('abFocus').innerHTML = (c.categories || []).map(esc).join('<br>');
+    $('abBased').textContent = c.about.based || '';
     // Career: 경력 = 큰 세리프 단 / 나머지 = 작은 단
     const ab = c.about;
     $('expCols').innerHTML = (ab.career || []).map(x =>
