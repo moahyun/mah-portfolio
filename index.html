@@ -48,13 +48,11 @@
   .nav ul{display:flex;gap:calc(40*var(--u));list-style:none;font-size:calc(14*var(--u))}
 
   /* ── 01 Hero ── */
-  .hero{height:calc(1080*var(--u));position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center}
-  .mah{font-family:var(--serif);font-size:calc(380*var(--u));line-height:.8;letter-spacing:-.02em;
-    opacity:0;filter:blur(calc(10*var(--u)));transition:opacity 2.6s var(--ease),filter 2.6s var(--ease);will-change:transform}
-  .mah.in{opacity:1;filter:blur(0)}
-  .sub{margin-top:calc(48*var(--u));font-size:calc(13*var(--u));letter-spacing:.32em;color:var(--mute);
-    opacity:0;transition:opacity 1.6s var(--ease) 1.4s}
-  .sub.in{opacity:1}
+  /* 스크롤 트랙: 1080 높이만큼 스크롤하는 동안 화면에 고정된 채 블러가 풀림 */
+  .hero-wrap{height:calc(2160*var(--u))}
+  .hero{position:sticky;top:0;height:calc(1080*var(--u));display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .mah{font-family:var(--serif);font-size:calc(380*var(--u));line-height:.8;letter-spacing:-.02em;will-change:filter,opacity}
+  .sub{margin-top:calc(48*var(--u));font-size:calc(13*var(--u));letter-spacing:.32em;color:var(--mute);opacity:0}
   .hero .copy{position:absolute;left:calc(60*var(--u));bottom:calc(60*var(--u));font-family:var(--serif);
     font-size:calc(32*var(--u));font-style:italic;line-height:1.2}
   .hero .scroll{position:absolute;right:calc(60*var(--u));bottom:calc(60*var(--u));font-size:calc(13*var(--u));color:var(--mute)}
@@ -160,27 +158,48 @@
 </nav>
 
 <!-- 01 HERO -->
-<section class="hero" id="top">
-  <span class="wf abs" style="top:calc(110*var(--u));left:calc(60*var(--u))">01 HERO · 1920×1080 한 화면 · 직접 레터링한 MaH 로고로 교체 예정</span>
+<div class="hero-wrap" id="top">
+<section class="hero">
+  <span class="wf abs" style="top:calc(110*var(--u));left:calc(60*var(--u))">01 HERO · 1920×1080 한 화면 · MaH는 직접 디자인한 로고로 교체 예정 (SVG 또는 PNG)</span>
   <div class="mah" id="mah">MaH</div>
   <div class="sub" id="sub">MO AHYUN · VISUAL CONTENT DESIGNER</div>
-  <span class="wf" style="margin-top:calc(24*var(--u))">로딩 시 블러→선명하게 천천히 등장 · 마우스 따라 아주 미세하게 움직임</span>
+  <span class="wf" style="margin-top:calc(24*var(--u))">처음엔 흐릿하게 · 스크롤할수록 블러가 풀리며 또렷해짐 · 다 또렷해지면 이름이 나타남</span>
   <div class="copy">Fit the brand,<br>keep the touch.</div>
-  <div class="scroll">Scroll ↓</div>
+  <div class="scroll" id="scrollHint">Scroll ↓</div>
+</section>
+</div>
+
+<!-- 02 ABOUT -->
+<section class="about pad" id="about">
+  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 ABOUT · 메인 바로 아래 · 소개 / 경력 타임라인 / 할 수 있는 것 3단</span>
+  <div class="sec-head rv"><h2>About</h2><span class="label">Mo Ahyun</span></div>
+  <div class="ab-grid rv">
+    <p class="intro">브랜드와 맥락을 먼저 이해하고, 그에 맞는 비주얼을 찾아갑니다. 타이포·그래픽·AI 등 필요한 방법을 적극적으로 활용하되, 디테일에는 저만의 결을 남깁니다.</p>
+    <ul class="tl">
+      <li><span class="label">20XX — 2026</span><div><b>andar</b><small>Content Design Team · Campaign, CRM, Offline</small></div></li>
+      <li><span class="label">20XX — 20XX</span><div><b>HBAF</b><small>Brand Planning Team · Package, Character</small></div></li>
+      <li><span class="label">20XX — 20XX</span><div><b>ZEROBASEONE</b><small>Entertainment Production · Album Design, Lettering</small></div></li>
+    </ul>
+    <ul class="cap">
+      <li class="label" style="border:0;padding-bottom:calc(16*var(--u))">Capabilities</li>
+      <li>Campaign Key Visual</li><li>Typography & Lettering</li><li>CRM Visual</li>
+      <li>Package & Print</li><li>Character Design</li><li>AI Workflow</li>
+    </ul>
+  </div>
 </section>
 
-<!-- 02 INDEX -->
+<!-- 03 INDEX -->
 <section class="index pad" id="index">
-  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 INDEX · 텍스트 리스트 · 행에 호버하면 대표 이미지가 커서를 따라다님 · 클릭하면 상세로</span>
+  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">03 INDEX · 텍스트 리스트 · 행에 호버하면 대표 이미지가 커서를 따라다님 · 클릭하면 상세로</span>
   <div class="sec-head rv"><h2>Index<sup>(07)</sup></h2><span class="label">Selected Works 20XX — 2026</span></div>
   <div class="cols label"><span>No.</span><span>Project</span><span>Client</span><span>Category</span><span style="text-align:right">Year</span></div>
   <div class="rows" id="rows"></div>
 </section>
 <div class="preview box" id="preview"></div>
 
-<!-- 03 PROJECT DETAIL (템플릿: 01 예시) -->
+<!-- 04 PROJECT DETAIL (템플릿: 01 예시) -->
 <section class="detail pad" id="p01">
-  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">03 PROJECT DETAIL · 7개 프로젝트 모두 이 템플릿 공통 · 블록(Touch / Spread / Result)은 프로젝트마다 골라서 사용</span>
+  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">04 PROJECT DETAIL · 7개 프로젝트 모두 이 템플릿 공통 · 블록(Touch / Spread / Result)은 프로젝트마다 골라서 사용</span>
   <div class="d-head rv">
     <div class="d-no">01</div>
     <div class="d-title">Seasonal Campaign<br>— Bridge Visual</div>
@@ -243,35 +262,16 @@
   </a>
 </section>
 
-<!-- 04 DAILY CONTENTS -->
+<!-- 05 DAILY CONTENTS -->
 <section class="daily" id="daily">
   <div class="pad">
-    <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">04 DAILY CONTENTS (= 07번 프로젝트) · 썸네일/배너/상세를 크기별로 천천히 흐르게 · 호버 시 일시정지</span>
+    <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">05 DAILY CONTENTS (= 07번 프로젝트) · 썸네일/배너/상세를 크기별로 천천히 흐르게 · 호버 시 일시정지</span>
     <div class="sec-head rv"><h2>Daily Contents<sup>andar</sup></h2><span class="label">Thumbnail · Banner · Detail</span></div>
   </div>
   <div style="margin-top:calc(60*var(--u))">
     <div class="track a" id="ta"></div>
     <div class="track b" id="tb"></div>
     <div class="track c" id="tc"></div>
-  </div>
-</section>
-
-<!-- 05 ABOUT -->
-<section class="about pad" id="about">
-  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">05 ABOUT · 소개 / 경력 타임라인 / 할 수 있는 것 3단</span>
-  <div class="sec-head rv"><h2>About</h2><span class="label">Mo Ahyun</span></div>
-  <div class="ab-grid rv">
-    <p class="intro">브랜드와 맥락을 먼저 이해하고, 그에 맞는 비주얼을 찾아갑니다. 타이포·그래픽·AI 등 필요한 방법을 적극적으로 활용하되, 디테일에는 저만의 결을 남깁니다.</p>
-    <ul class="tl">
-      <li><span class="label">20XX — 2026</span><div><b>andar</b><small>Content Design Team · Campaign, CRM, Offline</small></div></li>
-      <li><span class="label">20XX — 20XX</span><div><b>HBAF</b><small>Brand Planning Team · Package, Character</small></div></li>
-      <li><span class="label">20XX — 20XX</span><div><b>ZEROBASEONE</b><small>Entertainment Production · Album Design, Lettering</small></div></li>
-    </ul>
-    <ul class="cap">
-      <li class="label" style="border:0;padding-bottom:calc(16*var(--u))">Capabilities</li>
-      <li>Campaign Key Visual</li><li>Typography & Lettering</li><li>CRM Visual</li>
-      <li>Package & Print</li><li>Character Design</li><li>AI Workflow</li>
-    </ul>
   </div>
 </section>
 
@@ -320,13 +320,21 @@
     requestAnimationFrame(loop);
   })();
 
-  // 히어로 등장 + 미세 패럴랙스
-  const mah = document.getElementById('mah');
-  requestAnimationFrame(() => { mah.classList.add('in'); document.getElementById('sub').classList.add('in'); });
-  document.querySelector('.hero').addEventListener('mousemove', e => {
-    const x = (e.clientX / innerWidth - .5) * 16, y = (e.clientY / innerHeight - .5) * 10;
-    mah.style.transform = `translate(${x}px, ${y}px)`;
-  });
+  // 히어로: 스크롤 진행도에 따라 블러가 풀림
+  const mah = document.getElementById('mah'), sub = document.getElementById('sub'), hint = document.getElementById('scrollHint');
+  const clamp = v => Math.min(1, Math.max(0, v));
+  function heroScroll(){
+    const u = innerWidth / 1920;
+    const p = clamp(scrollY / (900 * u));
+    const e = 1 - Math.pow(1 - p, 3);                 // 끝으로 갈수록 부드럽게 감속
+    mah.style.filter = `blur(${(1 - e) * 40 * u}px)`;
+    mah.style.opacity = .15 + e * .85;
+    sub.style.opacity = clamp((p - .7) / .3);
+    hint.style.opacity = 1 - clamp(p / .3);
+  }
+  addEventListener('scroll', heroScroll, {passive:true});
+  addEventListener('resize', heroScroll);
+  heroScroll();
 
   // Daily contents 트랙 (가로 무한 흐름)
   const sizes = { ta:[[360,360],[560,360],[360,360],[280,360]], tb:[[640,280],[280,280],[420,280]], tc:[[300,400],[300,400],[520,400]] };
