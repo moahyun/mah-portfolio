@@ -206,12 +206,13 @@
   .daily:hover .track{animation-play-state:paused}
   @keyframes mq{to{transform:translateX(-50%)}}
 
-  /* ── 02 Info: 1920×2160 (두 화면 높이) · 위 = 소개 / 아래 = 이력 ── */
-  .about{min-height:calc(2160*var(--u));display:flex;flex-direction:column;padding-top:calc(200*var(--u));padding-bottom:calc(120*var(--u))}
-  .ab-block{flex:1;display:grid;grid-template-columns:calc(420*var(--u)) 1fr;align-content:center}
-  .ab-intro{font-size:calc(26*var(--u));line-height:1.8;font-weight:300;max-width:calc(960*var(--u));letter-spacing:-.005em}
+  /* ── 02 About Me: 제목 + 소개 한 줄 / 아래 = 이력 ── */
+  .about{padding-top:calc(200*var(--u));padding-bottom:calc(200*var(--u))}
+  /* 제목 About Me 와 소개 문장을 한 줄에: 소개는 아래 이력 항목과 같은 세로 축(420)에서 시작 */
+  .ab-head{display:grid;grid-template-columns:calc(420*var(--u)) 1fr;align-items:start;padding-bottom:calc(120*var(--u))}
+  .ab-intro{font-size:calc(24*var(--u));line-height:1.8;padding-top:calc(8*var(--u));font-weight:300;max-width:calc(960*var(--u));letter-spacing:-.005em}
   /* 이력: 그룹마다 한 줄씩 · 왼쪽 = 그룹 이름(세리프) / 오른쪽 = 항목 · 경력만 크게 */
-  .cv{padding-top:calc(120*var(--u))}
+  .cv .cv-group:first-child{border-top:0}
   .cv-group{display:grid;grid-template-columns:calc(420*var(--u)) 1fr;padding:calc(56*var(--u)) 0;border-top:1px solid var(--line)}
   .cv-group h3{font-family:var(--serif);font-weight:400;font-size:calc(28*var(--u));line-height:1}
   .cv-group ul{list-style:none}
@@ -248,7 +249,7 @@
 
 <nav class="nav">
   <a href="#top" class="logo">MaH</a>
-  <ul><li><a href="#info">Info</a></li><li><a href="#index">Index</a></li><li><a href="#contact">Contact</a></li></ul>
+  <ul><li><a href="#about">About Me</a></li><li><a href="#index">Index</a></li><li><a href="#contact">Contact</a></li></ul>
 </nav>
 
 <!-- 01 HERO -->
@@ -263,14 +264,10 @@
 </section>
 </div>
 
-<!-- 02 INFO -->
-<section class="about pad" id="info">
-  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 INFO · 위 화면 = 소개 / 아래 = 이력 (그룹 이름 왼쪽, 항목 오른쪽 · 경력만 크게) · 연락처·주소는 공개 사이트라 넣지 않음</span>
-  <div class="sec-head"><h2>Info</h2></div>
-  <div class="ab-block">
-    <span></span>
-    <p class="ab-intro rv" id="aboutIntro"></p>
-  </div>
+<!-- 02 ABOUT ME -->
+<section class="about pad" id="about">
+  <span class="wf" style="display:block;margin-bottom:calc(20*var(--u))">02 ABOUT ME · 제목 옆 같은 줄에 소개 · 아래 = 이력 (그룹 이름 왼쪽, 항목 오른쪽 · 경력만 크게) · 연락처·주소는 공개 사이트라 넣지 않음</span>
+  <div class="sec-head ab-head"><h2>About Me</h2><p class="ab-intro rv" id="aboutIntro"></p></div>
   <div class="cv" id="cv"></div>
 </section>
 

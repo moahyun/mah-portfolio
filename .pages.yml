@@ -35,7 +35,7 @@ content:
             type: string
 
       - name: about
-        label: Info
+        label: About Me
         type: object
         fields:
           - name: intro
