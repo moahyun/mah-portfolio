@@ -89,7 +89,7 @@
     padding:0 calc(60*var(--u)) calc(56*var(--u))}
   /* 뮤트한 하늘 그라데이션 + 필름 같은 노이즈 (메인 · Contact) */
   .sky{position:relative;color:#fff;overflow:hidden;background:radial-gradient(120% 95% at 28% 8%, #C9DDE5 0%, #A9C6D2 48%, #94B5C3 100%)}
-  .sky::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.55;mix-blend-mode:overlay;
+  .sky::before,.noisy::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.55;mix-blend-mode:overlay;
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
   .sky > *{position:relative}
   /* MaH 묶음은 가운데 하단에 · 메모(wf)는 흐름에서 빼서 위치에 영향 없게 */
@@ -100,12 +100,19 @@
 
   /* ── 인트로: 배경 블랙→그레이→화이트→블루 → MaH가 한 글자씩 떠오름 → 작아지며 히어로 자리로 (방문당 한 번 · 클릭하면 건너뜀) ── */
   #intro{position:fixed;inset:0;z-index:90;cursor:pointer;background:#000}
-  /* 배경이 아래에서 위로 빠르게 덮이며 바뀜: 블랙 → 그레이 → 화이트 → 블루 */
-  #intro .wipe{position:absolute;inset:0;clip-path:inset(100% 0 0 0);transition:clip-path .62s cubic-bezier(.76,0,.24,1)}
-  #intro .wipe.in{clip-path:inset(0 0 0 0)}
-  #intro .wipe.g{background:#6E6E6C}
-  #intro .wipe.w{background:#F9F9F9}
-  #intro .i-mah,#intro .skip{z-index:2}
+  /* 배경이 끊김 없이 흘러가며 바뀜: 블랙 → 그레이 → 화이트 → 블루 (세로로 긴 그라데이션 띠가 위로 지나감) */
+  #intro .flow{position:absolute;left:0;top:0;width:100%;height:500%;
+    background:linear-gradient(180deg,#000 0%,#000 12%,#3a3a39 24%,#7a7a78 36%,#d8d8d5 50%,#F9F9F9 56%,#dfe9ed 66%,#C9DDE5 78%,#A9C6D2 100%);
+    transition:transform 2.6s cubic-bezier(.65,0,.35,1)}
+  #intro .flow.go{transform:translateY(-80%)}
+  #intro .fin{position:absolute;inset:0;opacity:0;transition:opacity .7s ease}
+  #intro .fin.in{opacity:1}
+  #intro .i-mah,#intro .skip{z-index:3}
+
+  /* 마우스가 지나간 자리에 노이즈가 일렁였다 사라짐 (하늘 배경 · 인트로) */
+  .grain{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;mix-blend-mode:overlay;z-index:2}
+  .sky > .grain{position:absolute}
+  .sky > *:not(.grain){z-index:3}
   #intro .i-mah{position:fixed;color:#fff;font-family:var(--serif);font-weight:300;line-height:.74;letter-spacing:-.045em;
     transform-origin:0 0;white-space:nowrap}
   #intro .i-mah .ch{display:inline-block;opacity:0;transform:translateY(.22em);filter:blur(.04em);
@@ -298,7 +305,7 @@
 </nav>
 
 <!-- 00 INTRO (스크립트가 채움) -->
-<div id="intro" hidden></div>
+<div id="intro" class="noisy" hidden></div>
 
 <!-- 01 HERO -->
 <div class="hero-wrap" id="top">
@@ -376,6 +383,7 @@
   function render(c){
     // 커서: 관리자 화면에서 PNG를 올리면 그 이미지, 없으면 작은 흰 점
     setupCursor(c.cursor || {});
+    document.querySelectorAll('.hero, .contact').forEach(attachGrain);
 
     // Hero
     if (c.hero.logo) $('mah').innerHTML = `<img src="${esc(c.hero.logo)}" alt="MaH">`;
@@ -626,6 +634,57 @@
     root.querySelectorAll(".rv").forEach(el => io.observe(el));
   }
 
+  // 마우스가 지나간 자리에 노이즈 알갱이가 일렁이다 사라짐
+  const grains = [];
+  function attachGrain(el){
+    if (!matchMedia('(pointer:fine)').matches) return;
+    const cv = document.createElement('canvas');
+    cv.className = 'grain';
+    el.appendChild(cv);
+    const g = { el, cv, ctx: cv.getContext('2d'), pts: [], lx: null, ly: null };
+    const size = () => { cv.width = el.clientWidth; cv.height = el.clientHeight; };
+    size(); addEventListener('resize', size);
+    grains.push(g);
+  }
+  addEventListener('mousemove', e => {
+    for (const g of grains) {
+      if (!g.el.isConnected) continue;
+      const r = g.el.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      if (x < 0 || y < 0 || x > r.width || y > r.height) { g.lx = null; continue; }
+      // 빠르게 움직여도 끊기지 않게 사이를 채움
+      const steps = g.lx === null ? 1 : Math.min(8, Math.ceil(Math.hypot(x - g.lx, y - g.ly) / 18));
+      for (let k = 1; k <= steps; k++) {
+        const t = k / steps;
+        g.pts.push({ x: g.lx === null ? x : g.lx + (x - g.lx) * t, y: g.ly === null ? y : g.ly + (y - g.ly) * t, life: 1 });
+      }
+      if (g.pts.length > 90) g.pts.splice(0, g.pts.length - 90);
+      g.lx = x; g.ly = y;
+    }
+  }, {passive:true});
+  (function grainLoop(){
+    const u = innerWidth / 1920, rad = 90 * u;
+    for (const g of grains) {
+      if (!g.el.isConnected) continue;
+      const { ctx, cv } = g;
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.fillStyle = 'rgba(0,0,0,.12)';
+      ctx.fillRect(0, 0, cv.width, cv.height);
+      ctx.globalCompositeOperation = 'source-over';
+      for (const p of g.pts) {
+        const n = 26 * p.life, rr = rad * (.5 + (1 - p.life) * .8);
+        for (let i = 0; i < n; i++) {
+          const a = Math.random() * Math.PI * 2, d = Math.sqrt(Math.random()) * rr;
+          ctx.fillStyle = Math.random() < .55 ? `rgba(255,255,255,${.75 * p.life})` : `rgba(20,30,35,${.5 * p.life})`;
+          ctx.fillRect(p.x + Math.cos(a) * d, p.y + Math.sin(a) * d, Math.random() < .3 ? 2 : 1.2, Math.random() < .3 ? 2 : 1.2);
+        }
+        p.life -= .035;
+      }
+      g.pts = g.pts.filter(p => p.life > 0);
+    }
+    requestAnimationFrame(grainLoop);
+  })();
+
   function setupCursor(cfg){
     if (!matchMedia("(pointer:fine)").matches) return;      // 터치 기기에서는 기본 커서 유지
     const cur = $("cursor");
@@ -677,8 +736,9 @@
       setTimeout(() => intro.remove(), 650);
     }
     intro.hidden = false;
-    intro.innerHTML = '<div class="wipe g"></div><div class="wipe w"></div><div class="wipe sky"></div>'
+    intro.innerHTML = '<div class="flow"></div><div class="fin sky"></div>'
       + '<div class="i-mah" id="iMah"></div><span class="skip">Click to skip</span>';
+    attachGrain(intro);
     intro.addEventListener('click', () => { skipped = true; end(); });
 
     (async () => {
@@ -694,10 +754,13 @@
       const dx = innerWidth / 2 - (r.left + r.width * S / 2), dy = innerHeight / 2 - (r.top + r.height * S / 2);
       im.style.transform = `translate(${dx}px, ${dy}px) scale(${S})`;
 
-      // 배경 전환: 블랙에서 잠깐 멈췄다가 그레이 → 화이트 → 블루
-      await wait(350);
-      for (const w of intro.querySelectorAll('.wipe')) { if (skipped) return; w.classList.add('in'); await wait(260); }
-      await wait(450);
+      // 배경 흐름: 블랙에서 잠깐 멈췄다가 그레이 → 화이트 → 블루로 매끄럽게
+      await wait(300);
+      intro.querySelector('.flow').classList.add('go');
+      await wait(2200);
+      if (skipped) return;
+      intro.querySelector('.fin').classList.add('in');   // 메인과 같은 하늘 그라데이션으로 이어 붙임
+      await wait(500);
 
       // ② 한 글자씩 아래에서 떠오르며 또렷해짐
       const chs = [...im.querySelectorAll('.ch')];
